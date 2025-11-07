@@ -11,5 +11,13 @@ export const TOAST_MESSAGES = {
     UPDATE_SUCCESS: 'Profile updated successfully!',
     UPDATE_ERROR: 'Failed to update profile',
   },
+  TASKS: {
+    CREATE_SUCCESS: 'Task created successfully!',
+    CREATE_ERROR: 'Failed to create task',
+    UPDATE_SUCCESS: 'Task updated successfully!',
+    UPDATE_ERROR: 'Failed to update task',
+    DELETE_SUCCESS: 'Task deleted successfully!',
+    DELETE_ERROR: 'Failed to delete task',
+  },
 } as const;
 

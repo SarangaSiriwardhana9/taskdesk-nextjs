@@ -6,7 +6,7 @@ import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/features/theme/theme-toggle';
 import { UserMenu } from './user-menu';
 import { useAuthUser, useAuthLoading, useIsAuthenticated } from '@/lib/stores/auth-store';
-import { LogIn } from 'lucide-react';
+import { LogIn, CheckSquare } from 'lucide-react';
 import { ROUTES } from '@/lib/constants/routes';
 import { CONFIG } from '@/lib/constants/config';
 
@@ -60,18 +60,7 @@ export const Header = React.memo(function Header() {
                 isScrolled ? 'shadow-lg shadow-primary/20' : 'shadow-md'
               } group-hover:scale-110`}
             >
-              <svg
-                viewBox="0 0 24 24"
-                fill="none"
-                className="w-6 h-6 text-primary-foreground"
-                stroke="currentColor"
-                strokeWidth="2"
-                strokeLinecap="round"
-                strokeLinejoin="round"
-              >
-                <path d="M9 11l3 3L22 4" />
-                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
-              </svg>
+              <CheckSquare className="w-6 h-6 text-primary-foreground" />
             </div>
             <span
               className={`text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent transition-all duration-300 ${
