@@ -1,0 +1,94 @@
+'use client';
+
+import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { Button } from '@/components/ui/button';
+import { ThemeToggle } from '@/components/features/theme/theme-toggle';
+import { UserMenu } from './user-menu';
+import { LogIn } from 'lucide-react';
+
+interface HeaderProps {
+  isAuthenticated?: boolean;
+  user?: {
+    name: string;
+    email: string;
+    avatar?: string;
+  };
+}
+
+export function Header({ isAuthenticated = false, user }: HeaderProps) {
+  const [isScrolled, setIsScrolled] = useState(false);
+
+  useEffect(() => {
+    const handleScroll = () => {
+      setIsScrolled(window.scrollY > 20);
+    };
+
+    window.addEventListener('scroll', handleScroll);
+    return () => window.removeEventListener('scroll', handleScroll);
+  }, []);
+
+  return (
+    <header
+      className={`fixed top-0 left-0 right-0 z-50 transition-all duration-300 ${
+        isScrolled
+          ? 'bg-background/80 backdrop-blur-xl border-b border-border shadow-lg shadow-primary/5'
+          : 'bg-transparent'
+      }`}
+    >
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div className="flex items-center justify-between h-16">
+          <Link href="/" className="flex items-center gap-3 group">
+            <div
+              className={`relative w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center transition-all duration-300 ${
+                isScrolled
+                  ? 'shadow-lg shadow-primary/20'
+                  : 'shadow-md'
+              } group-hover:scale-110`}
+            >
+              <svg
+                viewBox="0 0 24 24"
+                fill="none"
+                className="w-6 h-6 text-primary-foreground"
+                stroke="currentColor"
+                strokeWidth="2"
+                strokeLinecap="round"
+                strokeLinejoin="round"
+              >
+                <path d="M9 11l3 3L22 4" />
+                <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
+              </svg>
+            </div>
+            <span
+              className={`text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent transition-all duration-300 ${
+                isScrolled ? 'opacity-100' : 'opacity-90'
+              }`}
+            >
+              TaskDesk
+            </span>
+          </Link>
+
+          <div className="flex items-center gap-3">
+            {isAuthenticated && user ? (
+              <UserMenu user={user} />
+            ) : (
+              <Link href="/auth">
+                <Button variant="outline" size="default" className="gap-2">
+                  <LogIn className="h-4 w-4" />
+                  <span>Sign In</span>
+                </Button>
+              </Link>
+            )}
+            
+            <ThemeToggle />
+          </div>
+        </div>
+      </div>
+
+      {isScrolled && (
+        <div className="absolute bottom-0 left-0 right-0 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
+      )}
+    </header>
+  );
+}
+

@@ -151,4 +151,10 @@
   button[data-slot="button"][class*="bg-gradient"]:hover svg {
     color: var(--primary-foreground) !important;
   }
+
+  ::view-transition-old(root),
+  ::view-transition-new(root) {
+    animation: none;
+    mix-blend-mode: normal;
+  }
 }

@@ -2,7 +2,6 @@
 'use client';
 
 import React, { ReactNode } from 'react';
-import { ThemeToggle } from '../theme/theme-toggle';
 import { CheckCircle2, Zap, Shield, TrendingUp } from 'lucide-react';
 
 interface AuthLayoutProps {
@@ -35,37 +34,14 @@ export function AuthLayout({ children, imageUrl }: AuthLayoutProps) {
   ];
 
   return (
-    <div className="relative min-h-screen bg-background overflow-hidden">
+    <div className="relative min-h-screen bg-background overflow-hidden pt-16">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl animate-pulse" />
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-accent/10 rounded-full blur-3xl animate-pulse delay-1000" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse delay-500" />
       </div>
 
-      <header className="relative z-50 flex items-center justify-between p-6">
-        <div className="flex items-center gap-3">
-          <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center shadow-lg">
-            <svg
-              viewBox="0 0 24 24"
-              fill="none"
-              className="w-6 h-6 text-primary-foreground"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            >
-              <path d="M9 11l3 3L22 4" />
-              <path d="M21 12v7a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2V5a2 2 0 0 1 2-2h11" />
-            </svg>
-          </div>
-          <span className="text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">
-            TaskDesk
-          </span>
-        </div>
-        <ThemeToggle />
-      </header>
-
-      <div className="relative z-10 flex min-h-[calc(100vh-88px)] items-center justify-center px-4 py-8">
+      <div className="relative z-10 flex min-h-[calc(100vh-64px)] items-center justify-center px-4 py-8">
         <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="flex justify-center order-2 lg:order-1">
             {children}
