@@ -1,15 +1,17 @@
- 
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
+import { useRouter } from 'next/navigation';
+import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { AuthFormField } from '@/components/features/auth/auth-form-field';
 import { signInSchema, type SignInFormData } from './form-schema';
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Github, Chrome } from 'lucide-react';
+import { signIn } from '@/lib/auth/actions';
 
 interface SignInFormProps {
   onSignUpClick?: () => void;
@@ -17,29 +19,57 @@ interface SignInFormProps {
 }
 
 export function SignInForm({ onSignUpClick, onSubmit }: SignInFormProps) {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [serverMessage, setServerMessage] = useState<{ type: 'error' | 'success'; message: string; redirect?: string } | null>(null);
 
-  const {
-    register,
-    handleSubmit,
-    formState: { errors },
-  } = useForm<SignInFormData>({
+  const { register, handleSubmit, formState: { errors } } = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
   });
 
+  useEffect(() => {
+    if (!serverMessage) return;
+
+    if (serverMessage.type === 'error') {
+      toast.error(serverMessage.message);
+    } else {
+      toast.success(serverMessage.message);
+      if (serverMessage.redirect) {
+        setTimeout(() => router.push(serverMessage.redirect!), 500);
+      }
+    }
+    setServerMessage(null);
+  }, [serverMessage, router]);
+
   const onSubmitForm = async (data: SignInFormData) => {
     setIsLoading(true);
+    setServerMessage(null);
+    
     try {
-      onSubmit?.(data);
-      console.log('Sign In data:', data);
+      const result = await signIn(data);
+      
+      if (result?.error) {
+        setServerMessage({ type: 'error', message: result.error });
+        setIsLoading(false);
+        return;
+      }
+      
+      if (result?.success) {
+        setServerMessage({ 
+          type: 'success', 
+          message: 'Successfully signed in!',
+          redirect: result.redirect 
+        });
+        setIsLoading(false);
+    onSubmit?.(data);
+        return;
+      }
+    } catch (error) {
+      setServerMessage({ type: 'error', message: 'An error occurred during sign in' });
     } finally {
-      setTimeout(() => setIsLoading(false), 1000);
+      setIsLoading(false);
     }
-  };
-
-  const handleSocialLogin = (provider: string) => {
-    console.log(`Social login with ${provider}`);
   };
 
   return (
@@ -52,31 +82,19 @@ export function SignInForm({ onSignUpClick, onSubmit }: SignInFormProps) {
             <Lock className="h-8 w-8 text-primary" />
           </div>
           <h1 className="text-3xl font-bold tracking-tight">
-            Welcome Back
-          </h1>
+          Welcome Back
+        </h1>
           <p className="text-sm text-muted-foreground">
-            Sign in to your account to continue
-          </p>
-        </div>
+          Sign in to your account to continue
+        </p>
+      </div>
 
         <div className="space-y-3 mb-6">
-          <Button
-            type="button"
-            variant="social"
-            size="auth"
-            onClick={() => handleSocialLogin('google')}
-            disabled={isLoading}
-          >
+          <Button type="button" variant="social" size="auth" disabled={isLoading}>
             <Chrome className="h-5 w-5" />
             <span>Continue with Google</span>
           </Button>
-          <Button
-            type="button"
-            variant="social"
-            size="auth"
-            onClick={() => handleSocialLogin('github')}
-            disabled={isLoading}
-          >
+          <Button type="button" variant="social" size="auth" disabled={isLoading}>
             <Github className="h-5 w-5" />
             <span>Continue with GitHub</span>
           </Button>
@@ -90,51 +108,47 @@ export function SignInForm({ onSignUpClick, onSubmit }: SignInFormProps) {
         </div>
 
         <form onSubmit={handleSubmit(onSubmitForm)} className="space-y-5">
-          <AuthFormField
-            label="Email Address"
-            icon={<Mail className="h-4 w-4" />}
-            error={errors.email?.message}
-          >
-            <Input
-              type="email"
-              placeholder="you@example.com"
+        <AuthFormField
+          label="Email Address"
+          icon={<Mail className="h-4 w-4" />}
+          error={errors.email?.message}
+        >
+          <Input
+            type="email"
+            placeholder="you@example.com"
               variant="auth"
               inputSize="auth"
-              {...register('email')}
-              className="pl-10"
+            {...register('email')}
+            className="pl-10"
               disabled={isLoading}
-            />
-          </AuthFormField>
+          />
+        </AuthFormField>
 
-          <AuthFormField
-            label="Password"
-            icon={<Lock className="h-4 w-4" />}
-            error={errors.password?.message}
-            action={
-              <button
-                type="button"
-                onClick={() => setShowPassword(!showPassword)}
-                className="text-muted-foreground hover:text-foreground transition-colors"
+        <AuthFormField
+          label="Password"
+          icon={<Lock className="h-4 w-4" />}
+          error={errors.password?.message}
+          action={
+            <button
+              type="button"
+              onClick={() => setShowPassword(!showPassword)}
+              className="text-muted-foreground hover:text-foreground transition-colors"
                 tabIndex={-1}
-              >
-                {showPassword ? (
-                  <EyeOff className="h-4 w-4" />
-                ) : (
-                  <Eye className="h-4 w-4" />
-                )}
-              </button>
-            }
-          >
-            <Input
-              type={showPassword ? 'text' : 'password'}
-              placeholder="••••••••"
+            >
+                {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
+            </button>
+          }
+        >
+          <Input
+            type={showPassword ? 'text' : 'password'}
+            placeholder="••••••••"
               variant="auth"
               inputSize="auth"
-              {...register('password')}
-              className="pl-10"
+            {...register('password')}
+            className="pl-10"
               disabled={isLoading}
-            />
-          </AuthFormField>
+          />
+        </AuthFormField>
 
           <div className="flex justify-end">
             <button
@@ -160,23 +174,23 @@ export function SignInForm({ onSignUpClick, onSubmit }: SignInFormProps) {
             ) : (
               <>
                 <span>Sign In</span>
-                <ArrowRight className="h-4 w-4" />
+          <ArrowRight className="h-4 w-4" />
               </>
             )}
-          </Button>
-        </form>
+        </Button>
+      </form>
 
-        <div className="mt-6 text-center">
-          <p className="text-sm text-muted-foreground">
-            Don't have an account?{' '}
-            <button
-              onClick={onSignUpClick}
-              className="font-semibold text-primary hover:underline transition-colors"
+      <div className="mt-6 text-center">
+        <p className="text-sm text-muted-foreground">
+          Don't have an account?{' '}
+          <button
+            onClick={onSignUpClick}
+            className="font-semibold text-primary hover:underline transition-colors"
               disabled={isLoading}
-            >
-              Sign Up
-            </button>
-          </p>
+          >
+            Sign Up
+          </button>
+        </p>
         </div>
       </div>
 

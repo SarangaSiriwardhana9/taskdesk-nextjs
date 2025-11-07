@@ -26,8 +26,13 @@ export function UserMenu({ user }: UserMenuProps) {
     return () => document.removeEventListener('mousedown', handleClickOutside);
   }, []);
 
-  const handleLogout = () => {
-    console.log('Logout clicked');
+  const handleLogout = async () => {
+    try {
+      const { signOut } = await import('@/lib/auth/actions');
+      await signOut();
+    } catch (error) {
+      console.error('Logout error:', error);
+    }
     setIsOpen(false);
   };
 
