@@ -120,3 +120,35 @@
     @apply bg-background text-foreground;
   }
 }
+
+@layer utilities {
+  @keyframes gradient {
+    0%, 100% {
+      background-size: 200% 200%;
+      background-position: left center;
+    }
+    50% {
+      background-size: 200% 200%;
+      background-position: right center;
+    }
+  }
+  
+  .animate-gradient {
+    animation: gradient 3s ease infinite;
+  }
+  
+  .delay-500 {
+    animation-delay: 500ms;
+  }
+  
+  .delay-1000 {
+    animation-delay: 1000ms;
+  }
+}
+
+@layer components {
+  button[data-slot="button"][class*="bg-gradient"]:hover,
+  button[data-slot="button"][class*="bg-gradient"]:hover svg {
+    color: var(--primary-foreground) !important;
+  }
+}

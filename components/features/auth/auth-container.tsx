@@ -13,14 +13,31 @@ interface AuthContainerProps {
 
 export function AuthContainer({ initialMode = 'signin' }: AuthContainerProps) {
   const [mode, setMode] = useState<AuthMode>(initialMode);
+  const [isTransitioning, setIsTransitioning] = useState(false);
+
+  const handleModeChange = (newMode: AuthMode) => {
+    setIsTransitioning(true);
+    setTimeout(() => {
+      setMode(newMode);
+      setTimeout(() => setIsTransitioning(false), 50);
+    }, 200);
+  };
 
   return (
-    <>
-      {mode === 'signin' ? (
-        <SignInForm onSignUpClick={() => setMode('signup')} />
-      ) : (
-        <SignUpForm onSignInClick={() => setMode('signin')} />
-      )}
-    </>
+    <div className="w-full max-w-md">
+      <div
+        className={`transition-all duration-200 ${
+          isTransitioning
+            ? 'opacity-0 scale-95 blur-sm'
+            : 'opacity-100 scale-100 blur-0'
+        }`}
+      >
+        {mode === 'signin' ? (
+          <SignInForm onSignUpClick={() => handleModeChange('signup')} />
+        ) : (
+          <SignUpForm onSignInClick={() => handleModeChange('signin')} />
+        )}
+      </div>
+    </div>
   );
 }
