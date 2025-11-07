@@ -5,9 +5,10 @@ export async function getServerUser() {
     const supabase = await createClient();
     const {
       data: { user },
+      error,
     } = await supabase.auth.getUser();
 
-    if (!user) {
+    if (error || !user) {
       return null;
     }
 
@@ -17,8 +18,7 @@ export async function getServerUser() {
       email: user.email || '',
       avatar: user.user_metadata?.avatar_url,
     };
-  } catch (error) {
+  } catch {
     return null;
   }
 }
-

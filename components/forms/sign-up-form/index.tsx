@@ -3,7 +3,6 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useRouter } from 'next/navigation';
 import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -14,90 +13,87 @@ import { AuthFormField } from '@/components/features/auth/auth-form-field';
 import { signUpSchema, type SignUpFormData } from './form-schema';
 import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Github, Chrome, Sparkles } from 'lucide-react';
 import { signUp } from '@/lib/auth/actions';
+import { useAuthStore } from '@/lib/stores/auth-store';
+import { createClient } from '@/lib/supabase/client';
 import { ROUTES } from '@/lib/constants/routes';
 import { TOAST_MESSAGES } from '@/lib/constants/toast-messages';
-import { CONFIG } from '@/lib/constants/config';
+import router from 'next/router';
 
 interface SignUpFormProps {
   onSignInClick?: () => void;
-  onSubmit?: (data: SignUpFormData) => void;
 }
 
-export function SignUpForm({ onSignInClick, onSubmit }: SignUpFormProps) {
-  const router = useRouter();
+export function SignUpForm({ onSignInClick }: SignUpFormProps) {
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [agreeToTerms, setAgreeToTerms] = useState(false);
+  const { setUser } = useAuthStore();
 
   const { register, handleSubmit, formState: { errors } } = useForm<SignUpFormData>({
     resolver: zodResolver(signUpSchema),
   });
 
-      const onSubmitForm = async (data: SignUpFormData) => {
-        if (!agreeToTerms) {
-          toast.error(TOAST_MESSAGES.AUTH.TERMS_REQUIRED);
-          return;
-        }
-        setIsLoading(true);
-        
-        try {
-          const result = await signUp(data);
-          
-          if (result?.error) {
-            toast.error(result.error);
-            setIsLoading(false);
-            return;
-          }
-          
-          if (result?.success) {
-            if (result.message) {
-              toast.success(result.message);
-            } else {
-              toast.success(TOAST_MESSAGES.AUTH.SIGN_UP_SUCCESS);
-              
-              if (result.redirect) {
-                const { useAuthStore } = await import('@/lib/stores/auth-store');
-                const supabase = await import('@/lib/supabase/client').then(m => m.createClient());
-                
-                const { data: { user: sessionUser } } = await supabase.auth.getUser();
-                
-                if (sessionUser) {
-                  useAuthStore.getState().setUser({
-                    id: sessionUser.id,
-                    name: sessionUser.user_metadata?.full_name || sessionUser.email || 'User',
-                    email: sessionUser.email || '',
-                    avatar: sessionUser.user_metadata?.avatar_url,
-                  }, false);
-                }
-                
-                window.location.href = result.redirect;
-              }
+  const onSubmitForm = async (data: SignUpFormData) => {
+    if (!agreeToTerms) {
+      toast.error(TOAST_MESSAGES.AUTH.TERMS_REQUIRED);
+      return;
+    }
+
+    setIsLoading(true);
+
+    try {
+      const result = await signUp(data);
+
+      if (result?.error) {
+        toast.error(result.error);
+        return;
+      }
+
+      if (result?.success) {
+        if (result.message) {
+          toast.success(result.message);
+        } else {
+          toast.success(TOAST_MESSAGES.AUTH.SIGN_UP_SUCCESS);
+
+          if (result.redirect) {
+            const supabase = createClient();
+            const { data: { user: sessionUser } } = await supabase.auth.getUser();
+
+            if (sessionUser) {
+              setUser({
+                id: sessionUser.id,
+                name: sessionUser.user_metadata?.full_name || sessionUser.email || 'User',
+                email: sessionUser.email || '',
+                avatar: sessionUser.user_metadata?.avatar_url,
+              });
             }
-            return;
+
+            setTimeout(() => {
+              router.push(result.redirect || ROUTES.TASKS);
+            }, 100);
           }
-        } catch (error) {
-          toast.error(TOAST_MESSAGES.AUTH.SIGN_UP_ERROR);
-          setIsLoading(false);
         }
-      };
+      }
+    } catch (error) {
+      toast.error(TOAST_MESSAGES.AUTH.SIGN_UP_ERROR);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <div className="w-full">
       <div className="relative p-8 rounded-2xl bg-card/50 backdrop-blur-xl border border-border shadow-2xl shadow-primary/5">
         <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/20 via-transparent to-accent/20 -z-10 blur-xl" />
-        
+
         <div className="mb-8 text-center space-y-2">
           <div className="inline-block p-3 rounded-2xl bg-gradient-to-br from-primary/10 to-accent/10 mb-4">
             <Sparkles className="h-8 w-8 text-primary" />
           </div>
-          <h1 className="text-3xl font-bold tracking-tight">
-          Create Account
-        </h1>
-          <p className="text-sm text-muted-foreground">
-          Join us and start managing your tasks efficiently
-        </p>
-      </div>
+          <h1 className="text-3xl font-bold tracking-tight">Create Account</h1>
+          <p className="text-sm text-muted-foreground">Join us and start managing your tasks efficiently</p>
+        </div>
 
         <div className="space-y-3 mb-6">
           <Button type="button" variant="social" size="auth" disabled={isLoading}>
@@ -117,89 +113,89 @@ export function SignUpForm({ onSignInClick, onSubmit }: SignUpFormProps) {
           </span>
         </div>
 
-      <form onSubmit={handleSubmit(onSubmitForm)} className="space-y-4">
-        <AuthFormField
-          label="Full Name"
-          icon={<User className="h-4 w-4" />}
-          error={errors.name?.message}
-        >
-          <Input
-            placeholder="John Doe"
+        <form onSubmit={handleSubmit(onSubmitForm)} className="space-y-4">
+          <AuthFormField
+            label="Full Name"
+            icon={<User className="h-4 w-4" />}
+            error={errors.name?.message}
+          >
+            <Input
+              placeholder="John Doe"
               variant="auth"
               inputSize="auth"
-            {...register('name')}
-            className="pl-10"
+              {...register('name')}
+              className="pl-10"
               disabled={isLoading}
-          />
-        </AuthFormField>
+            />
+          </AuthFormField>
 
-        <AuthFormField
-          label="Email Address"
-          icon={<Mail className="h-4 w-4" />}
-          error={errors.email?.message}
-        >
-          <Input
-            type="email"
-            placeholder="you@example.com"
+          <AuthFormField
+            label="Email Address"
+            icon={<Mail className="h-4 w-4" />}
+            error={errors.email?.message}
+          >
+            <Input
+              type="email"
+              placeholder="you@example.com"
               variant="auth"
               inputSize="auth"
-            {...register('email')}
-            className="pl-10"
+              {...register('email')}
+              className="pl-10"
               disabled={isLoading}
-          />
-        </AuthFormField>
+            />
+          </AuthFormField>
 
-        <AuthFormField
-          label="Password"
-          icon={<Lock className="h-4 w-4" />}
-          error={errors.password?.message}
-          action={
-            <button
-              type="button"
-              onClick={() => setShowPassword(!showPassword)}
-              className="text-muted-foreground hover:text-foreground transition-colors"
+          <AuthFormField
+            label="Password"
+            icon={<Lock className="h-4 w-4" />}
+            error={errors.password?.message}
+            action={
+              <button
+                type="button"
+                onClick={() => setShowPassword(!showPassword)}
+                className="text-muted-foreground hover:text-foreground transition-colors"
                 tabIndex={-1}
-            >
+              >
                 {showPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-            </button>
-          }
-        >
-          <Input
-            type={showPassword ? 'text' : 'password'}
-            placeholder="••••••••"
+              </button>
+            }
+          >
+            <Input
+              type={showPassword ? 'text' : 'password'}
+              placeholder="••••••••"
               variant="auth"
               inputSize="auth"
-            {...register('password')}
-            className="pl-10"
+              {...register('password')}
+              className="pl-10"
               disabled={isLoading}
-          />
-        </AuthFormField>
+            />
+          </AuthFormField>
 
-        <AuthFormField
-          label="Confirm Password"
-          icon={<Lock className="h-4 w-4" />}
-          error={errors.confirmPassword?.message}
-          action={
-            <button
-              type="button"
-              onClick={() => setShowConfirmPassword(!showConfirmPassword)}
-              className="text-muted-foreground hover:text-foreground transition-colors"
+          <AuthFormField
+            label="Confirm Password"
+            icon={<Lock className="h-4 w-4" />}
+            error={errors.confirmPassword?.message}
+            action={
+              <button
+                type="button"
+                onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                className="text-muted-foreground hover:text-foreground transition-colors"
                 tabIndex={-1}
-            >
+              >
                 {showConfirmPassword ? <EyeOff className="h-4 w-4" /> : <Eye className="h-4 w-4" />}
-            </button>
-          }
-        >
-          <Input
-            type={showConfirmPassword ? 'text' : 'password'}
-            placeholder="••••••••"
+              </button>
+            }
+          >
+            <Input
+              type={showConfirmPassword ? 'text' : 'password'}
+              placeholder="••••••••"
               variant="auth"
               inputSize="auth"
-            {...register('confirmPassword')}
-            className="pl-10"
+              {...register('confirmPassword')}
+              className="pl-10"
               disabled={isLoading}
-          />
-        </AuthFormField>
+            />
+          </AuthFormField>
 
           <div className="flex items-start gap-3 pt-2">
             <Checkbox
@@ -241,20 +237,20 @@ export function SignUpForm({ onSignInClick, onSubmit }: SignUpFormProps) {
                 <ArrowRight className="h-4 w-4" />
               </>
             )}
-        </Button>
-      </form>
+          </Button>
+        </form>
 
-      <div className="mt-6 text-center">
-        <p className="text-sm text-muted-foreground">
-          Already have an account?{' '}
-          <button
-            onClick={onSignInClick}
-            className="font-semibold text-primary hover:underline transition-colors"
+        <div className="mt-6 text-center">
+          <p className="text-sm text-muted-foreground">
+            Already have an account?{' '}
+            <button
+              onClick={onSignInClick}
+              className="font-semibold text-primary hover:underline transition-colors"
               disabled={isLoading}
-          >
-            Sign In
-          </button>
-        </p>
+            >
+              Sign In
+            </button>
+          </p>
         </div>
       </div>
 

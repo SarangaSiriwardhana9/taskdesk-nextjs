@@ -5,31 +5,29 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/features/theme/theme-toggle';
 import { UserMenu } from './user-menu';
-import { useAuthStore } from '@/lib/stores/auth-store';
+import { useAuthUser, useAuthLoading, useIsAuthenticated } from '@/lib/stores/auth-store';
 import { LogIn } from 'lucide-react';
 import { ROUTES } from '@/lib/constants/routes';
 import { CONFIG } from '@/lib/constants/config';
 
 export const Header = React.memo(function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const user = useAuthStore((state) => state.user);
-  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
-  const isLoading = useAuthStore((state) => state.isLoading);
+  const user = useAuthUser();
+  const isLoading = useAuthLoading();
+  const isAuthenticated = useIsAuthenticated();
 
   useEffect(() => {
     const handleScroll = () => {
       setIsScrolled(window.scrollY > CONFIG.HEADER_SCROLL_THRESHOLD);
     };
 
-    window.addEventListener('scroll', handleScroll);
+    window.addEventListener('scroll', handleScroll, { passive: true });
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
   const renderAuthButton = useMemo(() => {
     if (isLoading) {
-      return (
-        <div className="w-10 h-10 rounded-full bg-muted animate-pulse" />
-      );
+      return <div className="w-10 h-10 rounded-full bg-muted animate-pulse" />;
     }
 
     if (isAuthenticated && user) {
@@ -59,9 +57,7 @@ export const Header = React.memo(function Header() {
           <Link href="/" className="flex items-center gap-3 group">
             <div
               className={`relative w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center transition-all duration-300 ${
-                isScrolled
-                  ? 'shadow-lg shadow-primary/20'
-                  : 'shadow-md'
+                isScrolled ? 'shadow-lg shadow-primary/20' : 'shadow-md'
               } group-hover:scale-110`}
             >
               <svg
@@ -99,4 +95,3 @@ export const Header = React.memo(function Header() {
     </header>
   );
 });
-

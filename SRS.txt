@@ -1,0 +1,87 @@
+Software Requirements Specification (SRS)
+Task Management Web Application
+1. Introduction
+1.1 Purpose
+
+The purpose of this project is to develop a Task Management Web Application that helps users organize their daily tasks efficiently. Each user can register, log in, and manage their own list of tasks securely.
+
+1.2 Scope
+
+The system will allow users to:
+
+Sign up and log in securely using Supabase Authentication.
+
+Add, view, update, mark as complete, and delete their personal tasks.
+
+Set a priority level and due date for each task.
+
+View tasks filtered by completion status or priority.
+
+Edit basic user profile details (like display name).
+
+The application will be built using Next.js (App Router) and Supabase, styled with Tailwind CSS or Shadcn UI, and deployed on Vercel.
+
+2. System Overview
+2.1 Technologies Used
+
+Frontend: Next.js 15+ (TypeScript)
+
+Backend & Database: Supabase (PostgreSQL)
+
+Authentication: Supabase Auth (Email/Password)
+
+UI Framework: Tailwind CSS / Shadcn UI
+
+Form Handling: React Hook Form
+
+Hosting: Vercel
+
+3. Functional Requirements
+ID	Description
+FR1	Users can sign up and log in using email and password.
+FR2	Authenticated users can create a new task with title, description, due date, and priority.
+FR3	Users can view a list of their own tasks.
+FR4	Users can mark tasks as completed or uncompleted.
+FR5	Users can delete tasks.
+FR6	Users can filter tasks by status (All / Completed / Pending).
+FR7	Users can update an existing task (edit title, due date, priority).
+FR8	Each user can only access and modify their own tasks.
+FR9	Users can view or edit their profile details (optional).
+4. Non-Functional Requirements
+ID	Description
+NFR1	The UI should be simple, clean, and responsive on all screen sizes.
+NFR2	Authentication and user data should be stored securely via Supabase.
+NFR3	The app should load within 3 seconds on a stable connection.
+NFR4	The database should be normalized and optimized for performance.
+NFR5	The system should handle at least 100 concurrent users (scalable with Supabase).
+NFR6	Code should follow best practices in TypeScript and Next.js conventions.
+5. Pages and Navigation
+Page	Description
+/login	Sign In / Sign Up page using Supabase Auth.
+/tasks	Main page displaying all user tasks with Add, Edit, Delete, and Filter options.
+/profile	(Optional) Page to view or edit user profile information.
+6. Database Schema (Supabase)
+Table: tasks
+Column	Type	Description
+id	UUID	Primary key
+user_id	UUID	References authenticated user
+title	Text	Task name
+description	Text	Task details
+priority	Enum (‘Low’, ‘Medium’, ‘High’)	Task priority level
+due_date	Date	Optional task due date
+completed	Boolean	Completion status (default: false)
+created_at	Timestamp	Record creation time
+Table: profiles (optional)
+Column	Type	Description
+id	UUID	Primary key (same as user_id)
+display_name	Text	User’s display name
+created_at	Timestamp	Profile creation time
+7. Deliverables
+
+Live demo URL (Vercel)
+
+GitHub repository link (source code)
+
+Supabase migration SQL files under /supabase/migrations
+
+Short project note (approach, decisions, and improvements)

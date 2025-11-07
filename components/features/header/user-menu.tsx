@@ -3,6 +3,8 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { User, LogOut } from 'lucide-react';
+import { useAuthStore } from '@/lib/stores/auth-store';
+import { signOut } from '@/lib/auth/actions';
 import { ROUTES } from '@/lib/constants/routes';
 
 interface UserMenuProps {
@@ -17,6 +19,7 @@ export function UserMenu({ user }: UserMenuProps) {
   const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
+  const { clearAuth } = useAuthStore();
 
   useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
@@ -30,15 +33,8 @@ export function UserMenu({ user }: UserMenuProps) {
   }, []);
 
   const handleLogout = async () => {
-    try {
-      const { signOut } = await import('@/lib/auth/actions');
-      const { useAuthStore } = await import('@/lib/stores/auth-store');
-      useAuthStore.getState().clearAuth();
-      await signOut();
-    } catch (error) {
-      console.error('Logout error:', error);
-    }
-    setIsOpen(false);
+    clearAuth();
+    await signOut();
   };
 
   const handleProfile = () => {
@@ -88,12 +84,8 @@ export function UserMenu({ user }: UserMenuProps) {
                 )}
               </div>
               <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-foreground truncate">
-                  {user.name}
-                </p>
-                <p className="text-xs text-muted-foreground truncate">
-                  {user.email}
-                </p>
+                <p className="text-sm font-semibold text-foreground truncate">{user.name}</p>
+                <p className="text-xs text-muted-foreground truncate">{user.email}</p>
               </div>
             </div>
           </div>
@@ -106,15 +98,13 @@ export function UserMenu({ user }: UserMenuProps) {
               <User className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
               <span>Profile</span>
             </button>
-            
+
             <button
               onClick={handleLogout}
               className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-destructive/10 transition-colors text-sm text-foreground group"
             >
               <LogOut className="h-4 w-4 text-muted-foreground group-hover:text-destructive transition-colors" />
-              <span className="group-hover:text-destructive transition-colors">
-                Logout
-              </span>
+              <span className="group-hover:text-destructive transition-colors">Logout</span>
             </button>
           </div>
         </div>
@@ -122,4 +112,3 @@ export function UserMenu({ user }: UserMenuProps) {
     </div>
   );
 }
-
