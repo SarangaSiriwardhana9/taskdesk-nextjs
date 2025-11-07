@@ -3,17 +3,18 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Plus, X, Sparkles } from 'lucide-react';
-import { Dialog, DialogContent, DialogHeader, DialogTitle } from '@/components/ui/dialog';
+import { Plus, Sparkles } from 'lucide-react';
+import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Spinner } from '@/components/ui/spinner';
+import { Separator } from '@/components/ui/separator';
+import { TaskFormField } from './task-form-field';
 import { PrioritySelector } from './priority-selector';
 import { DatePicker } from './date-picker';
 import { taskSchema, type TaskFormData } from '@/components/forms/task-form/form-schema';
 import { cn } from '@/lib/utils';
-import type { TaskPriority } from '@/types/task.types';
 
 interface CreateTaskModalProps {
   open: boolean;
@@ -78,55 +79,35 @@ export function CreateTaskModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent
-        className="!max-w-5xl w-[95vw] max-h-[90vh] overflow-hidden p-0 gap-0 border-border/50 bg-card/95 backdrop-blur-xl shadow-2xl shadow-primary/5"
-        showCloseButton={false}
-      >
+      <DialogContent variant="task">
         <div className="relative p-8 space-y-6 overflow-y-auto max-h-[90vh]">
-          <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/5 via-transparent to-accent/5 -z-10" />
-          <div className="absolute top-0 left-1/2 -translate-x-1/2 w-32 h-px bg-gradient-to-r from-transparent via-primary/50 to-transparent" />
-
           <DialogHeader className="space-y-3">
-            <div className="flex items-center justify-between">
-              <div className="flex items-center gap-3">
-                <div className="relative">
-                  <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 blur-xl" />
-                  <div className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent">
-                    <Plus className="h-6 w-6 text-primary-foreground" />
-                  </div>
-                </div>
-                <div>
-                  <DialogTitle className="text-2xl font-bold tracking-tight">
-                    Create New Task
-                  </DialogTitle>
-                  <p className="text-sm text-muted-foreground mt-1">
-                    Organize your work and stay productive
-                  </p>
+            <div className="flex items-center gap-3">
+              <div className="relative">
+                <div className="absolute inset-0 rounded-xl bg-gradient-to-br from-primary/20 to-accent/20 blur-xl" />
+                <div className="relative flex h-12 w-12 items-center justify-center rounded-xl bg-gradient-to-br from-primary to-accent">
+                  <Plus className="h-6 w-6 text-primary-foreground" />
                 </div>
               </div>
-              <Button
-                type="button"
-                variant="ghost"
-                size="icon"
-                onClick={() => onOpenChange(false)}
-                className="h-9 w-9"
-                disabled={isLoading}
-              >
-                <X className="h-4 w-4" />
-              </Button>
+              <div>
+                <DialogTitle className="text-2xl font-bold tracking-tight">
+                  Create New Task
+                </DialogTitle>
+                <DialogDescription>
+                  Organize your work and stay productive
+                </DialogDescription>
+              </div>
             </div>
           </DialogHeader>
 
           <form onSubmit={handleSubmit(onFormSubmit)} className="space-y-6">
             <div className="grid grid-cols-2 gap-6">
               <div className="space-y-6">
-                <div className="space-y-2">
-                  <label
-                    htmlFor="title"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Task Title <span className="text-destructive">*</span>
-                  </label>
+                <TaskFormField
+                  label="Task Title"
+                  required
+                  error={errors.title?.message}
+                >
                   <div className="relative">
                     <Input
                       id="title"
@@ -151,20 +132,13 @@ export function CreateTaskModal({
                       </span>
                     </div>
                   </div>
-                  {errors.title && (
-                    <p className="text-sm text-destructive" role="alert">
-                      {errors.title.message}
-                    </p>
-                  )}
-                </div>
+                </TaskFormField>
 
-                <div className="space-y-2">
-                  <label
-                    htmlFor="description"
-                    className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70"
-                  >
-                    Description <span className="text-muted-foreground font-normal">(Optional)</span>
-                  </label>
+                <TaskFormField
+                  label="Description"
+                  optional
+                  error={errors.description?.message}
+                >
                   <div className="relative">
                     <Textarea
                       id="description"
@@ -187,12 +161,7 @@ export function CreateTaskModal({
                       </span>
                     </div>
                   </div>
-                  {errors.description && (
-                    <p className="text-sm text-destructive" role="alert">
-                      {errors.description.message}
-                    </p>
-                  )}
-                </div>
+                </TaskFormField>
               </div>
 
               <div className="space-y-6">
@@ -210,7 +179,7 @@ export function CreateTaskModal({
               </div>
             </div>
 
-            <div className="flex items-center justify-end gap-3 pt-4 border-t border-border">
+            <DialogFooter className="pt-4">
               <Button
                 type="button"
                 variant="outline"
@@ -221,7 +190,7 @@ export function CreateTaskModal({
               </Button>
               <Button
                 type="submit"
-    
+                variant="gradient"
                 size="lg"
                 disabled={isLoading}
                 className="gap-2 min-w-[120px]"
@@ -238,7 +207,7 @@ export function CreateTaskModal({
                   </>
                 )}
               </Button>
-            </div>
+            </DialogFooter>
           </form>
         </div>
       </DialogContent>

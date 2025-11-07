@@ -5,6 +5,7 @@ import { format } from 'date-fns';
 import { Calendar as CalendarIcon, Clock, X } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
+import { Label } from '@/components/ui/label';
 import { Calendar } from '@/components/ui/calendar';
 import {
   Popover,
@@ -74,16 +75,16 @@ export function DatePicker({ value, onChange, error }: DatePickerProps) {
 
   return (
     <div className="space-y-3">
-      <label className="text-sm font-medium leading-none peer-disabled:cursor-not-allowed peer-disabled:opacity-70">
+      <Label>
         Due Date <span className="text-muted-foreground font-normal">(Optional)</span>
-      </label>
+      </Label>
       
       <div className="space-y-3">
         <div className="space-y-2">
-          <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+          <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wider flex items-center gap-2">
             <Clock className="h-3 w-3" />
             Quick Options
-          </div>
+          </Label>
           <div className="grid grid-cols-3 gap-2">
             {quickOptions.map((option) => (
               <Button
@@ -92,7 +93,7 @@ export function DatePicker({ value, onChange, error }: DatePickerProps) {
                 variant="outline"
                 size="sm"
                 onClick={() => handleQuickOption(option.getDate)}
-                className="h-auto flex-col gap-1 py-2.5 dark:hover:text-foreground [&_svg]:dark:hover:text-foreground"
+                className="h-auto flex-col gap-1 py-2.5 hover:bg-transparent hover:border-primary focus-visible:border-primary text-foreground hover:!text-foreground active:!text-foreground"
               >
                 <CalendarIcon className="h-4 w-4" />
                 <span className="text-xs">{option.label}</span>
@@ -102,10 +103,10 @@ export function DatePicker({ value, onChange, error }: DatePickerProps) {
         </div>
 
         <div className="space-y-2">
-          <div className="flex items-center gap-2 text-xs font-medium text-muted-foreground uppercase tracking-wider">
+          <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wider flex items-center gap-2">
             <CalendarIcon className="h-3 w-3" />
             Custom Date
-          </div>
+          </Label>
           <Popover open={open} onOpenChange={setOpen}>
             <PopoverTrigger asChild>
               <div className="relative">
@@ -114,7 +115,8 @@ export function DatePicker({ value, onChange, error }: DatePickerProps) {
                   variant="outline"
                   className={cn(
                     'h-11 w-full justify-start text-left font-normal bg-background/50 pr-10',
-                    !date && 'text-muted-foreground',
+                    'hover:bg-transparent hover:border-primary focus-visible:border-primary',
+                    !date ? 'text-muted-foreground hover:!text-foreground active:!text-foreground' : 'text-foreground hover:!text-foreground active:!text-foreground',
                     error && 'border-destructive ring-destructive/20'
                   )}
                 >
