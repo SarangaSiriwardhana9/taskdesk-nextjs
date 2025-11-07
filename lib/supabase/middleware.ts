@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
+import { ROUTES } from '@/lib/constants/routes';
 
 export async function updateSession(request: NextRequest) {
   let supabaseResponse = NextResponse.next({
@@ -35,11 +36,11 @@ export async function updateSession(request: NextRequest) {
 
   if (
     !user &&
-    !request.nextUrl.pathname.startsWith('/auth') &&
-    request.nextUrl.pathname !== '/'
+    !request.nextUrl.pathname.startsWith(ROUTES.AUTH) &&
+    request.nextUrl.pathname !== ROUTES.HOME
   ) {
     const url = request.nextUrl.clone();
-    url.pathname = '/auth';
+    url.pathname = ROUTES.AUTH;
     return NextResponse.redirect(url);
   }
 

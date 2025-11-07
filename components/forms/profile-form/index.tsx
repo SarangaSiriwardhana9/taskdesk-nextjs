@@ -10,6 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Spinner } from '@/components/ui/spinner';
 import { profileSchema, type ProfileFormData } from './form-schema';
 import { User, Mail, Save } from 'lucide-react';
+import { TOAST_MESSAGES } from '@/lib/constants/toast-messages';
 
 interface ProfileFormProps {
   initialData: {
@@ -27,18 +28,18 @@ export function ProfileForm({ initialData, onSubmit }: ProfileFormProps) {
     defaultValues: initialData,
   });
 
-  const onSubmitForm = async (data: ProfileFormData) => {
-    setIsLoading(true);
-    try {
-      await new Promise(resolve => setTimeout(resolve, 500));
-      toast.success('Profile updated successfully!');
-      onSubmit?.(data);
-    } catch (error) {
-      toast.error('Failed to update profile');
-    } finally {
-      setIsLoading(false);
-    }
-  };
+      const onSubmitForm = async (data: ProfileFormData) => {
+        setIsLoading(true);
+        try {
+          await new Promise(resolve => setTimeout(resolve, 500));
+          toast.success(TOAST_MESSAGES.PROFILE.UPDATE_SUCCESS);
+          onSubmit?.(data);
+        } catch (error) {
+          toast.error(TOAST_MESSAGES.PROFILE.UPDATE_ERROR);
+        } finally {
+          setIsLoading(false);
+        }
+      };
 
   return (
     <Card>

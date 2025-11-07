@@ -3,6 +3,8 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
+import { ROUTES } from '@/lib/constants/routes';
+import { TOAST_MESSAGES } from '@/lib/constants/toast-messages';
 import type { SignInData, SignUpData } from '@/types/auth.types';
 
 export async function signIn(data: SignInData) {
@@ -18,7 +20,7 @@ export async function signIn(data: SignInData) {
   }
 
   revalidatePath('/', 'layout');
-  return { success: true, redirect: '/tasks' };
+  return { success: true, redirect: ROUTES.TASKS };
 }
 
 export async function signUp(data: SignUpData) {
@@ -41,12 +43,12 @@ export async function signUp(data: SignUpData) {
   if (signUpData?.user && !signUpData.session) {
     return { 
       success: true,
-      message: 'Success! Please check your email to confirm your account before signing in.'
+      message: TOAST_MESSAGES.AUTH.SIGN_UP_EMAIL_CONFIRMATION,
     };
   }
 
   revalidatePath('/', 'layout');
-  return { success: true, redirect: '/tasks' };
+  return { success: true, redirect: ROUTES.TASKS };
 }
 
 export async function signOut() {
@@ -59,7 +61,7 @@ export async function signOut() {
   }
 
   revalidatePath('/', 'layout');
-  redirect('/auth');
+  redirect(ROUTES.AUTH);
 }
 
 export async function getUser() {

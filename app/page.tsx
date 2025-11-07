@@ -4,6 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useAuthStore } from '@/lib/stores/auth-store';
 import { CheckCircle2, Zap, Shield, TrendingUp, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
+import { ROUTES } from '@/lib/constants/routes';
 
 export default function Home() {
   const { isAuthenticated } = useAuthStore();
@@ -43,7 +44,7 @@ export default function Home() {
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
                 {isAuthenticated ? (
-                  <Link href="/tasks">
+                  <Link href={ROUTES.TASKS}>
                     <Button variant="gradient" size="lg" className="gap-2">
                       <span>Go to Dashboard</span>
                       <ArrowRight className="h-4 w-4" />
@@ -51,7 +52,7 @@ export default function Home() {
                   </Link>
                 ) : (
                   <>
-                    <Link href="/auth">
+                    <Link href={ROUTES.AUTH}>
                       <Button variant="gradient" size="lg" className="gap-2">
                         <span>Get Started</span>
                         <ArrowRight className="h-4 w-4" />
@@ -137,14 +138,14 @@ export default function Home() {
                   Join thousands of professionals who trust TaskDesk to manage their work
                 </p>
                 {isAuthenticated ? (
-                  <Link href="/tasks">
+                  <Link href={ROUTES.TASKS}>
                     <Button variant="gradient" size="lg" className="gap-2">
                       <span>Go to Dashboard</span>
                       <ArrowRight className="h-4 w-4" />
                     </Button>
                   </Link>
                 ) : (
-                  <Link href="/auth">
+                  <Link href={ROUTES.AUTH}>
                     <Button variant="gradient" size="lg" className="gap-2">
                       <span>Start Free Trial</span>
                       <ArrowRight className="h-4 w-4" />

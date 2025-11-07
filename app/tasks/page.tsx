@@ -4,6 +4,7 @@ import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@/lib/stores/auth-store';
 import { Spinner } from '@/components/ui/spinner';
+import { ROUTES } from '@/lib/constants/routes';
 
 export default function TasksPage() {
   const router = useRouter();
@@ -11,7 +12,7 @@ export default function TasksPage() {
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      router.push('/auth');
+      router.push(ROUTES.AUTH);
     }
   }, [isAuthenticated, isLoading, router]);
 

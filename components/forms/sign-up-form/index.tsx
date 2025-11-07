@@ -14,6 +14,9 @@ import { AuthFormField } from '@/components/features/auth/auth-form-field';
 import { signUpSchema, type SignUpFormData } from './form-schema';
 import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Github, Chrome, Sparkles } from 'lucide-react';
 import { signUp } from '@/lib/auth/actions';
+import { ROUTES } from '@/lib/constants/routes';
+import { TOAST_MESSAGES } from '@/lib/constants/toast-messages';
+import { CONFIG } from '@/lib/constants/config';
 
 interface SignUpFormProps {
   onSignInClick?: () => void;
@@ -31,41 +34,53 @@ export function SignUpForm({ onSignInClick, onSubmit }: SignUpFormProps) {
     resolver: zodResolver(signUpSchema),
   });
 
-  const onSubmitForm = async (data: SignUpFormData) => {
-    if (!agreeToTerms) {
-      toast.error('Please agree to the terms and conditions');
-      return;
-    }
-    setIsLoading(true);
-    
-    try {
-      const result = await signUp(data);
-      
-      if (result?.error) {
-        toast.error(result.error);
-        setIsLoading(false);
-        return;
-      }
-      
-      if (result?.success) {
-        if (result.message) {
-          toast.success(result.message);
-        } else {
-          toast.success('Successfully signed up!');
+      const onSubmitForm = async (data: SignUpFormData) => {
+        if (!agreeToTerms) {
+          toast.error(TOAST_MESSAGES.AUTH.TERMS_REQUIRED);
+          return;
         }
-        if (result.redirect) {
-          setTimeout(() => {
-            router.push(result.redirect!);
-            router.refresh();
-          }, 300);
+        setIsLoading(true);
+        
+        try {
+          const result = await signUp(data);
+          
+          if (result?.error) {
+            toast.error(result.error);
+            setIsLoading(false);
+            return;
+          }
+          
+          if (result?.success) {
+            if (result.message) {
+              toast.success(result.message);
+            } else {
+              toast.success(TOAST_MESSAGES.AUTH.SIGN_UP_SUCCESS);
+              
+              if (result.redirect) {
+                const { useAuthStore } = await import('@/lib/stores/auth-store');
+                const supabase = await import('@/lib/supabase/client').then(m => m.createClient());
+                
+                const { data: { user: sessionUser } } = await supabase.auth.getUser();
+                
+                if (sessionUser) {
+                  useAuthStore.getState().setUser({
+                    id: sessionUser.id,
+                    name: sessionUser.user_metadata?.full_name || sessionUser.email || 'User',
+                    email: sessionUser.email || '',
+                    avatar: sessionUser.user_metadata?.avatar_url,
+                  }, false);
+                }
+                
+                window.location.href = result.redirect;
+              }
+            }
+            return;
+          }
+        } catch (error) {
+          toast.error(TOAST_MESSAGES.AUTH.SIGN_UP_ERROR);
+          setIsLoading(false);
         }
-        return;
-      }
-    } catch (error) {
-      toast.error('An error occurred during sign up');
-      setIsLoading(false);
-    }
-  };
+      };
 
   return (
     <div className="w-full">

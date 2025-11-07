@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
 import { createClient } from '@/lib/supabase/client';
 import { useAuthStore } from '@/lib/stores/auth-store';
 
@@ -15,34 +15,45 @@ interface AuthProviderProps {
 }
 
 export function AuthProvider({ children, initialUser }: AuthProviderProps) {
-  const { setUser, setLoading } = useAuthStore();
+  const { initialize, setUser } = useAuthStore();
+  const initializedRef = useRef(false);
+  const subscriptionRef = useRef<{ unsubscribe: () => void } | null>(null);
 
   useEffect(() => {
-    setUser(initialUser);
-    setLoading(false);
+    if (initializedRef.current) return;
+
+    initialize(initialUser);
+    initializedRef.current = true;
 
     const supabase = createClient();
 
     const {
       data: { subscription },
     } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (session?.user) {
-        setUser({
-          id: session.user.id,
-          name: session.user.user_metadata?.full_name || session.user.email || 'User',
-          email: session.user.email || '',
-          avatar: session.user.user_metadata?.avatar_url,
-        });
-      } else {
-        setUser(null);
+      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+        if (session?.user) {
+          setUser(
+            {
+              id: session.user.id,
+              name: session.user.user_metadata?.full_name || session.user.email || 'User',
+              email: session.user.email || '',
+              avatar: session.user.user_metadata?.avatar_url,
+            },
+            false
+          );
+        }
+      } else if (event === 'SIGNED_OUT') {
+        setUser(null, false);
       }
-      setLoading(false);
     });
 
+    subscriptionRef.current = subscription;
+
     return () => {
-      subscription.unsubscribe();
+      subscriptionRef.current?.unsubscribe();
+      subscriptionRef.current = null;
     };
-  }, [initialUser, setUser, setLoading]);
+  }, [initialUser, initialize, setUser]);
 
   return <>{children}</>;
 }

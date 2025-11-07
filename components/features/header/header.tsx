@@ -1,25 +1,50 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/features/theme/theme-toggle';
 import { UserMenu } from './user-menu';
 import { useAuthStore } from '@/lib/stores/auth-store';
 import { LogIn } from 'lucide-react';
+import { ROUTES } from '@/lib/constants/routes';
+import { CONFIG } from '@/lib/constants/config';
 
-export function Header() {
+export const Header = React.memo(function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
-  const { user, isAuthenticated } = useAuthStore();
+  const user = useAuthStore((state) => state.user);
+  const isAuthenticated = useAuthStore((state) => state.isAuthenticated);
+  const isLoading = useAuthStore((state) => state.isLoading);
 
   useEffect(() => {
     const handleScroll = () => {
-      setIsScrolled(window.scrollY > 20);
+      setIsScrolled(window.scrollY > CONFIG.HEADER_SCROLL_THRESHOLD);
     };
 
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  const renderAuthButton = useMemo(() => {
+    if (isLoading) {
+      return (
+        <div className="w-10 h-10 rounded-full bg-muted animate-pulse" />
+      );
+    }
+
+    if (isAuthenticated && user) {
+      return <UserMenu user={user} />;
+    }
+
+    return (
+      <Link href={ROUTES.AUTH}>
+        <Button variant="outline" size="default" className="gap-2">
+          <LogIn className="h-4 w-4" />
+          <span>Sign In</span>
+        </Button>
+      </Link>
+    );
+  }, [isLoading, isAuthenticated, user]);
 
   return (
     <header
@@ -62,17 +87,7 @@ export function Header() {
           </Link>
 
           <div className="flex items-center gap-3">
-            {isAuthenticated && user ? (
-              <UserMenu user={user} />
-            ) : (
-              <Link href="/auth">
-                <Button variant="outline" size="default" className="gap-2">
-                  <LogIn className="h-4 w-4" />
-                  <span>Sign In</span>
-                </Button>
-              </Link>
-            )}
-            
+            {renderAuthButton}
             <ThemeToggle />
           </div>
         </div>
@@ -83,5 +98,5 @@ export function Header() {
       )}
     </header>
   );
-}
+});
 

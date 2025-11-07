@@ -8,6 +8,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Shield, Calendar, Mail, User } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import { Spinner } from '@/components/ui/spinner';
+import { ROUTES } from '@/lib/constants/routes';
 
 export default function ProfilePage() {
   const router = useRouter();
@@ -15,7 +16,7 @@ export default function ProfilePage() {
 
   useEffect(() => {
     if (!isLoading && !isAuthenticated) {
-      router.push('/auth');
+      router.push(ROUTES.AUTH);
     }
   }, [isAuthenticated, isLoading, router]);
 

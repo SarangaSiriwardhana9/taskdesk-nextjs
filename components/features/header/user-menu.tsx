@@ -3,6 +3,7 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { User, LogOut } from 'lucide-react';
+import { ROUTES } from '@/lib/constants/routes';
 
 interface UserMenuProps {
   user: {
@@ -41,7 +42,7 @@ export function UserMenu({ user }: UserMenuProps) {
   };
 
   const handleProfile = () => {
-    router.push('/profile');
+    router.push(ROUTES.PROFILE);
     setIsOpen(false);
   };
 
