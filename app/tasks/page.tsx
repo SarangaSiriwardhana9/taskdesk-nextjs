@@ -1,26 +1,34 @@
-import { Header } from '@/components/features/header';
-import { getUser } from '@/lib/auth/actions';
-import { redirect } from 'next/navigation';
+'use client';
 
-export default async function TasksPage() {
-  const user = await getUser();
+import { useEffect } from 'react';
+import { useRouter } from 'next/navigation';
+import { useAuthStore } from '@/lib/stores/auth-store';
+import { Spinner } from '@/components/ui/spinner';
 
-  if (!user) {
-    redirect('/auth');
+export default function TasksPage() {
+  const router = useRouter();
+  const { isAuthenticated, isLoading, user } = useAuthStore();
+
+  useEffect(() => {
+    if (!isLoading && !isAuthenticated) {
+      router.push('/auth');
+    }
+  }, [isAuthenticated, isLoading, router]);
+
+  if (isLoading) {
+    return (
+      <main className="min-h-screen bg-background pt-16 flex items-center justify-center">
+        <Spinner />
+      </main>
+    );
+  }
+
+  if (!isAuthenticated) {
+    return null;
   }
 
   return (
-    <>
-      <Header
-        isAuthenticated={true}
-        user={{
-          name: user.user_metadata?.full_name || user.email || 'User',
-          email: user.email || '',
-          avatar: user.user_metadata?.avatar_url,
-        }}
-      />
-
-      <main className="min-h-screen bg-background pt-16">
+    <main className="min-h-screen bg-background pt-16">
         <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
           <div className="space-y-8">
             <div>
@@ -50,20 +58,19 @@ export default async function TasksPage() {
                 </div>
                 <h2 className="text-2xl font-bold">Authentication Successful!</h2>
                 <p className="text-muted-foreground max-w-md mx-auto">
-                  Welcome, {user.user_metadata?.full_name || user.email}! <br />
+                  Welcome, {user?.name}! <br />
                   Your task management dashboard will be built here.
                 </p>
                 <div className="pt-4">
                   <p className="text-sm text-muted-foreground">
-                    User ID: <code className="bg-muted px-2 py-1 rounded">{user.id}</code>
+                    User ID: <code className="bg-muted px-2 py-1 rounded">{user?.id}</code>
                   </p>
                 </div>
               </div>
             </div>
           </div>
         </div>
-      </main>
-    </>
+    </main>
   );
 }
 

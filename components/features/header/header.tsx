@@ -5,19 +5,12 @@ import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { ThemeToggle } from '@/components/features/theme/theme-toggle';
 import { UserMenu } from './user-menu';
+import { useAuthStore } from '@/lib/stores/auth-store';
 import { LogIn } from 'lucide-react';
 
-interface HeaderProps {
-  isAuthenticated?: boolean;
-  user?: {
-    name: string;
-    email: string;
-    avatar?: string;
-  };
-}
-
-export function Header({ isAuthenticated = false, user }: HeaderProps) {
+export function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
+  const { user, isAuthenticated } = useAuthStore();
 
   useEffect(() => {
     const handleScroll = () => {

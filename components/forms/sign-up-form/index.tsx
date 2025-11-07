@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
@@ -9,6 +9,7 @@ import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
 import { Checkbox } from '@/components/ui/checkbox';
+import { Spinner } from '@/components/ui/spinner';
 import { AuthFormField } from '@/components/features/auth/auth-form-field';
 import { signUpSchema, type SignUpFormData } from './form-schema';
 import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Github, Chrome, Sparkles } from 'lucide-react';
@@ -25,25 +26,10 @@ export function SignUpForm({ onSignInClick, onSubmit }: SignUpFormProps) {
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [agreeToTerms, setAgreeToTerms] = useState(false);
-  const [serverMessage, setServerMessage] = useState<{ type: 'error' | 'success'; message: string; redirect?: string } | null>(null);
 
   const { register, handleSubmit, formState: { errors } } = useForm<SignUpFormData>({
     resolver: zodResolver(signUpSchema),
   });
-
-  useEffect(() => {
-    if (!serverMessage) return;
-
-    if (serverMessage.type === 'error') {
-      toast.error(serverMessage.message);
-    } else {
-      toast.success(serverMessage.message);
-      if (serverMessage.redirect) {
-        setTimeout(() => router.push(serverMessage.redirect!), 500);
-      }
-    }
-    setServerMessage(null);
-  }, [serverMessage, router]);
 
   const onSubmitForm = async (data: SignUpFormData) => {
     if (!agreeToTerms) {
@@ -51,30 +37,32 @@ export function SignUpForm({ onSignInClick, onSubmit }: SignUpFormProps) {
       return;
     }
     setIsLoading(true);
-    setServerMessage(null);
     
     try {
       const result = await signUp(data);
       
       if (result?.error) {
-        setServerMessage({ type: 'error', message: result.error });
+        toast.error(result.error);
         setIsLoading(false);
         return;
       }
       
       if (result?.success) {
-        setServerMessage({ 
-          type: 'success', 
-          message: result.message || 'Successfully signed up!',
-          redirect: result.redirect 
-        });
-        setIsLoading(false);
-    onSubmit?.(data);
+        if (result.message) {
+          toast.success(result.message);
+        } else {
+          toast.success('Successfully signed up!');
+        }
+        if (result.redirect) {
+          setTimeout(() => {
+            router.push(result.redirect!);
+            router.refresh();
+          }, 300);
+        }
         return;
       }
     } catch (error) {
-      setServerMessage({ type: 'error', message: 'An error occurred during sign up' });
-    } finally {
+      toast.error('An error occurred during sign up');
       setIsLoading(false);
     }
   };
@@ -229,13 +217,13 @@ export function SignUpForm({ onSignInClick, onSubmit }: SignUpFormProps) {
           >
             {isLoading ? (
               <>
-                <div className="h-4 w-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                <Spinner size="sm" variant="foreground" />
                 <span>Creating Account...</span>
               </>
             ) : (
               <>
                 <span>Create Account</span>
-          <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-4 w-4" />
               </>
             )}
         </Button>

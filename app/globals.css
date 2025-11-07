@@ -157,24 +157,4 @@
     animation: none;
     mix-blend-mode: normal;
   }
-
-  [data-sonner-toaster] {
-    z-index: 9999 !important;
-  }
-
-  [data-sonner-toast][data-type="success"],
-  [data-sonner-toast][data-type="success"][data-styled="true"] {
-    background: var(--primary) !important;
-    color: var(--primary-foreground) !important;
-    border-color: var(--primary) !important;
-  }
-
-  [data-sonner-toast][data-type="success"] [data-icon],
-  [data-sonner-toast][data-type="success"] svg {
-    color: var(--primary-foreground) !important;
-  }
-
-  [data-sonner-toast][data-type="success"]::before {
-    background: var(--primary) !important;
-  }
 }

@@ -1,20 +1,15 @@
-import { Header } from '@/components/features/header';
+'use client';
+
 import { Button } from '@/components/ui/button';
+import { useAuthStore } from '@/lib/stores/auth-store';
 import { CheckCircle2, Zap, Shield, TrendingUp, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
 
 export default function Home() {
-  const isAuthenticated = false;
-  const user = {
-    name: 'John Doe',
-    email: 'john@example.com',
-  };
+  const { isAuthenticated } = useAuthStore();
 
   return (
-    <>
-      <Header isAuthenticated={isAuthenticated} user={isAuthenticated ? user : undefined} />
-      
-      <main className="min-h-screen bg-background pt-16">
+    <main className="min-h-screen bg-background pt-16">
         <section className="relative overflow-hidden">
           <div className="absolute inset-0 overflow-hidden pointer-events-none">
             <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl animate-pulse" />
@@ -47,15 +42,26 @@ export default function Home() {
               </p>
 
               <div className="flex flex-col sm:flex-row items-center justify-center gap-4">
-                <Link href="/auth">
-                  <Button variant="gradient" size="lg" className="gap-2">
-                    <span>Get Started</span>
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </Link>
-                <Button variant="outline" size="lg">
-                  Watch Demo
-                </Button>
+                {isAuthenticated ? (
+                  <Link href="/tasks">
+                    <Button variant="gradient" size="lg" className="gap-2">
+                      <span>Go to Dashboard</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </Link>
+                ) : (
+                  <>
+                    <Link href="/auth">
+                      <Button variant="gradient" size="lg" className="gap-2">
+                        <span>Get Started</span>
+                        <ArrowRight className="h-4 w-4" />
+                      </Button>
+                    </Link>
+                    <Button variant="outline" size="lg">
+                      Watch Demo
+                    </Button>
+                  </>
+                )}
               </div>
             </div>
           </div>
@@ -130,12 +136,21 @@ export default function Home() {
                 <p className="text-lg text-muted-foreground max-w-2xl mx-auto">
                   Join thousands of professionals who trust TaskDesk to manage their work
                 </p>
-                <Link href="/auth">
-                  <Button variant="gradient" size="lg" className="gap-2">
-                    <span>Start Free Trial</span>
-                    <ArrowRight className="h-4 w-4" />
-                  </Button>
-                </Link>
+                {isAuthenticated ? (
+                  <Link href="/tasks">
+                    <Button variant="gradient" size="lg" className="gap-2">
+                      <span>Go to Dashboard</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </Link>
+                ) : (
+                  <Link href="/auth">
+                    <Button variant="gradient" size="lg" className="gap-2">
+                      <span>Start Free Trial</span>
+                      <ArrowRight className="h-4 w-4" />
+                    </Button>
+                  </Link>
+                )}
               </div>
             </div>
           </div>
@@ -148,7 +163,6 @@ export default function Home() {
             </div>
           </div>
         </footer>
-      </main>
-    </>
+    </main>
   );
 }

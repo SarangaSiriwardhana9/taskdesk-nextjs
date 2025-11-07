@@ -1,7 +1,8 @@
 'use client';
 
 import React, { useState, useRef, useEffect } from 'react';
-import { User, LogOut, Settings } from 'lucide-react';
+import { useRouter } from 'next/navigation';
+import { User, LogOut } from 'lucide-react';
 
 interface UserMenuProps {
   user: {
@@ -12,6 +13,7 @@ interface UserMenuProps {
 }
 
 export function UserMenu({ user }: UserMenuProps) {
+  const router = useRouter();
   const [isOpen, setIsOpen] = useState(false);
   const menuRef = useRef<HTMLDivElement>(null);
 
@@ -29,6 +31,8 @@ export function UserMenu({ user }: UserMenuProps) {
   const handleLogout = async () => {
     try {
       const { signOut } = await import('@/lib/auth/actions');
+      const { useAuthStore } = await import('@/lib/stores/auth-store');
+      useAuthStore.getState().clearAuth();
       await signOut();
     } catch (error) {
       console.error('Logout error:', error);
@@ -37,7 +41,7 @@ export function UserMenu({ user }: UserMenuProps) {
   };
 
   const handleProfile = () => {
-    console.log('Profile clicked');
+    router.push('/profile');
     setIsOpen(false);
   };
 

@@ -1,6 +1,6 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useRouter } from 'next/navigation';
@@ -8,6 +8,7 @@ import { toast } from 'sonner';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
+import { Spinner } from '@/components/ui/spinner';
 import { AuthFormField } from '@/components/features/auth/auth-form-field';
 import { signInSchema, type SignInFormData } from './form-schema';
 import { Mail, Lock, Eye, EyeOff, ArrowRight, Github, Chrome } from 'lucide-react';
@@ -22,52 +23,33 @@ export function SignInForm({ onSignUpClick, onSubmit }: SignInFormProps) {
   const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [serverMessage, setServerMessage] = useState<{ type: 'error' | 'success'; message: string; redirect?: string } | null>(null);
 
   const { register, handleSubmit, formState: { errors } } = useForm<SignInFormData>({
     resolver: zodResolver(signInSchema),
   });
 
-  useEffect(() => {
-    if (!serverMessage) return;
-
-    if (serverMessage.type === 'error') {
-      toast.error(serverMessage.message);
-    } else {
-      toast.success(serverMessage.message);
-      if (serverMessage.redirect) {
-        setTimeout(() => router.push(serverMessage.redirect!), 500);
-      }
-    }
-    setServerMessage(null);
-  }, [serverMessage, router]);
-
   const onSubmitForm = async (data: SignInFormData) => {
     setIsLoading(true);
-    setServerMessage(null);
     
     try {
       const result = await signIn(data);
       
       if (result?.error) {
-        setServerMessage({ type: 'error', message: result.error });
+        toast.error(result.error);
         setIsLoading(false);
         return;
       }
       
       if (result?.success) {
-        setServerMessage({ 
-          type: 'success', 
-          message: 'Successfully signed in!',
-          redirect: result.redirect 
-        });
-        setIsLoading(false);
-    onSubmit?.(data);
+        toast.success('Successfully signed in!');
+        setTimeout(() => {
+          router.push(result.redirect || '/tasks');
+          router.refresh();
+        }, 300);
         return;
       }
     } catch (error) {
-      setServerMessage({ type: 'error', message: 'An error occurred during sign in' });
-    } finally {
+      toast.error('An error occurred during sign in');
       setIsLoading(false);
     }
   };
@@ -168,13 +150,13 @@ export function SignInForm({ onSignUpClick, onSubmit }: SignInFormProps) {
           >
             {isLoading ? (
               <>
-                <div className="h-4 w-4 border-2 border-primary-foreground/30 border-t-primary-foreground rounded-full animate-spin" />
+                <Spinner size="sm" variant="foreground" />
                 <span>Signing in...</span>
               </>
             ) : (
               <>
                 <span>Sign In</span>
-          <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-4 w-4" />
               </>
             )}
         </Button>
