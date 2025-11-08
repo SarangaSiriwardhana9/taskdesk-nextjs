@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useRouter } from 'next/navigation';
+import { useRouter, usePathname } from 'next/navigation';
 import { Header } from '@/components/features/header';
 import { Footer } from '@/components/features/home/footer';
 import { useIsAuthenticated, useAuthLoading } from '@/lib/stores/auth-store';
@@ -14,14 +14,17 @@ export default function AppLayout({
   children: React.ReactNode;
 }) {
   const router = useRouter();
+  const pathname = usePathname();
   const isAuthenticated = useIsAuthenticated();
   const isLoading = useAuthLoading();
 
   useEffect(() => {
-    if (!isLoading && !isAuthenticated) {
+    if (!isLoading && !isAuthenticated && pathname !== '/') {
+      // Store the intended destination for redirect after login
+      sessionStorage.setItem('redirectAfterLogin', pathname);
       router.push(ROUTES.AUTH);
     }
-  }, [isAuthenticated, isLoading, router]);
+  }, [isAuthenticated, isLoading, router, pathname]);
 
   if (isLoading) {
     return (
@@ -31,7 +34,7 @@ export default function AppLayout({
     );
   }
 
-  if (!isAuthenticated) {
+  if (!isAuthenticated && pathname !== '/') {
     return null;
   }
 

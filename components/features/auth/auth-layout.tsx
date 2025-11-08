@@ -1,8 +1,9 @@
- 
-'use client';
+ 'use client';
 
 import React, { ReactNode } from 'react';
-import { CheckCircle2, Zap, Shield, TrendingUp } from 'lucide-react';
+import Link from 'next/link';
+import { CheckCircle2, Zap, Shield, TrendingUp, ArrowLeft, Home } from 'lucide-react';
+import { ROUTES } from '@/lib/constants/routes';
 
 interface AuthLayoutProps {
   children: ReactNode;
@@ -40,6 +41,7 @@ export function AuthLayout({ children, imageUrl }: AuthLayoutProps) {
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-accent/10 rounded-full blur-3xl animate-pulse delay-1000" />
         <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-96 h-96 bg-primary/5 rounded-full blur-3xl animate-pulse delay-500" />
       </div>
+
 
       <div className="relative z-10 flex min-h-[calc(100vh-64px)] items-center justify-center px-4 py-8">
         <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">

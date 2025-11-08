@@ -70,7 +70,13 @@ export function SignUpForm({ onSignInClick }: SignUpFormProps) {
             }
 
             setTimeout(() => {
-              router.push(result.redirect || ROUTES.HOME);
+              const redirectPath = sessionStorage.getItem('redirectAfterLogin');
+              if (redirectPath) {
+                sessionStorage.removeItem('redirectAfterLogin');
+                router.push(redirectPath);
+              } else {
+                router.push(result.redirect || ROUTES.HOME);
+              }
             }, 100);
           }
         }

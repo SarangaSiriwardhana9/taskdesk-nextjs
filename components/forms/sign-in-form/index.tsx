@@ -59,7 +59,13 @@ export function SignInForm({ onSignUpClick }: SignInFormProps) {
         }
 
         setTimeout(() => {
-          router.push(result.redirect || ROUTES.HOME);
+          const redirectPath = sessionStorage.getItem('redirectAfterLogin');
+          if (redirectPath) {
+            sessionStorage.removeItem('redirectAfterLogin');
+            router.push(redirectPath);
+          } else {
+            router.push(result.redirect || ROUTES.HOME);
+          }
         }, 100);
       }
     } catch (error) {
@@ -143,11 +149,6 @@ export function SignInForm({ onSignUpClick }: SignInFormProps) {
             />
           </AuthFormField>
 
-          <div className="flex justify-end">
-            <button type="button" className="text-xs font-medium text-primary hover:underline">
-              Forgot password?
-            </button>
-          </div>
 
           <Button
             type="submit"

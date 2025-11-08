@@ -1,9 +1,10 @@
- 
-'use client';
+ 'use client';
 
 import React, { useState } from 'react';
+import Link from 'next/link';
 import { SignInForm } from '@/components/forms/sign-in-form';
 import { SignUpForm } from '@/components/forms/sign-up-form';
+import { ROUTES } from '@/lib/constants/routes';
 
 type AuthMode = 'signin' | 'signup';
 
@@ -37,6 +38,18 @@ export function AuthContainer({ initialMode = 'signin' }: AuthContainerProps) {
         ) : (
           <SignUpForm onSignInClick={() => handleModeChange('signin')} />
         )}
+      </div>
+      
+      <div className="mt-6 text-center">
+        <p className="text-sm text-muted-foreground">
+          Want to explore first?{' '}
+          <Link 
+            href={ROUTES.HOME}
+            className="text-primary hover:text-primary/80 underline-offset-4 hover:underline transition-colors"
+          >
+            Visit our homepage
+          </Link>
+        </p>
       </div>
     </div>
   );
