@@ -32,18 +32,15 @@ export function AuthProvider({ children, initialUser }: AuthProviderProps) {
     } = supabase.auth.onAuthStateChange(async (event, session) => {
       if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
         if (session?.user) {
-          setUser(
-            {
-              id: session.user.id,
-              name: session.user.user_metadata?.full_name || session.user.email || 'User',
-              email: session.user.email || '',
-              avatar: session.user.user_metadata?.avatar_url,
-            },
-            false
-          );
+          setUser({
+            id: session.user.id,
+            name: session.user.user_metadata?.full_name || session.user.email || 'User',
+            email: session.user.email || '',
+            avatar: session.user.user_metadata?.avatar_url,
+          });
         }
       } else if (event === 'SIGNED_OUT') {
-        setUser(null, false);
+        setUser(null);
       }
     });
 
