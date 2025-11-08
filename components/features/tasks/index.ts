@@ -1,5 +1,5 @@
 export { CreateTaskFab } from './create-task-fab';
-export { CreateTaskModal } from './create-task-modal';
+export { TaskModal } from './task-modal';
 export { PrioritySelector } from './priority-selector';
 export { DatePicker } from './date-picker';
 export { TaskFormField } from './task-form-field';

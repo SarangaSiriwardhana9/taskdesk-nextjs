@@ -8,6 +8,7 @@ import { CreateTaskFab } from '@/components/features/tasks/create-task-fab';
 import { TasksPageHeader } from '@/components/features/tasks/tasks-page-header';
 import { TaskList } from '@/components/features/tasks/task-list';
 import { EmptyTasks } from '@/components/features/tasks/empty-tasks';
+import { TaskModal } from '@/components/features/tasks/task-modal';
 import { createTask, updateTask, deleteTask, getTasks } from '@/lib/tasks/actions';
 import { TOAST_MESSAGES } from '@/lib/constants/toast-messages';
 import { CONFIG } from '@/lib/constants/config';
@@ -19,6 +20,9 @@ export default function TasksPage() {
   const user = useAuthUser();
   const router = useRouter();
   const [isCreating, setIsCreating] = useState(false);
+  const [isEditing, setIsEditing] = useState(false);
+  const [showCreateModal, setShowCreateModal] = useState(false);
+  const [editingTask, setEditingTask] = useState<Task | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [isLoading, setIsLoading] = useState(true);
 
@@ -56,6 +60,7 @@ export default function TasksPage() {
       if (result?.success) {
         toast.success(TOAST_MESSAGES.TASKS.CREATE_SUCCESS);
         await loadTasks();
+        setShowCreateModal(false);
       }
     } catch (error) {
       toast.error(TOAST_MESSAGES.TASKS.CREATE_ERROR);
@@ -107,7 +112,38 @@ export default function TasksPage() {
   };
 
   const handleEdit = (task: Task) => {
-    toast.info('Edit functionality coming soon!');
+    setEditingTask(task);
+  };
+
+  const handleEditTask = async (data: TaskFormData) => {
+    if (!editingTask) return;
+    
+    setIsEditing(true);
+    const previousTasks = tasks;
+    
+    setTasks((prevTasks) =>
+      prevTasks.map((task) =>
+        task.id === editingTask.id
+          ? { ...task, ...data, updated_at: new Date().toISOString() }
+          : task
+      )
+    );
+
+    try {
+      const result = await updateTask(editingTask.id, data);
+      if (result?.error) {
+        setTasks(previousTasks);
+        toast.error(result.error || TOAST_MESSAGES.TASKS.UPDATE_ERROR);
+      } else {
+        toast.success(TOAST_MESSAGES.TASKS.UPDATE_SUCCESS);
+        setEditingTask(null);
+      }
+    } catch (error) {
+      setTasks(previousTasks);
+      toast.error(TOAST_MESSAGES.TASKS.UPDATE_ERROR);
+    } finally {
+      setIsEditing(false);
+    }
   };
 
   if (isLoading) {
@@ -154,7 +190,28 @@ export default function TasksPage() {
         </div>
       </div>
 
-      <CreateTaskFab onCreateTask={handleCreateTask} isLoading={isCreating} />
+      <CreateTaskFab onCreateTask={() => setShowCreateModal(true)} isLoading={false} />
+      
+      <TaskModal
+        mode="create"
+        open={showCreateModal}
+        onOpenChange={setShowCreateModal}
+        onSubmit={handleCreateTask}
+        isLoading={isCreating}
+      />
+      
+      <TaskModal
+        mode="edit"
+        open={!!editingTask}
+        onOpenChange={(open) => {
+          if (!open) {
+            setEditingTask(null);
+          }
+        }}
+        onSubmit={handleEditTask}
+        task={editingTask || undefined}
+        isLoading={isEditing}
+      />
     </main>
   );
 }
