@@ -13,9 +13,10 @@ import { Spinner } from '@/components/ui/spinner';
 import { AuthFormField } from '@/components/features/auth/auth-form-field';
 import { signUpSchema, type SignUpFormData } from './form-schema';
 import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Github, Chrome, Sparkles } from 'lucide-react';
-import { signUp } from '@/lib/auth/actions';
+import { signUp, handleOAuthSignIn } from '@/lib/auth';
 import { useAuthStore } from '@/lib/stores/auth-store';
 import { createClient } from '@/lib/supabase/client';
+import { extractAvatarUrl, extractUserName } from '@/lib/utils/user-utils';
 import { ROUTES } from '@/lib/constants/routes';
 import { TOAST_MESSAGES } from '@/lib/constants/toast-messages';
 import router from 'next/router';
@@ -34,6 +35,9 @@ export function SignUpForm({ onSignInClick }: SignUpFormProps) {
   const { register, handleSubmit, formState: { errors } } = useForm<SignUpFormData>({
     resolver: zodResolver(signUpSchema),
   });
+
+  const handleGoogleSignIn = () => handleOAuthSignIn('google', setIsLoading);
+  const handleGithubSignIn = () => handleOAuthSignIn('github', setIsLoading);
 
   const onSubmitForm = async (data: SignUpFormData) => {
     if (!agreeToTerms) {
@@ -62,11 +66,14 @@ export function SignUpForm({ onSignInClick }: SignUpFormProps) {
             const { data: { user: sessionUser } } = await supabase.auth.getUser();
 
             if (sessionUser) {
+              const avatar = extractAvatarUrl(sessionUser.user_metadata);
+              const name = extractUserName(sessionUser.user_metadata, sessionUser.email);
+
               setUser({
                 id: sessionUser.id,
-                name: sessionUser.user_metadata?.full_name || sessionUser.email || 'User',
+                name,
                 email: sessionUser.email || '',
-                avatar: sessionUser.user_metadata?.avatar_url,
+                avatar,
               });
             }
 
@@ -103,11 +110,25 @@ export function SignUpForm({ onSignInClick }: SignUpFormProps) {
         </div>
 
         <div className="space-y-3 mb-6">
-          <Button type="button" variant="social" size="social" className="w-full" disabled={isLoading}>
+          <Button 
+            type="button" 
+            variant="social" 
+            size="social" 
+            className="w-full" 
+            disabled={isLoading}
+            onClick={handleGoogleSignIn}
+          >
             <Chrome className="h-5 w-5" />
             <span>Continue with Google</span>
           </Button>
-          <Button type="button" variant="social" size="social" className="w-full" disabled={isLoading}>
+          <Button 
+            type="button" 
+            variant="social" 
+            size="social" 
+            className="w-full" 
+            disabled={isLoading}
+            onClick={handleGithubSignIn}
+          >
             <Github className="h-5 w-5" />
             <span>Continue with GitHub</span>
           </Button>

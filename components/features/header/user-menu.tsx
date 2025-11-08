@@ -1,10 +1,12 @@
 'use client';
 
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { User, LogOut, CheckSquare } from 'lucide-react';
+import { Button } from '@/components/ui/button';
+import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
 import { useAuthStore } from '@/lib/stores/auth-store';
-import { signOut } from '@/lib/auth/actions';
+import { signOut } from '@/lib/auth';
 import { ROUTES } from '@/lib/constants/routes';
 
 interface UserMenuProps {
@@ -17,20 +19,12 @@ interface UserMenuProps {
 
 export function UserMenu({ user }: UserMenuProps) {
   const router = useRouter();
-  const [isOpen, setIsOpen] = useState(false);
-  const menuRef = useRef<HTMLDivElement>(null);
+  const [avatarError, setAvatarError] = useState(false);
   const { clearAuth } = useAuthStore();
 
   useEffect(() => {
-    const handleClickOutside = (event: MouseEvent) => {
-      if (menuRef.current && !menuRef.current.contains(event.target as Node)) {
-        setIsOpen(false);
-      }
-    };
-
-    document.addEventListener('mousedown', handleClickOutside);
-    return () => document.removeEventListener('mousedown', handleClickOutside);
-  }, []);
+    setAvatarError(false);
+  }, [user.avatar]);
 
   const handleLogout = async () => {
     clearAuth();
@@ -39,17 +33,19 @@ export function UserMenu({ user }: UserMenuProps) {
 
   const handleProfile = () => {
     router.push(ROUTES.PROFILE);
-    setIsOpen(false);
   };
 
   const handleTasks = () => {
     router.push(ROUTES.TASKS);
-    setIsOpen(false);
   };
 
   const getInitials = (name: string) => {
+    if (!name || name.trim() === '') return 'U';
+    
     return name
+      .trim()
       .split(' ')
+      .filter(n => n.length > 0)
       .map((n) => n[0])
       .join('')
       .toUpperCase()
@@ -57,71 +53,58 @@ export function UserMenu({ user }: UserMenuProps) {
   };
 
   return (
-    <div className="relative" ref={menuRef}>
-      <button
-        onClick={() => setIsOpen(!isOpen)}
-        className="flex items-center justify-center w-10 h-10 rounded-full bg-gradient-to-br from-primary to-accent text-primary-foreground font-semibold text-sm hover:shadow-lg hover:shadow-primary/30 transition-all duration-200 hover:scale-110 focus:outline-none focus:ring-2 focus:ring-primary/50 focus:ring-offset-2 focus:ring-offset-background"
-      >
-        {user.avatar ? (
-          <img
-            src={user.avatar}
-            alt={user.name}
-            className="w-full h-full rounded-full object-cover"
-          />
-        ) : (
-          getInitials(user.name)
-        )}
-      </button>
-
-      {isOpen && (
-        <div className="absolute right-0 mt-3 w-64 bg-card border border-border rounded-xl shadow-2xl shadow-primary/10 overflow-hidden animate-in fade-in slide-in-from-top-2 duration-200">
-          <div className="p-4 border-b border-border bg-gradient-to-br from-primary/5 to-accent/5">
-            <div className="flex items-center gap-3">
-              <div className="flex items-center justify-center w-12 h-12 rounded-full bg-gradient-to-br from-primary to-accent text-primary-foreground font-semibold">
-                {user.avatar ? (
-                  <img
-                    src={user.avatar}
-                    alt={user.name}
-                    className="w-full h-full rounded-full object-cover"
-                  />
-                ) : (
-                  getInitials(user.name)
-                )}
-              </div>
-              <div className="flex-1 min-w-0">
-                <p className="text-sm font-semibold text-foreground truncate">{user.name}</p>
-                <p className="text-xs text-muted-foreground truncate">{user.email}</p>
-              </div>
-            </div>
-          </div>
-
-          <div className="p-2">
-            <button
-              onClick={handleTasks}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary/10 transition-colors text-sm text-foreground group"
-            >
-              <CheckSquare className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
-              <span>My Tasks</span>
-            </button>
-
-            <button
-              onClick={handleProfile}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary/10 transition-colors text-sm text-foreground group"
-            >
-              <User className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
-              <span>Profile</span>
-            </button>
-
-            <button
-              onClick={handleLogout}
-              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-destructive/10 transition-colors text-sm text-foreground group"
-            >
-              <LogOut className="h-4 w-4 text-muted-foreground group-hover:text-destructive transition-colors" />
-              <span className="group-hover:text-destructive transition-colors">Logout</span>
-            </button>
+    <DropdownMenu>
+      <DropdownMenuTrigger asChild>
+        <Button
+          variant="ghost"
+          size="sm"
+          className="relative h-9 w-9 rounded-full bg-gradient-to-br from-primary to-accent text-primary-foreground hover:from-primary/90 hover:to-accent/90"
+        >
+          {user.avatar && !avatarError ? (
+            <img
+              src={user.avatar}
+              alt={user.name}
+              className="h-full w-full rounded-full object-cover"
+              onError={() => setAvatarError(true)}
+              onLoad={() => setAvatarError(false)}
+            />
+          ) : (
+            <span className="text-xs font-semibold">{getInitials(user.name)}</span>
+          )}
+        </Button>
+      </DropdownMenuTrigger>
+      
+      <DropdownMenuContent className="w-64" align="end" forceMount>
+        <div className="flex items-center justify-start gap-2 p-2">
+          <div className="flex flex-col space-y-1 leading-none">
+            {user.name && <p className="font-medium">{user.name}</p>}
+            {user.email && (
+              <p className="w-[200px] truncate text-sm text-muted-foreground">
+                {user.email}
+              </p>
+            )}
           </div>
         </div>
-      )}
-    </div>
+        
+        <DropdownMenuSeparator />
+        
+        <DropdownMenuItem onClick={handleTasks}>
+          <CheckSquare className="mr-2 h-4 w-4" />
+          <span>My Tasks</span>
+        </DropdownMenuItem>
+        
+        <DropdownMenuItem onClick={handleProfile}>
+          <User className="mr-2 h-4 w-4" />
+          <span>Profile</span>
+        </DropdownMenuItem>
+        
+        <DropdownMenuSeparator />
+        
+        <DropdownMenuItem onClick={handleLogout}>
+          <LogOut className="mr-2 h-4 w-4" />
+          <span>Logout</span>
+        </DropdownMenuItem>
+      </DropdownMenuContent>
+    </DropdownMenu>
   );
 }

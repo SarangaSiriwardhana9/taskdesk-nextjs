@@ -1,0 +1,69 @@
+'use client';
+
+import { createClient } from '@/lib/supabase/client';
+import { toast } from 'sonner';
+
+export type OAuthProvider = 'google' | 'github';
+
+export interface OAuthOptions {
+  redirectTo?: string;
+  scopes?: string;
+}
+export async function signInWithOAuth(
+  provider: OAuthProvider,
+  options?: OAuthOptions
+): Promise<{ success: boolean; error?: string }> {
+  try {
+    const supabase = createClient();
+    
+    const { error } = await supabase.auth.signInWithOAuth({
+      provider,
+      options: {
+        redirectTo: options?.redirectTo || `${window.location.origin}/auth/callback`,
+        scopes: options?.scopes,
+      }
+    });
+
+    if (error) {
+      return { success: false, error: error.message };
+    }
+
+    return { success: true };
+  } catch (error) {
+    return { 
+      success: false, 
+      error: `Failed to sign in with ${provider.charAt(0).toUpperCase() + provider.slice(1)}` 
+    };
+  }
+}
+
+export async function signInWithGoogle(options?: OAuthOptions) {
+  return signInWithOAuth('google', {
+    ...options,
+    scopes: 'openid email profile',
+  });
+}
+
+export async function signInWithGitHub(options?: OAuthOptions) {
+  return signInWithOAuth('github', options);
+}
+
+export async function handleOAuthSignIn(
+  provider: OAuthProvider,
+  setLoading: (loading: boolean) => void,
+  options?: OAuthOptions
+) {
+  setLoading(true);
+  
+  try {
+    const result = await signInWithOAuth(provider, options);
+    
+    if (!result.success && result.error) {
+      toast.error(result.error);
+    }
+    
+    return result;
+  } finally {
+    setLoading(false);
+  }
+}
