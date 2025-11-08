@@ -21,7 +21,7 @@ export async function signIn(data: SignInData): Promise<AuthResponse> {
     }
 
     revalidatePath('/', 'layout');
-    return { success: true, redirect: ROUTES.TASKS };
+    return { success: true, redirect: ROUTES.HOME };
   } catch (error) {
     return { error: 'An unexpected error occurred' };
   }
@@ -53,7 +53,7 @@ export async function signUp(data: SignUpData): Promise<AuthResponse> {
     }
 
     revalidatePath('/', 'layout');
-    return { success: true, redirect: ROUTES.TASKS };
+    return { success: true, redirect: ROUTES.HOME };
   } catch (error) {
     return { error: 'An unexpected error occurred' };
   }

@@ -2,7 +2,7 @@
 
 import React, { useState, useRef, useEffect } from 'react';
 import { useRouter } from 'next/navigation';
-import { User, LogOut } from 'lucide-react';
+import { User, LogOut, CheckSquare } from 'lucide-react';
 import { useAuthStore } from '@/lib/stores/auth-store';
 import { signOut } from '@/lib/auth/actions';
 import { ROUTES } from '@/lib/constants/routes';
@@ -39,6 +39,11 @@ export function UserMenu({ user }: UserMenuProps) {
 
   const handleProfile = () => {
     router.push(ROUTES.PROFILE);
+    setIsOpen(false);
+  };
+
+  const handleTasks = () => {
+    router.push(ROUTES.TASKS);
     setIsOpen(false);
   };
 
@@ -91,6 +96,14 @@ export function UserMenu({ user }: UserMenuProps) {
           </div>
 
           <div className="p-2">
+            <button
+              onClick={handleTasks}
+              className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary/10 transition-colors text-sm text-foreground group"
+            >
+              <CheckSquare className="h-4 w-4 text-muted-foreground group-hover:text-primary transition-colors" />
+              <span>My Tasks</span>
+            </button>
+
             <button
               onClick={handleProfile}
               className="w-full flex items-center gap-3 px-3 py-2.5 rounded-lg hover:bg-primary/10 transition-colors text-sm text-foreground group"

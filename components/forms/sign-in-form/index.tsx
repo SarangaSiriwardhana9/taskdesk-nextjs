@@ -59,7 +59,7 @@ export function SignInForm({ onSignUpClick }: SignInFormProps) {
         }
 
         setTimeout(() => {
-          router.push(result.redirect || ROUTES.TASKS);
+          router.push(result.redirect || ROUTES.HOME);
         }, 100);
       }
     } catch (error) {

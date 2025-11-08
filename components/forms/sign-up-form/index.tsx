@@ -70,7 +70,7 @@ export function SignUpForm({ onSignInClick }: SignUpFormProps) {
             }
 
             setTimeout(() => {
-              router.push(result.redirect || ROUTES.TASKS);
+              router.push(result.redirect || ROUTES.HOME);
             }, 100);
           }
         }

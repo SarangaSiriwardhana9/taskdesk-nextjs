@@ -62,12 +62,11 @@ export const Header = React.memo(function Header() {
             >
               <CheckSquare className="w-6 h-6 text-primary-foreground" />
             </div>
-            <span
-              className={`text-xl font-bold bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent transition-all duration-300 ${
+            <span className={`text-xl font-bold transition-all duration-300 ${
                 isScrolled ? 'opacity-100' : 'opacity-90'
-              }`}
-            >
-              TaskDesk
+              }`}>
+              <span className="text-foreground">Task</span>
+              <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Desk</span>
             </span>
           </Link>
 

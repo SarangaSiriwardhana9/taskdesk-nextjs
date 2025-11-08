@@ -17,7 +17,7 @@ export default function AuthPage() {
   useEffect(() => {
     if (!isLoading && isAuthenticated && !isRedirecting) {
       setIsRedirecting(true);
-      router.replace(ROUTES.TASKS);
+      router.replace(ROUTES.HOME);
     }
   }, [isAuthenticated, isLoading, isRedirecting, router]);
 

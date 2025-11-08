@@ -3,6 +3,7 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 import { Header } from '@/components/features/header';
+import { Footer } from '@/components/features/home/footer';
 import { useIsAuthenticated, useAuthLoading } from '@/lib/stores/auth-store';
 import { Spinner } from '@/components/ui/spinner';
 import { ROUTES } from '@/lib/constants/routes';
@@ -38,6 +39,7 @@ export default function AppLayout({
     <>
       <Header />
       {children}
+      <Footer />
     </>
   );
 }

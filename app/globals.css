@@ -164,3 +164,62 @@ html > body[data-scroll-locked] {
   overflow: visible !important;
   margin-right: 0 !important;
 }
+
+/* Custom animations for unique home page */
+@keyframes gradient {
+  0%, 100% {
+    background-position: 0% 50%;
+  }
+  50% {
+    background-position: 100% 50%;
+  }
+}
+
+.animate-gradient {
+  background-size: 300% 300%;
+  animation: gradient 4s ease infinite;
+}
+
+.bg-300\% {
+  background-size: 300% 300%;
+}
+
+.perspective-1000 {
+  perspective: 1000px;
+}
+
+/* Floating animation for task cards */
+@keyframes float {
+  0%, 100% {
+    transform: translateY(0px) rotate(var(--rotation, 0deg));
+  }
+  50% {
+    transform: translateY(-10px) rotate(var(--rotation, 0deg));
+  }
+}
+
+.animate-float {
+  animation: float 3s ease-in-out infinite;
+}
+
+/* Glowing effect */
+.glow {
+  box-shadow: 0 0 20px rgba(var(--primary), 0.3);
+}
+
+/* Typewriter effect */
+@keyframes typewriter {
+  from {
+    width: 0;
+  }
+  to {
+    width: 100%;
+  }
+}
+
+.typewriter {
+  overflow: hidden;
+  border-right: 2px solid;
+  white-space: nowrap;
+  animation: typewriter 3s steps(40, end), blink-caret 0.75s step-end infinite;
+}
