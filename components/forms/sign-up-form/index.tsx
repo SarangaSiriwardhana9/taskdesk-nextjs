@@ -279,16 +279,7 @@ export function SignUpForm({ onSignInClick }: SignUpFormProps) {
               Sign In
             </button>
           </p>
-          
-          <p className="text-sm text-muted-foreground">
-            Want to explore first?{' '}
-            <Link 
-              href={ROUTES.HOME}
-              className="text-primary hover:text-primary/80 underline-offset-4 hover:underline transition-colors"
-            >
-              Visit our homepage
-            </Link>
-          </p>
+    
         </div>
       </div>
 

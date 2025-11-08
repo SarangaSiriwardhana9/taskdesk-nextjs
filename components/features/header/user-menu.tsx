@@ -57,8 +57,7 @@ export function UserMenu({ user }: UserMenuProps) {
       <DropdownMenuTrigger asChild>
         <Button
           variant="ghost"
-          size="sm"
-          className="relative h-9 w-9 rounded-full bg-gradient-to-br from-primary to-accent text-primary-foreground hover:from-primary/90 hover:to-accent/90"
+          className="relative h-9 w-9 rounded-full bg-gradient-to-br from-primary to-accent text-primary-foreground hover:from-primary/90 hover:to-accent/90 p-0"
         >
           {user.avatar && !avatarError ? (
             <img

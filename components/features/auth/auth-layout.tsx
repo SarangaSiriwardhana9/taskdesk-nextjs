@@ -4,6 +4,7 @@ import React, { ReactNode } from 'react';
 import Link from 'next/link';
 import { CheckCircle2, Zap, Shield, TrendingUp, ArrowLeft, Home } from 'lucide-react';
 import { ROUTES } from '@/lib/constants/routes';
+import { Header } from '@/components/features/header/header';
 
 interface AuthLayoutProps {
   children: ReactNode;
@@ -35,7 +36,9 @@ export function AuthLayout({ children, imageUrl }: AuthLayoutProps) {
   ];
 
   return (
-    <div className="relative min-h-screen bg-background overflow-hidden py-2 ">
+    <div className="relative min-h-screen bg-background overflow-hidden">
+      <Header />
+      
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl animate-pulse" />
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-accent/10 rounded-full blur-3xl animate-pulse delay-1000" />
@@ -43,7 +46,7 @@ export function AuthLayout({ children, imageUrl }: AuthLayoutProps) {
       </div>
 
 
-      <div className="relative z-10 flex min-h-[calc(100vh-64px)] items-center justify-center px-4 py-8">
+      <div className="relative z-10 flex min-h-screen items-center justify-center px-4 py-8 pt-24">
         <div className="w-full max-w-7xl grid grid-cols-1 lg:grid-cols-2 gap-12 lg:gap-20 items-center">
           <div className="flex justify-center order-2 lg:order-1">
             {children}
