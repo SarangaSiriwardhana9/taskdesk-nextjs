@@ -158,3 +158,9 @@
     mix-blend-mode: normal;
   }
 }
+
+/* for fix for sheets shifting layout */
+html > body[data-scroll-locked] {
+  overflow: visible !important;
+  margin-right: 0 !important;
+}

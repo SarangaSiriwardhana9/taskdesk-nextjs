@@ -1,0 +1,83 @@
+# Dependencies and Package Files
+package.json
+package-lock.json
+yarn.lock
+pnpm-lock.yaml
+node_modules/
+
+# Configuration Files
+tsconfig.json
+next.config.ts
+next.config.js
+eslint.config.mjs
+postcss.config.mjs
+tailwind.config.ts
+tailwind.config.js
+components.json
+repomix.config.json
+
+# Build and Output Files
+.next/
+out/
+dist/
+build/
+*.log
+
+# Environment Files
+.env
+.env.local
+.env.*.local
+
+# Global CSS (Shadcn/Tailwind generated)
+app/globals.css
+
+# Shadcn UI Components (Auto-generated) - Exclude all except spinner
+components/ui/button.tsx
+components/ui/card.tsx
+components/ui/checkbox.tsx
+components/ui/dialog.tsx
+components/ui/form.tsx
+components/ui/input.tsx
+components/ui/label.tsx
+components/ui/select.tsx
+components/ui/separator.tsx
+components/ui/sonner.tsx
+components/ui/table.tsx
+components/ui/textarea.tsx
+
+# Public Assets
+public/
+*.jpg
+*.jpeg
+*.png
+*.gif
+*.svg
+*.ico
+*.webp
+app/favicon.ico
+
+# Documentation
+README.md
+SRS.txt
+
+# TypeScript Declaration Files (Auto-generated)
+next-env.d.ts
+
+# Git Files
+.git/
+.gitignore
+
+# IDE and Editor Files
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS Files
+.DS_Store
+Thumbs.db
+
+# Temporary Files
+*.tmp
+*.temp
+.cache/

@@ -25,11 +25,11 @@ const priorities: PriorityOption[] = [
     label: 'Low',
     icon: TrendingDown,
     colorClasses: {
-      bg: 'bg-green-50 dark:bg-green-950/30',
-      border: 'border-green-200 dark:border-green-800',
-      text: 'text-green-600 dark:text-green-400',
-      icon: 'text-green-600 dark:text-green-400',
-      hoverBg: 'hover:bg-green-100 dark:hover:bg-green-950/50',
+      bg: 'bg-yellow-50 dark:bg-yellow-950/30',
+      border: 'border-yellow-200 dark:border-yellow-800',
+      text: 'text-yellow-600 dark:text-yellow-400',
+      icon: 'text-yellow-600 dark:text-yellow-400',
+      hoverBg: 'hover:bg-yellow-100 dark:hover:bg-yellow-950/50',
     },
   },
   {
@@ -37,11 +37,11 @@ const priorities: PriorityOption[] = [
     label: 'Medium',
     icon: Minus,
     colorClasses: {
-      bg: 'bg-yellow-50 dark:bg-yellow-950/30',
-      border: 'border-yellow-200 dark:border-yellow-800',
-      text: 'text-yellow-600 dark:text-yellow-400',
-      icon: 'text-yellow-600 dark:text-yellow-400',
-      hoverBg: 'hover:bg-yellow-100 dark:hover:bg-yellow-950/50',
+      bg: 'bg-orange-50 dark:bg-orange-950/30',
+      border: 'border-orange-200 dark:border-orange-800',
+      text: 'text-orange-600 dark:text-orange-400',
+      icon: 'text-orange-600 dark:text-orange-400',
+      hoverBg: 'hover:bg-orange-100 dark:hover:bg-orange-950/50',
     },
   },
   {

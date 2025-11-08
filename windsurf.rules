@@ -1,4 +1,4 @@
-# TaskDesk Project - Cursor Rules
+# TaskDesk Project - Windsurf Rules
 
 ## Project Overview
 TaskDesk is a modern task management application built with Next.js 16, React 19, TypeScript, and Tailwind CSS 4.
@@ -639,4 +639,3 @@ This file should be updated when:
 
 **Last Updated**: December 2024
 **Maintained by**: TaskDesk Development Team
-

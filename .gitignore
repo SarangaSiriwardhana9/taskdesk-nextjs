@@ -39,3 +39,9 @@ yarn-error.log*
 # typescript
 *.tsbuildinfo
 next-env.d.ts
+
+# development tools
+windsurf.rules
+.windsurfrules
+repomix-output.md
+repomix.config.json

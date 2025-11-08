@@ -18,6 +18,8 @@ export const TOAST_MESSAGES = {
     UPDATE_ERROR: 'Failed to update task',
     DELETE_SUCCESS: 'Task deleted successfully!',
     DELETE_ERROR: 'Failed to delete task',
+    COMPLETE_SUCCESS: 'Task marked as completed!',
+    INCOMPLETE_SUCCESS: 'Task marked as incomplete!',
   },
 } as const;
 

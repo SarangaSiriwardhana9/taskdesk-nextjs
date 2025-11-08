@@ -2,7 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
-import type { CreateTaskData, UpdateTaskData } from '@/types/task.types';
+import type { CreateTaskData, UpdateTaskData, Task } from '@/types/task.types';
 
 export async function createTask(data: CreateTaskData) {
   try {
@@ -93,10 +93,37 @@ export async function deleteTask(taskId: string) {
       return { error: error.message };
     }
 
-    revalidatePath('/tasks');
     return { success: true };
   } catch (error) {
     return { error: 'An unexpected error occurred' };
+  }
+}
+
+export async function getTasks() {
+  try {
+    const supabase = await createClient();
+
+    const {
+      data: { user },
+    } = await supabase.auth.getUser();
+
+    if (!user) {
+      return { error: 'Unauthorized', tasks: [] };
+    }
+
+    const { data, error } = await supabase
+      .from('tasks')
+      .select('*')
+      .eq('user_id', user.id)
+      .order('created_at', { ascending: false });
+
+    if (error) {
+      return { error: error.message, tasks: [] };
+    }
+
+    return { tasks: (data as Task[]) || [], error: null };
+  } catch (error) {
+    return { error: 'An unexpected error occurred', tasks: [] };
   }
 }
 
