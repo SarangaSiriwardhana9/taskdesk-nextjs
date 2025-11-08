@@ -40,17 +40,6 @@ export function AuthContainer({ initialMode = 'signin' }: AuthContainerProps) {
         )}
       </div>
       
-      <div className="mt-6 text-center">
-        <p className="text-sm text-muted-foreground">
-          Want to explore first?{' '}
-          <Link 
-            href={ROUTES.HOME}
-            className="text-primary hover:text-primary/80 underline-offset-4 hover:underline transition-colors"
-          >
-            Visit our homepage
-          </Link>
-        </p>
-      </div>
     </div>
   );
 }

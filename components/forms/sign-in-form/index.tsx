@@ -5,6 +5,7 @@ import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
 import { useRouter } from 'next/navigation';
+import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
@@ -89,11 +90,11 @@ export function SignInForm({ onSignUpClick }: SignInFormProps) {
         </div>
 
         <div className="space-y-3 mb-6">
-          <Button type="button" variant="social" size="auth" className="w-full" disabled={isLoading}>
+          <Button type="button" variant="social" size="social" className="w-full" disabled={isLoading}>
             <Chrome className="h-5 w-5" />
             <span>Continue with Google</span>
           </Button>
-          <Button type="button" variant="social" size="auth" className="w-full" disabled={isLoading}>
+          <Button type="button" variant="social" size="social" className="w-full" disabled={isLoading}>
             <Github className="h-5 w-5" />
             <span>Continue with GitHub</span>
           </Button>
@@ -171,7 +172,7 @@ export function SignInForm({ onSignUpClick }: SignInFormProps) {
           </Button>
         </form>
 
-        <div className="mt-6 text-center">
+        <div className="mt-6 text-center space-y-3">
           <p className="text-sm text-muted-foreground">
             Don't have an account?{' '}
             <button
@@ -181,6 +182,16 @@ export function SignInForm({ onSignUpClick }: SignInFormProps) {
             >
               Sign Up
             </button>
+          </p>
+          
+          <p className="text-sm text-muted-foreground">
+            Want to explore first?{' '}
+            <Link 
+              href={ROUTES.HOME}
+              className="text-primary hover:text-primary/80 underline-offset-4 hover:underline transition-colors"
+            >
+              Visit our homepage
+            </Link>
           </p>
         </div>
       </div>
