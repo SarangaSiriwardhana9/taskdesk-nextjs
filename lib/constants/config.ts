@@ -6,5 +6,9 @@ export const CONFIG = {
     HEADER: 3,
     TASKS: 6,
   },
+  PAGINATION: {
+    TASKS_PER_PAGE: 9,
+    MAX_VISIBLE_PAGES: 5,
+  },
 } as const;
 

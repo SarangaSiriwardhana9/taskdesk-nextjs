@@ -99,7 +99,7 @@ export async function deleteTask(taskId: string) {
   }
 }
 
-export async function getTasks() {
+export async function getTasks(page: number = 1, limit: number = 9) {
   try {
     const supabase = await createClient();
 
@@ -108,22 +108,30 @@ export async function getTasks() {
     } = await supabase.auth.getUser();
 
     if (!user) {
-      return { error: 'Unauthorized', tasks: [] };
+      return { error: 'Unauthorized', tasks: [], totalCount: 0 };
     }
 
-    const { data, error } = await supabase
+    const from = (page - 1) * limit;
+    const to = from + limit - 1;
+
+    const { data, error, count } = await supabase
       .from('tasks')
-      .select('*')
+      .select('*', { count: 'exact' })
       .eq('user_id', user.id)
-      .order('created_at', { ascending: false });
+      .order('created_at', { ascending: false })
+      .range(from, to);
 
     if (error) {
-      return { error: error.message, tasks: [] };
+      return { error: error.message, tasks: [], totalCount: 0 };
     }
 
-    return { tasks: (data as Task[]) || [], error: null };
+    return { 
+      tasks: (data as Task[]) || [], 
+      totalCount: count || 0,
+      error: null 
+    };
   } catch (error) {
-    return { error: 'An unexpected error occurred', tasks: [] };
+    return { error: 'An unexpected error occurred', tasks: [], totalCount: 0 };
   }
 }
 

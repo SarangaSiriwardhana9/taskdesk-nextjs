@@ -32,8 +32,9 @@ export function ProfileForm({ initialData, onSubmit }: ProfileFormProps) {
         setIsLoading(true);
         try {
           await new Promise(resolve => setTimeout(resolve, 500));
+          const { email, ...updateData } = data;
           toast.success(TOAST_MESSAGES.PROFILE.UPDATE_SUCCESS);
-          onSubmit?.(data);
+          onSubmit?.(updateData as ProfileFormData);
         } catch (error) {
           toast.error(TOAST_MESSAGES.PROFILE.UPDATE_ERROR);
         } finally {
@@ -78,9 +79,14 @@ export function ProfileForm({ initialData, onSubmit }: ProfileFormProps) {
               type="email"
               placeholder="you@example.com"
               {...register('email')}
-              disabled={isLoading}
+              disabled={true}
               aria-invalid={errors.email ? 'true' : 'false'}
+              className="bg-muted cursor-not-allowed"
             />
+            <p className="text-xs text-muted-foreground flex items-center gap-1">
+              <Mail className="h-3 w-3" />
+              Email cannot be changed as it's linked to your account authentication
+            </p>
             {errors.email && (
               <p className="text-sm text-destructive">{errors.email.message}</p>
             )}

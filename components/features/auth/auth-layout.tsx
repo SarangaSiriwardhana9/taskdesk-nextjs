@@ -34,7 +34,7 @@ export function AuthLayout({ children, imageUrl }: AuthLayoutProps) {
   ];
 
   return (
-    <div className="relative min-h-screen bg-background overflow-hidden pt-16">
+    <div className="relative min-h-screen bg-background overflow-hidden py-2 ">
       <div className="absolute inset-0 overflow-hidden pointer-events-none">
         <div className="absolute -top-40 -right-40 w-80 h-80 bg-primary/10 rounded-full blur-3xl animate-pulse" />
         <div className="absolute -bottom-40 -left-40 w-80 h-80 bg-accent/10 rounded-full blur-3xl animate-pulse delay-1000" />

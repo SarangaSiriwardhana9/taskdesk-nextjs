@@ -111,8 +111,8 @@ export default function ProfilePage() {
                           <p className="text-sm text-muted-foreground">Last updated recently</p>
                         </div>
                       </div>
-                      <Button variant="outline" size="sm" className="w-full sm:w-auto">
-                        Change Password
+                      <Button variant="outline" size="sm" disabled className="w-full sm:w-auto">
+                        Coming Soon
                       </Button>
                     </div>
                     <div className="flex flex-col sm:flex-row sm:items-center sm:justify-between gap-4 p-4 rounded-lg border border-border bg-card/50">

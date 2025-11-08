@@ -41,7 +41,7 @@ export default function AuthPage() {
   }
 
   return (
-    <div className="min-h-screen bg-background pt-16">
+    <div className="min-h-screen bg-background  ">
       <AuthLayout imageUrl="/auth.jpg">
         <AuthContainer initialMode="signin" />
       </AuthLayout>

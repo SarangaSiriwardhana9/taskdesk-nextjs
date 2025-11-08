@@ -83,11 +83,11 @@ export function SignInForm({ onSignUpClick }: SignInFormProps) {
         </div>
 
         <div className="space-y-3 mb-6">
-          <Button type="button" variant="social" size="auth" disabled={isLoading}>
+          <Button type="button" variant="social" size="auth" className="w-full" disabled={isLoading}>
             <Chrome className="h-5 w-5" />
             <span>Continue with Google</span>
           </Button>
-          <Button type="button" variant="social" size="auth" disabled={isLoading}>
+          <Button type="button" variant="social" size="auth" className="w-full" disabled={isLoading}>
             <Github className="h-5 w-5" />
             <span>Continue with GitHub</span>
           </Button>
@@ -152,7 +152,7 @@ export function SignInForm({ onSignUpClick }: SignInFormProps) {
           <Button
             type="submit"
             variant="gradient"
-            size="auth"
+             
             className="w-full"
             disabled={isLoading}
           >
