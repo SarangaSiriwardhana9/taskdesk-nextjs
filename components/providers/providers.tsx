@@ -1,9 +1,10 @@
 'use client';
 
-import { ThemeProvider } from './theme-provider';
+import { ThemeProvider } from 'next-themes';
+import { Toaster } from 'sonner';
 import { AuthProvider } from './auth-provider';
 
-interface RootProviderProps {
+interface ProvidersProps {
   children: React.ReactNode;
   initialUser: {
     id: string;
@@ -13,13 +14,13 @@ interface RootProviderProps {
   } | null;
 }
 
-export function RootProvider({ children, initialUser }: RootProviderProps) {
+export function Providers({ children, initialUser }: ProvidersProps) {
   return (
-    <ThemeProvider>
+    <ThemeProvider attribute="class" defaultTheme="system" enableSystem>
       <AuthProvider initialUser={initialUser}>
         {children}
+        <Toaster />
       </AuthProvider>
     </ThemeProvider>
   );
 }
-

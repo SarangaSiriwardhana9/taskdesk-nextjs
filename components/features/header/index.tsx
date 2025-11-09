@@ -3,12 +3,11 @@
 import React, { useState, useEffect, useMemo } from 'react';
 import Link from 'next/link';
 import { Button } from '@/components/ui/button';
-import { ThemeToggle } from '@/components/features/theme/theme-toggle';
+import { ThemeToggle } from '@/components/ui/theme-toggle';
 import { UserMenu } from './user-menu';
 import { useAuthUser, useAuthLoading, useIsAuthenticated } from '@/lib/stores/auth-store';
 import { LogIn, CheckSquare } from 'lucide-react';
-import { ROUTES } from '@/lib/constants/routes';
-import { CONFIG } from '@/lib/constants/config';
+import { ROUTES, CONFIG } from '@/lib/constants';
 
 export const Header = React.memo(function Header() {
   const [isScrolled, setIsScrolled] = useState(false);
@@ -38,7 +37,7 @@ export const Header = React.memo(function Header() {
       <Link href={ROUTES.AUTH}>
         <Button variant="outline" size="default" className="gap-2">
           <LogIn className="h-4 w-4" />
-          <span>Sign In</span>
+          Sign In
         </Button>
       </Link>
     );
@@ -55,16 +54,10 @@ export const Header = React.memo(function Header() {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex items-center justify-between h-16">
           <Link href="/" className="flex items-center gap-3 group">
-            <div
-              className={`relative w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center transition-all duration-300 ${
-                isScrolled ? 'shadow-lg shadow-primary/20' : 'shadow-md'
-              } group-hover:scale-110`}
-            >
+            <div className="relative w-10 h-10 rounded-xl bg-gradient-to-br from-primary to-accent flex items-center justify-center transition-all duration-300 shadow-md group-hover:scale-110">
               <CheckSquare className="w-6 h-6 text-primary-foreground" />
             </div>
-            <span className={`text-xl font-bold transition-all duration-300 ${
-                isScrolled ? 'opacity-100' : 'opacity-90'
-              }`}>
+            <span className="text-xl font-bold">
               <span className="text-foreground">Task</span>
               <span className="bg-gradient-to-r from-primary to-accent bg-clip-text text-transparent">Desk</span>
             </span>

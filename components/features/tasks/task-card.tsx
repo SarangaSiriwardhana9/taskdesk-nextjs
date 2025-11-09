@@ -42,7 +42,7 @@ const priorityConfig: Record<TaskPriority, { variant: 'low' | 'medium' | 'high';
 export function TaskCard({ task, onToggleComplete, onDelete, onEdit }: TaskCardProps) {
   const priority = priorityConfig[task.priority];
   const dueDate = task.due_date ? new Date(task.due_date) : null;
-  
+
   const getDueDateLabel = () => {
     if (!dueDate) return null;
     if (isToday(dueDate)) return 'Today';
@@ -62,8 +62,8 @@ export function TaskCard({ task, onToggleComplete, onDelete, onEdit }: TaskCardP
     <div
       className={cn(
         'relative rounded-xl border-2 bg-card p-6',
-        task.completed 
-          ? 'border-green-500 dark:border-green-400' 
+        task.completed
+          ? 'border-green-500 dark:border-green-400'
           : priority.border
       )}
     >
@@ -73,8 +73,8 @@ export function TaskCard({ task, onToggleComplete, onDelete, onEdit }: TaskCardP
           className={cn(
             'mt-1 flex-shrink-0 rounded-full border-2 p-0.5 transition-all duration-75',
             'outline-none focus-visible:ring-2 focus-visible:ring-offset-1 active:scale-95',
-            task.completed 
-              ? 'border-green-500 dark:border-green-400 bg-green-500 dark:bg-green-400 focus-visible:ring-green-500' 
+            task.completed
+              ? 'border-green-500 dark:border-green-400 bg-green-500 dark:bg-green-400 focus-visible:ring-green-500'
               : 'border-muted-foreground/30 hover:border-muted-foreground focus-visible:ring-primary'
           )}
           aria-label={task.completed ? 'Mark as incomplete' : 'Mark as complete'}
@@ -92,8 +92,8 @@ export function TaskCard({ task, onToggleComplete, onDelete, onEdit }: TaskCardP
               <h3
                 className={cn(
                   'text-lg font-semibold leading-tight',
-                  task.completed 
-                    ? 'text-muted-foreground' 
+                  task.completed
+                    ? 'text-muted-foreground'
                     : 'text-foreground'
                 )}
               >
@@ -114,7 +114,6 @@ export function TaskCard({ task, onToggleComplete, onDelete, onEdit }: TaskCardP
                   className="h-8 w-8 flex-shrink-0"
                 >
                   <MoreVertical className="h-4 w-4" />
-                  <span className="sr-only">Task options</span>
                 </Button>
               </DropdownMenuTrigger>
               <DropdownMenuContent align="end">
@@ -122,10 +121,9 @@ export function TaskCard({ task, onToggleComplete, onDelete, onEdit }: TaskCardP
                   <Edit2 className="mr-2 h-4 w-4" />
                   Edit
                 </DropdownMenuItem>
-                <DropdownMenuItem 
+                <DropdownMenuItem
                   variant="destructive"
                   onClick={() => onDelete(task.id)}
-                  className="hover:!text-white [&>svg]:hover:!text-white"
                 >
                   <Trash2 className="mr-2 h-4 w-4" />
                   Delete
@@ -156,8 +154,6 @@ export function TaskCard({ task, onToggleComplete, onDelete, onEdit }: TaskCardP
           </div>
         </div>
       </div>
-
     </div>
   );
 }
-

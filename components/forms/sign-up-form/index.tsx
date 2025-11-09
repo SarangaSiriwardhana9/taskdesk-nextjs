@@ -13,13 +13,14 @@ import { Spinner } from '@/components/ui/spinner';
 import { AuthFormField } from '@/components/features/auth/auth-form-field';
 import { signUpSchema, type SignUpFormData } from './form-schema';
 import { Mail, Lock, User, Eye, EyeOff, ArrowRight, Github, Chrome, Sparkles } from 'lucide-react';
-import { signUp, handleOAuthSignIn } from '@/lib/auth';
+import { signUp } from '@/lib/auth/actions'
 import { useAuthStore } from '@/lib/stores/auth-store';
 import { createClient } from '@/lib/supabase/client';
 import { extractAvatarUrl, extractUserName } from '@/lib/utils/user-utils';
-import { ROUTES } from '@/lib/constants/routes';
-import { TOAST_MESSAGES } from '@/lib/constants/toast-messages';
+import { ROUTES } from '@/lib/constants';
+import { TOAST_MESSAGES } from '@/lib/constants';
 import router from 'next/router';
+import { handleOAuthSignIn } from '@/lib/auth/oauth-actions';
 
 interface SignUpFormProps {
   onSignInClick?: () => void;

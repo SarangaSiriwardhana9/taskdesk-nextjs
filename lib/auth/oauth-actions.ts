@@ -9,13 +9,14 @@ export interface OAuthOptions {
   redirectTo?: string;
   scopes?: string;
 }
+
 export async function signInWithOAuth(
   provider: OAuthProvider,
   options?: OAuthOptions
 ): Promise<{ success: boolean; error?: string }> {
   try {
     const supabase = createClient();
-    
+
     const { error } = await supabase.auth.signInWithOAuth({
       provider,
       options: {
@@ -29,23 +30,12 @@ export async function signInWithOAuth(
     }
 
     return { success: true };
-  } catch (error) {
-    return { 
-      success: false, 
-      error: `Failed to sign in with ${provider.charAt(0).toUpperCase() + provider.slice(1)}` 
+  } catch {
+    return {
+      success: false,
+      error: `Failed to sign in with ${provider.charAt(0).toUpperCase() + provider.slice(1)}`
     };
   }
-}
-
-export async function signInWithGoogle(options?: OAuthOptions) {
-  return signInWithOAuth('google', {
-    ...options,
-    scopes: 'openid email profile',
-  });
-}
-
-export async function signInWithGitHub(options?: OAuthOptions) {
-  return signInWithOAuth('github', options);
 }
 
 export async function handleOAuthSignIn(
@@ -54,14 +44,14 @@ export async function handleOAuthSignIn(
   options?: OAuthOptions
 ) {
   setLoading(true);
-  
+
   try {
     const result = await signInWithOAuth(provider, options);
-    
+
     if (!result.success && result.error) {
       toast.error(result.error);
     }
-    
+
     return result;
   } finally {
     setLoading(false);

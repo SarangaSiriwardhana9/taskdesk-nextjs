@@ -1,4 +1,3 @@
- 
 'use client';
 
 import { useTheme } from 'next-themes';
@@ -66,7 +65,7 @@ export function ThemeToggle() {
       variant="outline"
       size="icon"
       onClick={handleThemeChange}
-      className="rounded-full hover:scale-110 transition-all duration-300 hover:border-primary/50 hover:shadow-lg hover:shadow-primary/20"
+      className="rounded-full hover:scale-110 transition-all duration-300"
     >
       <Sun className="h-[1.2rem] w-[1.2rem] rotate-0 scale-100 transition-all duration-500 dark:-rotate-180 dark:scale-0" />
       <Moon className="absolute h-[1.2rem] w-[1.2rem] rotate-180 scale-0 transition-all duration-500 dark:rotate-0 dark:scale-100" />

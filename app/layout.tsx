@@ -1,8 +1,8 @@
-import type { Metadata } from "next";
-import { Geist, Geist_Mono } from "next/font/google";
-import "./globals.css";
-import { RootProvider } from "@/components/providers/root-provider";
-import { getServerUser } from "@/lib/auth/server-utils";
+import type { Metadata } from 'next';
+import { Geist, Geist_Mono } from 'next/font/google';
+import './globals.css';
+import { Providers } from '@/components/providers/providers';
+import { getServerUser } from '@/lib/auth/server-utils';
 
 const geistSans = Geist({
   variable: '--font-geist-sans',
@@ -15,8 +15,8 @@ const geistMono = Geist_Mono({
 });
 
 export const metadata: Metadata = {
-  title: 'Task Manager - Organize Your Life',
-  description: 'A modern task management application built with Next.js and Supabase',
+  title: 'TaskDesk - Organize Your Life',
+  description: 'Modern task management application built with Next.js and Supabase',
 };
 
 export default async function RootLayout({
@@ -28,12 +28,10 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
-      <body
-        className={`${geistSans.variable} ${geistMono.variable} antialiased`}
-      >
-        <RootProvider initialUser={initialUser}>
+      <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
+        <Providers initialUser={initialUser}>
           {children}
-        </RootProvider>
+        </Providers>
       </body>
     </html>
   );

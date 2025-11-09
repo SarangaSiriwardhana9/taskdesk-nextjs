@@ -20,16 +20,16 @@ interface DatePickerProps {
 }
 
 const quickOptions = [
-  { 
-    label: 'Today', 
+  {
+    label: 'Today',
     getDate: () => {
       const today = new Date();
       today.setHours(23, 59, 59, 999);
       return today;
     }
   },
-  { 
-    label: 'Tomorrow', 
+  {
+    label: 'Tomorrow',
     getDate: () => {
       const tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate() + 1);
@@ -37,8 +37,8 @@ const quickOptions = [
       return tomorrow;
     }
   },
-  { 
-    label: 'Next Week', 
+  {
+    label: 'Next Week',
     getDate: () => {
       const nextWeek = new Date();
       nextWeek.setDate(nextWeek.getDate() + 7);
@@ -50,7 +50,7 @@ const quickOptions = [
 
 export function DatePicker({ value, onChange, error }: DatePickerProps) {
   const [open, setOpen] = useState(false);
-  
+
   const date = value ? new Date(value) : undefined;
 
   const handleSelect = (selectedDate: Date | undefined) => {
@@ -64,8 +64,7 @@ export function DatePicker({ value, onChange, error }: DatePickerProps) {
   };
 
   const handleQuickOption = (getDate: () => Date) => {
-    const date = getDate();
-    handleSelect(date);
+    handleSelect(getDate());
   };
 
   const handleClear = (e: React.MouseEvent) => {
@@ -78,7 +77,7 @@ export function DatePicker({ value, onChange, error }: DatePickerProps) {
       <Label>
         Due Date <span className="text-muted-foreground font-normal">(Optional)</span>
       </Label>
-      
+
       <div className="space-y-3">
         <div className="space-y-2">
           <Label className="text-xs font-medium text-muted-foreground uppercase tracking-wider flex items-center gap-2">
@@ -93,7 +92,7 @@ export function DatePicker({ value, onChange, error }: DatePickerProps) {
                 variant="outline"
                 size="sm"
                 onClick={() => handleQuickOption(option.getDate)}
-                className="h-auto flex-col gap-1 py-2.5 hover:bg-transparent hover:border-primary focus-visible:border-primary text-foreground hover:!text-foreground active:!text-foreground"
+                className="h-auto flex-col gap-1 py-2.5"
               >
                 <CalendarIcon className="h-4 w-4" />
                 <span className="text-xs">{option.label}</span>
@@ -115,8 +114,7 @@ export function DatePicker({ value, onChange, error }: DatePickerProps) {
                   variant="outline"
                   className={cn(
                     'h-11 w-full justify-start text-left font-normal bg-background/50 pr-10',
-                    'hover:bg-transparent hover:border-primary focus-visible:border-primary',
-                    !date ? 'text-muted-foreground hover:!text-foreground active:!text-foreground' : 'text-foreground hover:!text-foreground active:!text-foreground',
+                    !date ? 'text-muted-foreground' : 'text-foreground',
                     error && 'border-destructive ring-destructive/20'
                   )}
                 >
@@ -134,7 +132,7 @@ export function DatePicker({ value, onChange, error }: DatePickerProps) {
                         handleClear(e as unknown as React.MouseEvent);
                       }
                     }}
-                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1 hover:bg-muted transition-colors cursor-pointer focus:outline-none focus:ring-2 focus:ring-ring focus:ring-offset-2"
+                    className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1 hover:bg-muted transition-colors cursor-pointer"
                     aria-label="Clear date"
                   >
                     <X className="h-3 w-3 text-muted-foreground" />

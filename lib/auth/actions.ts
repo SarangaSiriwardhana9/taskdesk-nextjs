@@ -3,8 +3,7 @@
 import { revalidatePath } from 'next/cache';
 import { redirect } from 'next/navigation';
 import { createClient } from '@/lib/supabase/server';
-import { ROUTES } from '@/lib/constants/routes';
-import { TOAST_MESSAGES } from '@/lib/constants/toast-messages';
+import { ROUTES, TOAST_MESSAGES } from '@/lib/constants';
 import type { SignInData, SignUpData, AuthResponse } from '@/types/auth.types';
 
 export async function signIn(data: SignInData): Promise<AuthResponse> {
@@ -22,7 +21,7 @@ export async function signIn(data: SignInData): Promise<AuthResponse> {
 
     revalidatePath('/', 'layout');
     return { success: true, redirect: ROUTES.HOME };
-  } catch (error) {
+  } catch {
     return { error: 'An unexpected error occurred' };
   }
 }
@@ -54,7 +53,7 @@ export async function signUp(data: SignUpData): Promise<AuthResponse> {
 
     revalidatePath('/', 'layout');
     return { success: true, redirect: ROUTES.HOME };
-  } catch (error) {
+  } catch {
     return { error: 'An unexpected error occurred' };
   }
 }
@@ -74,9 +73,7 @@ export async function signOut(): Promise<void> {
 export async function getUser() {
   try {
     const supabase = await createClient();
-    const {
-      data: { user },
-    } = await supabase.auth.getUser();
+    const { data: { user } } = await supabase.auth.getUser();
     return user;
   } catch {
     return null;

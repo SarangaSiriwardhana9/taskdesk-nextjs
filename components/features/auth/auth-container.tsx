@@ -1,10 +1,8 @@
- 'use client';
+'use client';
 
 import React, { useState } from 'react';
-import Link from 'next/link';
 import { SignInForm } from '@/components/forms/sign-in-form';
 import { SignUpForm } from '@/components/forms/sign-up-form';
-import { ROUTES } from '@/lib/constants/routes';
 
 type AuthMode = 'signin' | 'signup';
 
@@ -39,7 +37,6 @@ export function AuthContainer({ initialMode = 'signin' }: AuthContainerProps) {
           <SignUpForm onSignInClick={() => handleModeChange('signin')} />
         )}
       </div>
-      
     </div>
   );
 }

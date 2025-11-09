@@ -25,12 +25,9 @@ export async function middleware(request: NextRequest) {
     }
   );
 
-  const {
-    data: { user },
-  } = await supabase.auth.getUser();
+  const { data: { user } } = await supabase.auth.getUser();
 
   const { pathname } = request.nextUrl;
-
   const publicRoutes = ['/', '/auth'];
 
   if (!user && !publicRoutes.includes(pathname)) {

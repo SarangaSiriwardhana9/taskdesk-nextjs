@@ -6,7 +6,7 @@ import { AuthLayout } from '@/components/features/auth/auth-layout';
 import { AuthContainer } from '@/components/features/auth/auth-container';
 import { useIsAuthenticated, useAuthLoading } from '@/lib/stores/auth-store';
 import { Spinner } from '@/components/ui/spinner';
-import { ROUTES } from '@/lib/constants/routes';
+import { ROUTES } from '@/lib/constants';
 
 export default function AuthPage() {
   const router = useRouter();

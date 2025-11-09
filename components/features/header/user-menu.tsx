@@ -1,13 +1,19 @@
 'use client';
 
-import React, { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { useRouter } from 'next/navigation';
 import { User, LogOut, CheckSquare } from 'lucide-react';
 import { Button } from '@/components/ui/button';
-import { DropdownMenu, DropdownMenuContent, DropdownMenuItem, DropdownMenuSeparator, DropdownMenuTrigger } from '@/components/ui/dropdown-menu';
+import {
+  DropdownMenu,
+  DropdownMenuContent,
+  DropdownMenuItem,
+  DropdownMenuSeparator,
+  DropdownMenuTrigger,
+} from '@/components/ui/dropdown-menu';
 import { useAuthStore } from '@/lib/stores/auth-store';
-import { signOut } from '@/lib/auth';
-import { ROUTES } from '@/lib/constants/routes';
+import { signOut } from '@/lib/auth/actions';
+import { ROUTES } from '@/lib/constants';
 
 interface UserMenuProps {
   user: {
@@ -22,26 +28,13 @@ export function UserMenu({ user }: UserMenuProps) {
   const [avatarError, setAvatarError] = useState(false);
   const { clearAuth } = useAuthStore();
 
-  useEffect(() => {
-    setAvatarError(false);
-  }, [user.avatar]);
-
   const handleLogout = async () => {
     clearAuth();
     await signOut();
   };
 
-  const handleProfile = () => {
-    router.push(ROUTES.PROFILE);
-  };
-
-  const handleTasks = () => {
-    router.push(ROUTES.TASKS);
-  };
-
   const getInitials = (name: string) => {
     if (!name || name.trim() === '') return 'U';
-    
     return name
       .trim()
       .split(' ')
@@ -65,14 +58,13 @@ export function UserMenu({ user }: UserMenuProps) {
               alt={user.name}
               className="h-full w-full rounded-full object-cover"
               onError={() => setAvatarError(true)}
-              onLoad={() => setAvatarError(false)}
             />
           ) : (
             <span className="text-xs font-semibold">{getInitials(user.name)}</span>
           )}
         </Button>
       </DropdownMenuTrigger>
-      
+
       <DropdownMenuContent className="w-64" align="end" forceMount>
         <div className="flex items-center justify-start gap-2 p-2">
           <div className="flex flex-col space-y-1 leading-none">
@@ -84,24 +76,24 @@ export function UserMenu({ user }: UserMenuProps) {
             )}
           </div>
         </div>
-        
+
         <DropdownMenuSeparator />
-        
-        <DropdownMenuItem onClick={handleTasks}>
+
+        <DropdownMenuItem onClick={() => router.push(ROUTES.TASKS)}>
           <CheckSquare className="mr-2 h-4 w-4" />
-          <span>My Tasks</span>
+          My Tasks
         </DropdownMenuItem>
-        
-        <DropdownMenuItem onClick={handleProfile}>
+
+        <DropdownMenuItem onClick={() => router.push(ROUTES.PROFILE)}>
           <User className="mr-2 h-4 w-4" />
-          <span>Profile</span>
+          Profile
         </DropdownMenuItem>
-        
+
         <DropdownMenuSeparator />
-        
+
         <DropdownMenuItem onClick={handleLogout}>
           <LogOut className="mr-2 h-4 w-4" />
-          <span>Logout</span>
+          Logout
         </DropdownMenuItem>
       </DropdownMenuContent>
     </DropdownMenu>

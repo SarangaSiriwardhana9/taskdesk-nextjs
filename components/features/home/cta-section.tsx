@@ -2,7 +2,7 @@ import { Button } from '@/components/ui/button';
 import { Card, CardContent, CardTitle } from '@/components/ui/card';
 import { ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import { ROUTES } from '@/lib/constants/routes';
+import { ROUTES } from '@/lib/constants';
 
 export function CTASection() {
   return (

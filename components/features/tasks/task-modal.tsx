@@ -10,7 +10,7 @@ import { Input } from '@/components/ui/input';
 import { Textarea } from '@/components/ui/textarea';
 import { Spinner } from '@/components/ui/spinner';
 import { Separator } from '@/components/ui/separator';
-import { TaskFormField } from './task-form-field';
+import { Label } from '@/components/ui/label';
 import { PrioritySelector } from './priority-selector';
 import { DatePicker } from './date-picker';
 import { taskSchema, type TaskFormData } from '@/components/forms/task-form/form-schema';
@@ -83,8 +83,8 @@ export function TaskModal({
 
   const isCreate = mode === 'create';
   const title = isCreate ? 'Create New Task' : 'Edit Task';
-  const description = isCreate 
-    ? 'Add a new task to your list and stay organized.' 
+  const description = isCreate
+    ? 'Add a new task to your list and stay organized.'
     : 'Update your task details and keep everything current.';
   const submitText = isCreate ? 'Create Task' : 'Update Task';
   const Icon = isCreate ? Plus : Edit2;
@@ -94,7 +94,7 @@ export function TaskModal({
       <DialogContent className="sm:max-w-[900px] p-0 overflow-hidden">
         <div className="relative">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none" />
-          
+
           <div className="relative p-6 pb-0">
             <DialogHeader className="space-y-4">
               <div className="flex items-center gap-3">
@@ -118,11 +118,8 @@ export function TaskModal({
           <form onSubmit={handleSubmit(handleFormSubmit)} className="px-6 pb-6 space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="space-y-4">
-                <TaskFormField
-                  label="Task Title"
-                  error={errors.title?.message}
-                  required
-                >
+                <div className="space-y-2">
+                  <Label>Task Title</Label>
                   <Input
                     placeholder="Enter task title..."
                     {...register('title')}
@@ -131,13 +128,13 @@ export function TaskModal({
                       errors.title && 'border-destructive focus-visible:ring-destructive/20'
                     )}
                   />
-                </TaskFormField>
+                  {errors.title && (
+                    <p className="text-sm text-destructive">{errors.title.message}</p>
+                  )}
+                </div>
 
-                <TaskFormField
-                  label="Description"
-                  error={errors.description?.message}
-                  optional
-                >
+                <div className="space-y-2">
+                  <Label>Description</Label>
                   <Textarea
                     placeholder="Add task description (optional)..."
                     rows={6}
@@ -147,25 +144,24 @@ export function TaskModal({
                       errors.description && 'border-destructive focus-visible:ring-destructive/20'
                     )}
                   />
-                </TaskFormField>
+                  {errors.description && (
+                    <p className="text-sm text-destructive">{errors.description.message}</p>
+                  )}
+                </div>
               </div>
 
               <div className="space-y-4">
-                <div className="space-y-2">
-                  <PrioritySelector
-                    value={priority}
-                    onChange={(value) => setValue('priority', value)}
-                    error={errors.priority?.message}
-                  />
-                </div>
+                <PrioritySelector
+                  value={priority}
+                  onChange={(value) => setValue('priority', value)}
+                  error={errors.priority?.message}
+                />
 
-                <div className="space-y-2">
-                  <DatePicker
-                    value={dueDate}
-                    onChange={(value) => setValue('due_date', value)}
-                    error={errors.due_date?.message}
-                  />
-                </div>
+                <DatePicker
+                  value={dueDate}
+                  onChange={(value) => setValue('due_date', value)}
+                  error={errors.due_date?.message}
+                />
               </div>
             </div>
 

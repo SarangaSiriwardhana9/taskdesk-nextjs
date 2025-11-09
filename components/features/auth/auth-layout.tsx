@@ -1,10 +1,8 @@
  'use client';
 
-import React, { ReactNode } from 'react';
-import Link from 'next/link';
-import { CheckCircle2, Zap, Shield, TrendingUp, ArrowLeft, Home } from 'lucide-react';
-import { ROUTES } from '@/lib/constants/routes';
-import { Header } from '@/components/features/header/header';
+import  { ReactNode } from 'react';
+import { CheckCircle2, Zap, Shield, TrendingUp, } from 'lucide-react';
+import { Header } from '@/components/features/header';
 
 interface AuthLayoutProps {
   children: ReactNode;

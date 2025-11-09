@@ -6,7 +6,7 @@ import { Header } from '@/components/features/header';
 import { Footer } from '@/components/features/home/footer';
 import { useIsAuthenticated, useAuthLoading } from '@/lib/stores/auth-store';
 import { Spinner } from '@/components/ui/spinner';
-import { ROUTES } from '@/lib/constants/routes';
+import { ROUTES } from '@/lib/constants';
 
 export default function AppLayout({
   children,

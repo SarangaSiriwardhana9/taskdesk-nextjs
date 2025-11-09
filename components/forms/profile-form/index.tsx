@@ -10,7 +10,7 @@ import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/com
 import { Spinner } from '@/components/ui/spinner';
 import { profileSchema, type ProfileFormData } from './form-schema';
 import { User, Mail, Save } from 'lucide-react';
-import { TOAST_MESSAGES } from '@/lib/constants/toast-messages';
+import { TOAST_MESSAGES } from '@/lib/constants';
 
 interface ProfileFormProps {
   initialData: {

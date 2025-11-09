@@ -4,7 +4,7 @@ import { Button } from '@/components/ui/button';
 import { useIsAuthenticated } from '@/lib/stores/auth-store';
 import { Sparkles, Zap, Target, ArrowRight } from 'lucide-react';
 import Link from 'next/link';
-import { ROUTES } from '@/lib/constants/routes';
+import { ROUTES } from '@/lib/constants';
 
 export function HeroSection() {
   const isAuthenticated = useIsAuthenticated();

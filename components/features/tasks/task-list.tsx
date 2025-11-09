@@ -2,7 +2,7 @@
 
 import React, { useState, useMemo } from 'react';
 import { Filter, CheckCircle2, Clock, AlertCircle, ArrowUpDown } from 'lucide-react';
-import { CONFIG } from '@/lib/constants/config';
+import { CONFIG } from '@/lib/constants';
 import { Button } from '@/components/ui/button';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { TaskCard } from './task-card';
@@ -37,7 +37,7 @@ export function TaskList({ tasks, onToggleComplete, onDelete, onEdit }: TaskList
         const priorityOrder: Record<TaskPriority, number> = { High: 3, Medium: 2, Low: 1 };
         return priorityOrder[b.priority] - priorityOrder[a.priority];
       }
-      
+
       if (sortBy === 'due_date') {
         if (!a.due_date && !b.due_date) return 0;
         if (!a.due_date) return 1;
@@ -93,20 +93,17 @@ export function TaskList({ tasks, onToggleComplete, onDelete, onEdit }: TaskList
           </div>
         </div>
 
-        <div className="flex items-center gap-3">
-          <Select value={sortBy} onValueChange={(value) => setSortBy(value as SortType)}>
-            <SelectTrigger size="sm" className="w-[160px]">
-              <ArrowUpDown className="h-4 w-4" />
-              <SelectValue />
-            </SelectTrigger>
-            <SelectContent>
-              <SelectItem value="date">Sort by Created Date</SelectItem>
-              <SelectItem value="priority">Sort by Priority</SelectItem>
-              <SelectItem value="due_date">Sort by Due Date</SelectItem>
-            </SelectContent>
-          </Select>
-
-        </div>
+        <Select value={sortBy} onValueChange={(value) => setSortBy(value as SortType)}>
+          <SelectTrigger size="sm" className="w-[160px]">
+            <ArrowUpDown className="h-4 w-4" />
+            <SelectValue />
+          </SelectTrigger>
+          <SelectContent>
+            <SelectItem value="date">Created Date</SelectItem>
+            <SelectItem value="priority">Priority</SelectItem>
+            <SelectItem value="due_date">Due Date</SelectItem>
+          </SelectContent>
+        </Select>
       </div>
 
       {filteredAndSortedTasks.length === 0 ? (
@@ -114,8 +111,8 @@ export function TaskList({ tasks, onToggleComplete, onDelete, onEdit }: TaskList
           <AlertCircle className="h-12 w-12 text-muted-foreground mx-auto mb-4" />
           <h3 className="text-lg font-semibold mb-2">No tasks found</h3>
           <p className="text-muted-foreground">
-            {filter === 'pending' 
-              ? "You don't have any pending tasks. Great job!" 
+            {filter === 'pending'
+              ? "You don't have any pending tasks. Great job!"
               : filter === 'completed'
               ? "You haven't completed any tasks yet."
               : 'No tasks match your filters.'}
@@ -137,4 +134,3 @@ export function TaskList({ tasks, onToggleComplete, onDelete, onEdit }: TaskList
     </div>
   );
 }
-

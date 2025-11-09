@@ -17,7 +17,6 @@ interface AuthProviderProps {
 export function AuthProvider({ children, initialUser }: AuthProviderProps) {
   const { initialize, setUser } = useAuthStore();
   const initializedRef = useRef(false);
-  const subscriptionRef = useRef<{ unsubscribe: () => void } | null>(null);
 
   useEffect(() => {
     if (initializedRef.current) return;
@@ -26,32 +25,25 @@ export function AuthProvider({ children, initialUser }: AuthProviderProps) {
     initializedRef.current = true;
 
     const supabase = createClient();
-
-    const {
-      data: { subscription },
-    } = supabase.auth.onAuthStateChange(async (event, session) => {
-      if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
-        if (session?.user) {
-          setUser({
-            id: session.user.id,
-            name: session.user.user_metadata?.full_name || session.user.email || 'User',
-            email: session.user.email || '',
-            avatar: session.user.user_metadata?.avatar_url,
-          });
+    const { data: { subscription } } = supabase.auth.onAuthStateChange(
+      (event, session) => {
+        if (event === 'SIGNED_IN' || event === 'TOKEN_REFRESHED') {
+          if (session?.user) {
+            setUser({
+              id: session.user.id,
+              name: session.user.user_metadata?.full_name || session.user.email || 'User',
+              email: session.user.email || '',
+              avatar: session.user.user_metadata?.avatar_url,
+            });
+          }
+        } else if (event === 'SIGNED_OUT') {
+          setUser(null);
         }
-      } else if (event === 'SIGNED_OUT') {
-        setUser(null);
       }
-    });
+    );
 
-    subscriptionRef.current = subscription;
-
-    return () => {
-      subscriptionRef.current?.unsubscribe();
-      subscriptionRef.current = null;
-    };
+    return () => subscription?.unsubscribe();
   }, [initialUser, initialize, setUser]);
 
   return <>{children}</>;
 }
-
