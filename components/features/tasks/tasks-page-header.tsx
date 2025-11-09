@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import { CheckCircle2, Clock, ListTodo, Calendar, CalendarDays, AlertTriangle, LucideIcon } from 'lucide-react';
-import { isToday, startOfWeek, endOfWeek, isPast } from 'date-fns';
+import { CheckCircle2, Clock, ListTodo, Calendar, AlertTriangle, LucideIcon } from 'lucide-react';
+import { isToday, isPast } from 'date-fns';
 import { Card, CardContent } from '@/components/ui/card';
 import type { Task } from '@/types/task.types';
 
@@ -61,21 +61,13 @@ export function TasksPageHeader({ tasks }: TasksPageHeaderProps) {
       return isToday(dueDate);
     }).length;
     
-    const weekStart = startOfWeek(new Date(), { weekStartsOn: 1 });
-    const weekEnd = endOfWeek(new Date(), { weekStartsOn: 1 });
-    const thisWeekTasks = tasks.filter((t) => {
-      if (!t.due_date) return false;
-      const dueDate = new Date(t.due_date);
-      return dueDate >= weekStart && dueDate <= weekEnd;
-    }).length;
-    
     const overdueTasks = tasks.filter((t) => {
       if (!t.due_date || t.completed) return false;
       const dueDate = new Date(t.due_date);
       return isPast(dueDate) && !isToday(dueDate);
     }).length;
     
-    return { total, completed, pending, completionRate, todayTasks, thisWeekTasks, overdueTasks };
+    return { total, completed, pending, completionRate, todayTasks, overdueTasks };
   }, [tasks]);
 
   const statCards: StatCardProps[] = [

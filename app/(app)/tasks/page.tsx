@@ -9,8 +9,7 @@ import { EmptyTasks } from '@/components/features/tasks/empty-tasks';
 import { TaskModal } from '@/components/features/tasks/task-modal';
 import { TaskPagination } from '@/components/features/tasks/task-pagination';
 import { createTask, updateTask, deleteTask, getTasks } from '@/lib/tasks/actions';
-import { TOAST_MESSAGES } from '@/lib/constants';
-import { CONFIG } from '@/lib/constants';
+import { TOAST_MESSAGES, CONFIG } from '@/lib/constants';
 import { Skeleton } from '@/components/ui/skeleton';
 import type { TaskFormData } from '@/components/forms/task-form/form-schema';
 import type { Task } from '@/types/task.types';
@@ -189,7 +188,7 @@ export default function TasksPage() {
   }
 
   return (
-    <main className="min-h-screen bg-background pt-20 sm:pt-24">
+    <main className="min-h-screen bg-background pt-16 sm:pt-12">
       <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-12">
         <div className="space-y-8 sm:space-y-12">
           <TasksPageHeader tasks={tasks} />

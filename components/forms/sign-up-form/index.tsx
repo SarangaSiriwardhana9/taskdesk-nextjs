@@ -16,8 +16,7 @@ import { signUp } from '@/lib/auth/actions'
 import { useAuthStore } from '@/lib/stores/auth-store';
 import { createClient } from '@/lib/supabase/client';
 import { extractAvatarUrl, extractUserName } from '@/lib/utils/user-utils';
-import { ROUTES } from '@/lib/constants';
-import { TOAST_MESSAGES } from '@/lib/constants';
+import { ROUTES, TOAST_MESSAGES } from '@/lib/constants';
 import { useRouter } from 'next/navigation';
 import { handleOAuthSignIn } from '@/lib/auth/oauth-actions';
 

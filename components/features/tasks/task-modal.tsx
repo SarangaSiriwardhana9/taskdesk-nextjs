@@ -63,7 +63,7 @@ export function TaskModal({
           title: task.title,
           description: task.description || '',
           priority: task.priority,
-          due_date: task.due_date || '',
+          due_date: task.due_date ? task.due_date.split('T')[0] : '',
         });
       } else {
         reset({
@@ -196,7 +196,7 @@ export function TaskModal({
                     onOpenChange(false);
                   }}
                   disabled={isLoading}
-                  className="gap-2 min-w-[140px]"
+                  className="gap-2 "
                 >
                   <CheckCircle2 className="h-4 w-4" />
                   <span>{task.completed ? 'Mark Incomplete' : 'Mark Complete'}</span>
@@ -207,7 +207,7 @@ export function TaskModal({
                 <Button
                   type="submit"
                   disabled={isLoading}
-                  className="gap-2 min-w-[120px]"
+                  className="gap-2 min-w-[140px]"
                 >
                   {isLoading ? (
                     <>

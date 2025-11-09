@@ -108,7 +108,7 @@ export function DatePicker({ value, onChange, error, readOnly }: DatePickerProps
             <CalendarIcon className="h-3 w-3" />
             Custom Date
           </Label>
-          <Popover open={open} onOpenChange={setOpen}>
+          <Popover open={readOnly ? false : open} onOpenChange={readOnly ? undefined : setOpen}>
             <PopoverTrigger asChild>
               <div className="relative">
                 <Button
@@ -125,7 +125,7 @@ export function DatePicker({ value, onChange, error, readOnly }: DatePickerProps
                   <CalendarIcon className="mr-3 h-4 w-4 shrink-0" />
                   {date ? format(date, 'PPP') : <span>Pick a date</span>}
                 </Button>
-                {date && (
+                {date && !readOnly && (
                   <div
                     role="button"
                     tabIndex={0}
@@ -137,9 +137,8 @@ export function DatePicker({ value, onChange, error, readOnly }: DatePickerProps
                       }
                     }}
                     className="absolute right-2 top-1/2 -translate-y-1/2 rounded-full p-1 hover:bg-muted transition-colors cursor-pointer"
-                    aria-label="Clear date"
                   >
-                    <X className="h-3 w-3 text-muted-foreground" />
+                    <X className="h-4 w-4 text-muted-foreground hover:text-foreground" />
                   </div>
                 )}
               </div>

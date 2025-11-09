@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { format, formatDistanceToNow, isPast, isToday, isTomorrow } from 'date-fns';
-import { Calendar, CheckCircle2, Circle, Flag, MoreVertical, Trash2, Edit2, Clock, Eye } from 'lucide-react';
+import { Calendar, CheckCircle2, Circle, MoreVertical, Trash2, Edit2, Clock, Eye } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
