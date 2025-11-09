@@ -214,11 +214,6 @@ taskdesk/
 - **Smooth Animations** - CSS transitions, hover effects, and micro-interactions
 - **Touch-Friendly** - Proper touch targets for mobile devices (44px minimum)
 
-### Mobile Optimization
-- **Old iPhone Support** - Tested and optimized for older iOS devices
-- **Scrollable Modals** - Full-height modals with proper scrolling on mobile
-- **Larger Text** - Improved readability with responsive font sizes
-- **Better Buttons** - Fixed-size buttons that don't change during loading states
 
 ## 📱 Pages
 
