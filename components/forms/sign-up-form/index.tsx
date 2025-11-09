@@ -4,7 +4,6 @@ import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { toast } from 'sonner';
-import Link from 'next/link';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
@@ -19,7 +18,7 @@ import { createClient } from '@/lib/supabase/client';
 import { extractAvatarUrl, extractUserName } from '@/lib/utils/user-utils';
 import { ROUTES } from '@/lib/constants';
 import { TOAST_MESSAGES } from '@/lib/constants';
-import router from 'next/router';
+import { useRouter } from 'next/navigation';
 import { handleOAuthSignIn } from '@/lib/auth/oauth-actions';
 
 interface SignUpFormProps {
@@ -27,6 +26,7 @@ interface SignUpFormProps {
 }
 
 export function SignUpForm({ onSignInClick }: SignUpFormProps) {
+  const router = useRouter();
   const [showPassword, setShowPassword] = useState(false);
   const [showConfirmPassword, setShowConfirmPassword] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
@@ -251,7 +251,7 @@ export function SignUpForm({ onSignInClick }: SignUpFormProps) {
           <Button
             type="submit"
             variant="gradient"
-           
+            size="auth"
             className="w-full mt-6"
             disabled={isLoading || !agreeToTerms}
           >

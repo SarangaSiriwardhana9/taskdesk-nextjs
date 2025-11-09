@@ -17,9 +17,9 @@ export function CTASection() {
               Create an account to begin organizing your work with TaskDesk
             </p>
             <Link href={ROUTES.AUTH}>
-              <Button variant="gradient" size="lg" className="gap-2">
+              <Button variant="gradient" size="xl" className="gap-2">
                 <span>Get Started</span>
-                <ArrowRight className="h-4 w-4" />
+                <ArrowRight className="h-5 w-5" />
               </Button>
             </Link>
           </CardContent>

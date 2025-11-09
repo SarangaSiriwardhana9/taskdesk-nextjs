@@ -11,6 +11,8 @@ import { Spinner } from '@/components/ui/spinner';
 import { profileSchema, type ProfileFormData } from './form-schema';
 import { User, Mail, Save } from 'lucide-react';
 import { TOAST_MESSAGES } from '@/lib/constants';
+import { updateProfile } from '@/lib/profile/actions';
+import { useAuthStore } from '@/lib/stores/auth-store';
 
 interface ProfileFormProps {
   initialData: {
@@ -22,25 +24,35 @@ interface ProfileFormProps {
 
 export function ProfileForm({ initialData, onSubmit }: ProfileFormProps) {
   const [isLoading, setIsLoading] = useState(false);
+  const { setUser } = useAuthStore();
 
   const { register, handleSubmit, formState: { errors } } = useForm<ProfileFormData>({
     resolver: zodResolver(profileSchema),
     defaultValues: initialData,
   });
 
-      const onSubmitForm = async (data: ProfileFormData) => {
-        setIsLoading(true);
-        try {
-          await new Promise(resolve => setTimeout(resolve, 500));
-          const { email, ...updateData } = data;
-          toast.success(TOAST_MESSAGES.PROFILE.UPDATE_SUCCESS);
-          onSubmit?.(updateData as ProfileFormData);
-        } catch (error) {
-          toast.error(TOAST_MESSAGES.PROFILE.UPDATE_ERROR);
-        } finally {
-          setIsLoading(false);
-        }
-      };
+  const onSubmitForm = async (data: ProfileFormData) => {
+    setIsLoading(true);
+    try {
+      const result = await updateProfile({ name: data.name });
+      
+      if (result.error) {
+        toast.error(result.error);
+        return;
+      }
+
+      if (result.success && result.user) {
+        // Update the auth store with new user data
+        setUser(result.user);
+        toast.success(TOAST_MESSAGES.PROFILE.UPDATE_SUCCESS);
+        onSubmit?.(data);
+      }
+    } catch (error) {
+      toast.error(TOAST_MESSAGES.PROFILE.UPDATE_ERROR);
+    } finally {
+      setIsLoading(false);
+    }
+  };
 
   return (
     <Card>
@@ -98,7 +110,7 @@ export function ProfileForm({ initialData, onSubmit }: ProfileFormProps) {
               variant="gradient"
               size="lg"
               disabled={isLoading}
-              className="gap-2"
+              className="gap-2 min-w-[140px]"
             >
               {isLoading ? (
                 <>

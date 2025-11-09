@@ -17,6 +17,9 @@ const geistMono = Geist_Mono({
 export const metadata: Metadata = {
   title: 'TaskDesk - Organize Your Life',
   description: 'Modern task management application built with Next.js and Supabase',
+  icons: {
+    icon: '/task.png',
+  },
 };
 
 export default async function RootLayout({

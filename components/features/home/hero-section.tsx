@@ -23,39 +23,39 @@ export function HeroSection() {
 
  
           <div className="space-y-4">
-            <h1 className="text-5xl sm:text-6xl lg:text-7xl font-black tracking-tight">
+            <h1 className="text-hero-mobile font-black tracking-tight">
               <span className="text-primary">Task</span>Desk
             </h1>
             
-            <h2 className="text-xl sm:text-2xl lg:text-3xl font-bold text-muted-foreground">
+            <h2 className="text-subhero-mobile font-bold text-muted-foreground">
               Where productivity meets
-              <span className="block mt-2 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent font-black">
+              <span className="block mt-2 bg-gradient-to-r from-primary via-accent to-primary bg-clip-text text-transparent font-black text-gradient-mobile">
                 Pure Simplicity
               </span>
             </h2>
           </div>
 
  
-          <p className="max-w-2xl mx-auto text-base sm:text-lg text-muted-foreground leading-relaxed">
+          <p className="max-w-2xl mx-auto text-mobile-friendly text-muted-foreground leading-relaxed px-4">
             Create, organize, and conquer your goals with an interface so intuitive, it feels like magic.
           </p>
 
  
-          <div>
+          <div className="px-4">
             <Link href={isAuthenticated ? ROUTES.TASKS : ROUTES.AUTH}>
               <Button 
-                size="lg" 
+                size="hero" 
                 className="gap-2"
               >
                 {isAuthenticated ? (
                   <>
                     <Target className="h-5 w-5" />
-                    Launch TaskDesk
+                    <span>Launch TaskDesk</span>
                   </>
                 ) : (
                   <>
                     <Zap className="h-5 w-5" />
-                    Start Your Journey
+                    <span>Get Started</span>
                   </>
                 )}
                 <ArrowRight className="h-5 w-5" />

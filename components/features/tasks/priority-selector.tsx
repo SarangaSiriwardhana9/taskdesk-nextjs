@@ -68,7 +68,7 @@ export function PrioritySelector({ value, onChange, error }: PrioritySelectorPro
   return (
     <div className="space-y-3">
       <Label>Priority</Label>
-      <div className="grid grid-cols-3 gap-3">
+      <div className="grid grid-cols-3 gap-2 sm:gap-3">
         {priorities.map((priority) => {
           const Icon = priority.icon;
           const isSelected = value === priority.value;
@@ -79,7 +79,7 @@ export function PrioritySelector({ value, onChange, error }: PrioritySelectorPro
               type="button"
               onClick={() => onChange(priority.value)}
               className={cn(
-                'relative h-auto flex flex-col items-center justify-center gap-2 p-4 rounded-md border-2 outline-none',
+                'relative h-auto flex flex-col items-center justify-center gap-1 sm:gap-2 p-3 sm:p-4 rounded-md border-2 outline-none min-h-[80px] sm:min-h-[90px]',
                 'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
                 priority.colorClasses.bg,
                 isSelected ? 'border-primary ring-2 ring-primary/20 ring-offset-2 dark:ring-offset-background' : priority.colorClasses.border,

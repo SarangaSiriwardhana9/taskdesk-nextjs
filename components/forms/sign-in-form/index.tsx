@@ -176,7 +176,7 @@ export function SignInForm({ onSignUpClick }: SignInFormProps) {
           <Button
             type="submit"
             variant="gradient"
-             
+            size="auth"
             className="w-full"
             disabled={isLoading}
           >

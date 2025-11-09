@@ -91,21 +91,21 @@ export function TaskModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[900px] p-0 overflow-hidden">
-        <div className="relative">
+      <DialogContent className="sm:max-w-[900px] max-h-[95vh] w-[95vw] p-0 overflow-hidden">
+        <div className="relative flex flex-col max-h-[95vh]">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none" />
 
-          <div className="relative p-6 pb-0">
+          <div className="relative p-4 sm:p-6 pb-0 flex-shrink-0">
             <DialogHeader className="space-y-4">
               <div className="flex items-center gap-3">
-                <div className="flex h-10 w-10 items-center justify-center rounded-lg bg-primary/10">
-                  <Icon className="h-5 w-5 text-primary" />
+                <div className="flex h-8 w-8 sm:h-10 sm:w-10 items-center justify-center rounded-lg bg-primary/10">
+                  <Icon className="h-4 w-4 sm:h-5 sm:w-5 text-primary" />
                 </div>
                 <div>
-                  <DialogTitle className="text-xl font-semibold">
+                  <DialogTitle className="text-lg sm:text-xl font-semibold">
                     {title}
                   </DialogTitle>
-                  <DialogDescription className="text-sm text-muted-foreground mt-1">
+                  <DialogDescription className="text-xs sm:text-sm text-muted-foreground mt-1">
                     {description}
                   </DialogDescription>
                 </div>
@@ -113,9 +113,10 @@ export function TaskModal({
             </DialogHeader>
           </div>
 
-          <Separator className="my-6" />
+          <Separator className="my-4 sm:my-6 flex-shrink-0" />
 
-          <form onSubmit={handleSubmit(handleFormSubmit)} className="px-6 pb-6 space-y-6">
+          <div className="flex-1 overflow-y-auto px-4 sm:px-6">
+            <form onSubmit={handleSubmit(handleFormSubmit)} className="pb-4 sm:pb-6 space-y-4 sm:space-y-6">
             <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
               <div className="space-y-4">
                 <div className="space-y-2">
@@ -193,6 +194,7 @@ export function TaskModal({
               </Button>
             </DialogFooter>
           </form>
+          </div>
         </div>
       </DialogContent>
     </Dialog>
