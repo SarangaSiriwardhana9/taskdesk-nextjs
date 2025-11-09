@@ -37,11 +37,11 @@ const priorities: PriorityOption[] = [
     label: 'Medium',
     icon: Minus,
     colorClasses: {
-      bg: 'bg-orange-50 dark:bg-orange-950/30',
-      border: 'border-orange-200 dark:border-orange-800',
-      text: 'text-orange-600 dark:text-orange-400',
-      icon: 'text-orange-600 dark:text-orange-400',
-      hoverBg: 'hover:bg-orange-100 dark:hover:bg-orange-950/50',
+      bg: 'bg-blue-50 dark:bg-blue-950/30',
+      border: 'border-blue-200 dark:border-blue-800',
+      text: 'text-blue-600 dark:text-blue-400',
+      icon: 'text-blue-600 dark:text-blue-400',
+      hoverBg: 'hover:bg-blue-100 dark:hover:bg-blue-950/50',
     },
   },
   {
@@ -62,9 +62,10 @@ interface PrioritySelectorProps {
   value: TaskPriority;
   onChange: (priority: TaskPriority) => void;
   error?: string;
+  readOnly?: boolean;
 }
 
-export function PrioritySelector({ value, onChange, error }: PrioritySelectorProps) {
+export function PrioritySelector({ value, onChange, error, readOnly }: PrioritySelectorProps) {
   return (
     <div className="space-y-3">
       <Label>Priority</Label>
@@ -77,16 +78,18 @@ export function PrioritySelector({ value, onChange, error }: PrioritySelectorPro
             <button
               key={priority.value}
               type="button"
-              onClick={() => onChange(priority.value)}
+              onClick={() => !readOnly && onChange(priority.value)}
+              disabled={readOnly}
               className={cn(
                 'relative h-auto flex flex-col items-center justify-center gap-1 sm:gap-2 p-3 sm:p-4 rounded-md border-2 outline-none min-h-[80px] sm:min-h-[90px]',
                 'focus-visible:ring-2 focus-visible:ring-ring focus-visible:ring-offset-2 disabled:pointer-events-none disabled:opacity-50',
                 priority.colorClasses.bg,
                 isSelected ? 'border-primary ring-2 ring-primary/20 ring-offset-2 dark:ring-offset-background' : priority.colorClasses.border,
                 priority.colorClasses.text,
-                priority.colorClasses.hoverBg,
+                !readOnly && priority.colorClasses.hoverBg,
                 'active:bg-inherit',
-                error && !isSelected && 'border-destructive/50'
+                error && !isSelected && 'border-destructive/50',
+                readOnly && 'cursor-default opacity-75'
               )}
             >
               <div

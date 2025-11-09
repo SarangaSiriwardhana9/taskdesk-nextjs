@@ -17,6 +17,7 @@ interface DatePickerProps {
   value?: string;
   onChange: (date: string | undefined) => void;
   error?: string;
+  readOnly?: boolean;
 }
 
 const quickOptions = [
@@ -48,7 +49,7 @@ const quickOptions = [
   },
 ];
 
-export function DatePicker({ value, onChange, error }: DatePickerProps) {
+export function DatePicker({ value, onChange, error, readOnly }: DatePickerProps) {
   const [open, setOpen] = useState(false);
 
   const date = value ? new Date(value) : undefined;
@@ -92,6 +93,7 @@ export function DatePicker({ value, onChange, error }: DatePickerProps) {
                 variant="outline"
                 size="sm"
                 onClick={() => handleQuickOption(option.getDate)}
+                disabled={readOnly}
                 className="h-auto flex-col gap-1 py-2.5"
               >
                 <CalendarIcon className="h-4 w-4" />
@@ -112,10 +114,12 @@ export function DatePicker({ value, onChange, error }: DatePickerProps) {
                 <Button
                   type="button"
                   variant="outline"
+                  disabled={readOnly}
                   className={cn(
                     'h-11 w-full justify-start text-left font-normal bg-background/50 pr-10',
                     !date ? 'text-muted-foreground' : 'text-foreground',
-                    error && 'border-destructive ring-destructive/20'
+                    error && 'border-destructive ring-destructive/20',
+                    readOnly && 'bg-muted/50 cursor-default'
                   )}
                 >
                   <CalendarIcon className="mr-3 h-4 w-4 shrink-0" />

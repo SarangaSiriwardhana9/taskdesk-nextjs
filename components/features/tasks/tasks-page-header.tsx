@@ -1,8 +1,8 @@
 'use client';
 
 import React from 'react';
-import { CheckCircle2, Clock, ListTodo, Calendar, CalendarDays } from 'lucide-react';
-import { isToday, startOfWeek, endOfWeek } from 'date-fns';
+import { CheckCircle2, Clock, ListTodo, Calendar, CalendarDays, AlertTriangle } from 'lucide-react';
+import { isToday, startOfWeek, endOfWeek, isPast } from 'date-fns';
 import { Card, CardContent } from '@/components/ui/card';
 import type { Task } from '@/types/task.types';
 
@@ -31,7 +31,13 @@ export function TasksPageHeader({ tasks }: TasksPageHeaderProps) {
       return dueDate >= weekStart && dueDate <= weekEnd;
     }).length;
     
-    return { total, completed, pending, completionRate, todayTasks, thisWeekTasks };
+    const overdueTasks = tasks.filter((t) => {
+      if (!t.due_date || t.completed) return false;
+      const dueDate = new Date(t.due_date);
+      return isPast(dueDate) && !isToday(dueDate);
+    }).length;
+    
+    return { total, completed, pending, completionRate, todayTasks, thisWeekTasks, overdueTasks };
   }, [tasks]);
 
   return (
@@ -126,13 +132,13 @@ export function TasksPageHeader({ tasks }: TasksPageHeaderProps) {
             <div className="flex items-start justify-between">
               <div className="space-y-2">
                 <div className="flex items-center gap-2 text-muted-foreground">
-                  <CalendarDays className="h-4 w-4" />
-                  <span className="text-sm font-medium">This Week</span>
+                  <AlertTriangle className="h-4 w-4" />
+                  <span className="text-sm font-medium">Overdue</span>
                 </div>
-                <p className="text-3xl font-bold">{stats.thisWeekTasks}</p>
+                <p className="text-3xl font-bold text-red-600 dark:text-red-400">{stats.overdueTasks}</p>
               </div>
-              <div className="w-12 h-12 rounded-xl bg-purple-500/10 flex items-center justify-center">
-                <CalendarDays className="h-6 w-6 text-purple-500" />
+              <div className="w-12 h-12 rounded-xl bg-red-500/10 flex items-center justify-center">
+                <AlertTriangle className="h-6 w-6 text-red-500" />
               </div>
             </div>
           </CardContent>

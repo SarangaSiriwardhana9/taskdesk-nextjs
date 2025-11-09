@@ -20,6 +20,7 @@ export default function TasksPage() {
   const [isEditing, setIsEditing] = useState(false);
   const [showCreateModal, setShowCreateModal] = useState(false);
   const [editingTask, setEditingTask] = useState<Task | null>(null);
+  const [viewingTask, setViewingTask] = useState<Task | null>(null);
   const [tasks, setTasks] = useState<Task[]>([]);
   const [totalCount, setTotalCount] = useState(0);
   const [currentPage, setCurrentPage] = useState(1);
@@ -127,6 +128,10 @@ export default function TasksPage() {
     setEditingTask(task);
   };
 
+  const handleView = (task: Task) => {
+    setViewingTask(task);
+  };
+
   const handleEditTask = async (data: TaskFormData) => {
     if (!editingTask) return;
     
@@ -198,6 +203,7 @@ export default function TasksPage() {
                 onToggleComplete={handleToggleComplete}
                 onDelete={handleDelete}
                 onEdit={handleEdit}
+                onView={handleView}
               />
               
               <TaskPagination
@@ -235,6 +241,21 @@ export default function TasksPage() {
         onSubmit={handleEditTask}
         task={editingTask || undefined}
         isLoading={isEditing}
+        onToggleComplete={handleToggleComplete}
+      />
+      
+      <TaskModal
+        mode="view"
+        open={!!viewingTask}
+        onOpenChange={(open) => {
+          if (!open) {
+            setViewingTask(null);
+          }
+        }}
+        onSubmit={() => Promise.resolve()}
+        task={viewingTask || undefined}
+        isLoading={false}
+        onToggleComplete={handleToggleComplete}
       />
     </main>
   );

@@ -3,7 +3,7 @@
 import React, { useEffect } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { Plus, Edit2, Sparkles } from 'lucide-react';
+import { Plus, Edit2, Save, Eye, CheckCircle2 } from 'lucide-react';
 import { Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter } from '@/components/ui/dialog';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
@@ -18,12 +18,13 @@ import type { Task } from '@/types/task.types';
 import { cn } from '@/lib/utils';
 
 interface TaskModalProps {
-  mode: 'create' | 'edit';
+  mode: 'create' | 'edit' | 'view';
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (data: TaskFormData) => Promise<void>;
   task?: Task;
   isLoading?: boolean;
+  onToggleComplete?: (taskId: string, completed: boolean) => void;
 }
 
 export function TaskModal({
@@ -33,6 +34,7 @@ export function TaskModal({
   onSubmit,
   task,
   isLoading = false,
+  onToggleComplete,
 }: TaskModalProps) {
   const {
     register,
@@ -56,7 +58,7 @@ export function TaskModal({
 
   useEffect(() => {
     if (open) {
-      if (mode === 'edit' && task) {
+      if ((mode === 'edit' || mode === 'view') && task) {
         reset({
           title: task.title,
           description: task.description || '',
@@ -82,12 +84,15 @@ export function TaskModal({
   };
 
   const isCreate = mode === 'create';
-  const title = isCreate ? 'Create New Task' : 'Edit Task';
+  const isView = mode === 'view';
+  const title = isCreate ? 'Create New Task' : isView ? 'Task Details' : 'Edit Task';
   const description = isCreate
     ? 'Add a new task to your list and stay organized.'
+    : isView
+    ? 'View your task details and information.'
     : 'Update your task details and keep everything current.';
   const submitText = isCreate ? 'Create Task' : 'Update Task';
-  const Icon = isCreate ? Plus : Edit2;
+  const Icon = isCreate ? Plus : isView ? Eye : Edit2;
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
@@ -124,9 +129,11 @@ export function TaskModal({
                   <Input
                     placeholder="Enter task title..."
                     {...register('title')}
+                    readOnly={isView}
                     className={cn(
                       'transition-all duration-200',
-                      errors.title && 'border-destructive focus-visible:ring-destructive/20'
+                      errors.title && 'border-destructive focus-visible:ring-destructive/20',
+                      isView && 'bg-muted/50 cursor-default'
                     )}
                   />
                   {errors.title && (
@@ -138,11 +145,13 @@ export function TaskModal({
                   <Label>Description</Label>
                   <Textarea
                     placeholder="Add task description (optional)..."
-                    rows={6}
+                    rows={8}
                     {...register('description')}
+                    readOnly={isView}
                     className={cn(
-                      'resize-none transition-all duration-200',
-                      errors.description && 'border-destructive focus-visible:ring-destructive/20'
+                      'min-h-32 transition-all duration-200',
+                      errors.description && 'border-destructive focus-visible:ring-destructive/20',
+                      isView && 'bg-muted/50 cursor-default'
                     )}
                   />
                   {errors.description && (
@@ -156,12 +165,14 @@ export function TaskModal({
                   value={priority}
                   onChange={(value) => setValue('priority', value)}
                   error={errors.priority?.message}
+                  readOnly={isView}
                 />
 
                 <DatePicker
                   value={dueDate}
                   onChange={(value) => setValue('due_date', value)}
                   error={errors.due_date?.message}
+                  readOnly={isView}
                 />
               </div>
             </div>
@@ -173,25 +184,44 @@ export function TaskModal({
                 onClick={() => onOpenChange(false)}
                 disabled={isLoading}
               >
-                Cancel
+                {isView ? 'Close' : 'Cancel'}
               </Button>
-              <Button
-                type="submit"
-                disabled={isLoading}
-                className="gap-2 min-w-[120px]"
-              >
-                {isLoading ? (
-                  <>
-                    <Spinner size="sm" variant="foreground" />
-                    <span>{isCreate ? 'Creating...' : 'Updating...'}</span>
-                  </>
-                ) : (
-                  <>
-                    <Sparkles className="h-4 w-4" />
-                    <span>{submitText}</span>
-                  </>
-                )}
-              </Button>
+              
+              {(isView || mode === 'edit') && task && onToggleComplete && (
+                <Button
+                  type="button"
+                  variant={task.completed ? "outline" : "success"}
+                  onClick={() => {
+                    onToggleComplete(task.id, !task.completed);
+                    onOpenChange(false);
+                  }}
+                  disabled={isLoading}
+                  className="gap-2 min-w-[140px]"
+                >
+                  <CheckCircle2 className="h-4 w-4" />
+                  <span>{task.completed ? 'Mark Incomplete' : 'Mark Complete'}</span>
+                </Button>
+              )}
+              
+              {!isView && (
+                <Button
+                  type="submit"
+                  disabled={isLoading}
+                  className="gap-2 min-w-[120px]"
+                >
+                  {isLoading ? (
+                    <>
+                      <Spinner size="sm" variant="foreground" />
+                      <span>{isCreate ? 'Creating...' : 'Updating...'}</span>
+                    </>
+                  ) : (
+                    <>
+                      <Save className="h-4 w-4" />
+                      <span>{submitText}</span>
+                    </>
+                  )}
+                </Button>
+              )}
             </DialogFooter>
           </form>
           </div>

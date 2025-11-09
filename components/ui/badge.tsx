@@ -13,7 +13,7 @@ const badgeVariants = cva(
         destructive: "border-transparent bg-destructive text-destructive-foreground",
         outline: "text-foreground",
         low: "bg-yellow-50 dark:bg-yellow-950/30 text-yellow-600 dark:text-yellow-400 border-yellow-400 dark:border-yellow-500",
-        medium: "bg-orange-50 dark:bg-orange-950/30 text-orange-600 dark:text-orange-400 border-orange-400 dark:border-orange-500",
+        medium: "bg-blue-50 dark:bg-blue-950/30 text-blue-600 dark:text-blue-400 border-blue-400 dark:border-blue-500",
         high: "bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border-red-500 dark:border-red-400",
         overdue: "bg-red-50 dark:bg-red-950/30 text-red-600 dark:text-red-400 border-red-200 dark:border-red-800",
         due: "bg-muted text-muted-foreground border-border",

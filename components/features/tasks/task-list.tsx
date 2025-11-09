@@ -17,9 +17,10 @@ interface TaskListProps {
   onToggleComplete: (taskId: string, completed: boolean) => void;
   onDelete: (taskId: string) => void;
   onEdit: (task: Task) => void;
+  onView: (task: Task) => void;
 }
 
-export function TaskList({ tasks, onToggleComplete, onDelete, onEdit }: TaskListProps) {
+export function TaskList({ tasks, onToggleComplete, onDelete, onEdit, onView }: TaskListProps) {
   const [filter, setFilter] = useState<FilterType>('all');
   const [sortBy, setSortBy] = useState<SortType>('date');
 
@@ -127,6 +128,7 @@ export function TaskList({ tasks, onToggleComplete, onDelete, onEdit }: TaskList
               onToggleComplete={onToggleComplete}
               onDelete={onDelete}
               onEdit={onEdit}
+              onView={onView}
             />
           ))}
         </div>

@@ -2,7 +2,7 @@
 
 import React from 'react';
 import { format, formatDistanceToNow, isPast, isToday, isTomorrow } from 'date-fns';
-import { Calendar, CheckCircle2, Circle, Flag, MoreVertical, Trash2, Edit2, Clock } from 'lucide-react';
+import { Calendar, CheckCircle2, Circle, Flag, MoreVertical, Trash2, Edit2, Clock, Eye } from 'lucide-react';
 import { cn } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { Badge } from '@/components/ui/badge';
@@ -19,6 +19,7 @@ interface TaskCardProps {
   onToggleComplete: (taskId: string, completed: boolean) => void;
   onDelete: (taskId: string) => void;
   onEdit: (task: Task) => void;
+  onView: (task: Task) => void;
 }
 
 const priorityConfig: Record<TaskPriority, { variant: 'low' | 'medium' | 'high'; icon: string; border: string }> = {
@@ -29,8 +30,8 @@ const priorityConfig: Record<TaskPriority, { variant: 'low' | 'medium' | 'high';
   },
   Medium: {
     variant: 'medium',
-    icon: 'bg-orange-500',
-    border: 'border-orange-400 dark:border-orange-500',
+    icon: 'bg-blue-500',
+    border: 'border-blue-400 dark:border-blue-500',
   },
   High: {
     variant: 'high',
@@ -39,7 +40,7 @@ const priorityConfig: Record<TaskPriority, { variant: 'low' | 'medium' | 'high';
   },
 };
 
-export function TaskCard({ task, onToggleComplete, onDelete, onEdit }: TaskCardProps) {
+export function TaskCard({ task, onToggleComplete, onDelete, onEdit, onView }: TaskCardProps) {
   const priority = priorityConfig[task.priority];
   const dueDate = task.due_date ? new Date(task.due_date) : null;
 
@@ -68,23 +69,37 @@ export function TaskCard({ task, onToggleComplete, onDelete, onEdit }: TaskCardP
       )}
     >
       <div className="flex items-start gap-4">
-        <button
-          onClick={handleToggleComplete}
-          className={cn(
-            'mt-1 flex-shrink-0 rounded-full border-2 p-0.5 transition-all duration-75',
-            'outline-none focus-visible:ring-2 focus-visible:ring-offset-1 active:scale-95',
-            task.completed
-              ? 'border-green-500 dark:border-green-400 bg-green-500 dark:bg-green-400 focus-visible:ring-green-500'
-              : 'border-muted-foreground/30 hover:border-muted-foreground focus-visible:ring-primary'
-          )}
-          aria-label={task.completed ? 'Mark as incomplete' : 'Mark as complete'}
-        >
-          {task.completed ? (
-            <CheckCircle2 className="h-5 w-5 text-white transition-transform duration-75" />
-          ) : (
-            <Circle className="h-5 w-5 text-transparent" />
-          )}
-        </button>
+        <div className="flex flex-col items-center gap-2 mt-1">
+          <button
+            onClick={handleToggleComplete}
+            className={cn(
+              'flex-shrink-0 rounded-full border-2 p-0.5 transition-all duration-75',
+              'outline-none focus-visible:ring-2 focus-visible:ring-offset-1 active:scale-95',
+              task.completed
+                ? 'border-green-500 dark:border-green-400 bg-green-500 dark:bg-green-400 focus-visible:ring-green-500'
+                : 'border-muted-foreground/30 hover:border-muted-foreground focus-visible:ring-primary'
+            )}
+            aria-label={task.completed ? 'Mark as incomplete' : 'Mark as complete'}
+          >
+            {task.completed ? (
+              <CheckCircle2 className="h-5 w-5 text-white transition-transform duration-75" />
+            ) : (
+              <Circle className="h-5 w-5 text-transparent" />
+            )}
+          </button>
+          
+          <button
+            onClick={() => onView(task)}
+            className={cn(
+              'flex-shrink-0 rounded-full border-2 p-0.5 transition-all duration-75',
+              'outline-none focus-visible:ring-2 focus-visible:ring-offset-1 active:scale-95',
+              'border-muted-foreground/30 hover:border-primary hover:bg-primary/10 focus-visible:ring-primary'
+            )}
+            aria-label="View task details"
+          >
+            <Eye className="h-5 w-5 text-muted-foreground hover:text-primary transition-colors" />
+          </button>
+        </div>
 
         <div className="flex-1 min-w-0 space-y-3">
           <div className="flex items-start justify-between gap-3">
