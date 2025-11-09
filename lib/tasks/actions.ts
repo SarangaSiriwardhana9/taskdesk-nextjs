@@ -22,12 +22,13 @@ export async function createTask(data: CreateTaskData) {
       title: data.title,
       description: data.description || null,
       priority: data.priority,
-      due_date: data.due_date || null,
+      due_date: data.due_date && data.due_date.trim() !== '' ? data.due_date : null,
       completed: false,
     });
 
     if (error) {
-      return { error: error.message };
+      console.error('Create task error:', error);
+      return { error: 'Failed to create task. Please try again.' };
     }
 
     revalidatePath(ROUTES.TASKS);
@@ -55,14 +56,15 @@ export async function updateTask(taskId: string, data: UpdateTaskData) {
         title: data.title,
         description: data.description,
         priority: data.priority,
-        due_date: data.due_date,
+        due_date: data.due_date && data.due_date.trim() !== '' ? data.due_date : null,
         completed: data.completed,
       })
       .eq('id', taskId)
       .eq('user_id', user.id);
 
     if (error) {
-      return { error: error.message };
+      console.error('Update task error:', error);
+      return { error: 'Failed to update task. Please try again.' };
     }
 
     revalidatePath(ROUTES.TASKS);
@@ -91,7 +93,8 @@ export async function deleteTask(taskId: string) {
       .eq('user_id', user.id);
 
     if (error) {
-      return { error: error.message };
+      console.error('Delete task error:', error);
+      return { error: 'Failed to delete task. Please try again.' };
     }
 
     return { success: true };
@@ -123,7 +126,8 @@ export async function getTasks(page: number = 1, limit: number = 9) {
       .range(from, to);
 
     if (error) {
-      return { error: error.message, tasks: [], totalCount: 0 };
+      console.error('Get tasks error:', error);
+      return { error: 'Failed to load tasks. Please try again.', tasks: [], totalCount: 0 };
     }
 
     return { 
