@@ -1,6 +1,6 @@
 # TaskDesk - Modern Task Management Application
 
-A beautiful, responsive task management application built with Next.js 15+, TypeScript, and Supabase. Features user authentication, task CRUD operations, priority management, and a modern UI with smooth animations.
+A beautiful, responsive task management application built with Next.js 16, TypeScript, and Supabase. Features user authentication, task CRUD operations, priority management, and a modern UI with smooth animations.
 
 ![TaskDesk Preview](https://via.placeholder.com/800x400/6366f1/ffffff?text=TaskDesk+Preview)
 
@@ -40,9 +40,10 @@ A beautiful, responsive task management application built with Next.js 15+, Type
 ## 🛠️ Tech Stack
 
 ### Frontend
-- **Framework**: Next.js 15+ (App Router)
-- **Language**: TypeScript
-- **Styling**: Tailwind CSS
+- **Framework**: Next.js 16.0.1 (App Router)
+- **Language**: TypeScript 5
+- **Runtime**: React 19.2.0
+- **Styling**: Tailwind CSS 4
 - **UI Components**: shadcn/ui, Radix UI
 - **Forms**: React Hook Form with Zod validation
 - **State Management**: Zustand
@@ -261,7 +262,7 @@ This project was built as part of a technical assessment. The code follows moder
 ## 📄 Assignment Requirements Checklist
 
 ### Core Requirements
-- ✅ **Next.js 15+** - App Router with TypeScript
+- ✅ **Next.js 16** - App Router with TypeScript 5 and React 19
 - ✅ **Supabase Integration** - Authentication and PostgreSQL database
 - ✅ **User Authentication** - Signup/signin with email and password
 - ✅ **Task CRUD Operations** - Create, read, update, delete tasks

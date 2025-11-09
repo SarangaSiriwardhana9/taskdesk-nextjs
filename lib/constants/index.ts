@@ -35,7 +35,7 @@ export const CONFIG = {
   HEADER_SCROLL_THRESHOLD: 20,
   TASK_GRID_LAYOUT: 'grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4',
   SKELETON_COUNTS: {
-    HEADER: 6,
+    HEADER: 5,
     TASKS: 6,
   },
   PAGINATION: {

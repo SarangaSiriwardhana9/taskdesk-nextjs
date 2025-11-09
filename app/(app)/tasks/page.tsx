@@ -8,9 +8,9 @@ import { TaskList } from '@/components/features/tasks/task-list';
 import { EmptyTasks } from '@/components/features/tasks/empty-tasks';
 import { TaskModal } from '@/components/features/tasks/task-modal';
 import { TaskPagination } from '@/components/features/tasks/task-pagination';
+import { TasksPageSkeleton } from '@/components/features/tasks/tasks-page-skeleton';
 import { createTask, updateTask, deleteTask, getTasks } from '@/lib/tasks/actions';
 import { TOAST_MESSAGES, CONFIG } from '@/lib/constants';
-import { Skeleton } from '@/components/ui/skeleton';
 import type { TaskFormData } from '@/components/forms/task-form/form-schema';
 import type { Task } from '@/types/task.types';
 
@@ -163,28 +163,7 @@ export default function TasksPage() {
   };
 
   if (isLoading) {
-    return (
-      <main className="min-h-screen bg-background pt-20 sm:pt-24 pb-12 sm:pb-24">
-        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-12">
-          <div className="space-y-6 sm:space-y-8">
-            <div className="space-y-3 sm:space-y-4 text-center">
-              <Skeleton className="h-10 sm:h-12 w-32 sm:w-48 rounded-xl mx-auto" />
-              <Skeleton className="h-4 sm:h-6 w-48 sm:w-96 rounded-lg mx-auto" />
-            </div>
-            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
-              {Array.from({ length: CONFIG.SKELETON_COUNTS.HEADER }).map((_, i) => (
-                <Skeleton key={i} className="h-24 sm:h-32 rounded-2xl" />
-              ))}
-            </div>
-            <div className={CONFIG.TASK_GRID_LAYOUT}>
-              {Array.from({ length: CONFIG.SKELETON_COUNTS.TASKS }).map((_, i) => (
-                <Skeleton key={i} className="h-40 sm:h-48 rounded-xl" />
-              ))}
-            </div>
-          </div>
-        </div>
-      </main>
-    );
+    return <TasksPageSkeleton />;
   }
 
   return (
