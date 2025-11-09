@@ -18,7 +18,7 @@ A beautiful, responsive task management application built with Next.js 16, TypeS
 
 
 
-![TaskDesk Preview](https://via.placeholder.com/800x400/6366f1/ffffff?text=TaskDesk+Preview)
+ 
 
 ## 🚀 Live Demo
 
