@@ -43,3 +43,8 @@ export const CONFIG = {
     MAX_VISIBLE_PAGES: 5,
   },
 } as const;
+
+export const TASK_DEFAULTS = {
+  PRIORITY: 'Medium' as const,
+  PRIORITIES: ['Low', 'Medium', 'High'] as const,
+} as const;

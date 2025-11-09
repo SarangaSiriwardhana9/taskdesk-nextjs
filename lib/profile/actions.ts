@@ -2,6 +2,7 @@
 
 import { createClient } from '@/lib/supabase/server';
 import { revalidatePath } from 'next/cache';
+import { ROUTES } from '@/lib/constants';
 
 interface UpdateProfileData {
   name: string;
@@ -44,7 +45,7 @@ export async function updateProfile(data: UpdateProfileData) {
       // Don't return error here as profile was updated successfully
     }
 
-    revalidatePath('/profile');
+    revalidatePath(ROUTES.PROFILE);
     
     return { 
       success: true,

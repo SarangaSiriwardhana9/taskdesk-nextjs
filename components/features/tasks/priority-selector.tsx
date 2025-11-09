@@ -5,6 +5,7 @@ import { cn } from '@/lib/utils';
 import { Label } from '@/components/ui/label';
 import { Flag, TrendingDown, TrendingUp, Minus } from 'lucide-react';
 import type { TaskPriority } from '@/types/task.types';
+import { TASK_DEFAULTS } from '@/lib/constants';
 
 interface PriorityOption {
   value: TaskPriority;
@@ -21,8 +22,8 @@ interface PriorityOption {
 
 const priorities: PriorityOption[] = [
   {
-    value: 'Low',
-    label: 'Low',
+    value: TASK_DEFAULTS.PRIORITIES[0],
+    label: TASK_DEFAULTS.PRIORITIES[0],
     icon: TrendingDown,
     colorClasses: {
       bg: 'bg-yellow-50 dark:bg-yellow-950/30',
@@ -33,8 +34,8 @@ const priorities: PriorityOption[] = [
     },
   },
   {
-    value: 'Medium',
-    label: 'Medium',
+    value: TASK_DEFAULTS.PRIORITIES[1],
+    label: TASK_DEFAULTS.PRIORITIES[1],
     icon: Minus,
     colorClasses: {
       bg: 'bg-blue-50 dark:bg-blue-950/30',
@@ -45,8 +46,8 @@ const priorities: PriorityOption[] = [
     },
   },
   {
-    value: 'High',
-    label: 'High',
+    value: TASK_DEFAULTS.PRIORITIES[2],
+    label: TASK_DEFAULTS.PRIORITIES[2],
     icon: TrendingUp,
     colorClasses: {
       bg: 'bg-red-50 dark:bg-red-950/30',

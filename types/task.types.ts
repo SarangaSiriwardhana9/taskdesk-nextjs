@@ -1,4 +1,5 @@
 export type TaskPriority = 'Low' | 'Medium' | 'High';
+export type TaskModalMode = 'create' | 'edit' | 'view';
 
 export interface Task {
   id: string;

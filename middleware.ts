@@ -1,5 +1,6 @@
 import { createServerClient } from '@supabase/ssr';
 import { NextResponse, type NextRequest } from 'next/server';
+import { ROUTES } from '@/lib/constants';
 
 export async function middleware(request: NextRequest) {
   let response = NextResponse.next({ request });
@@ -28,11 +29,11 @@ export async function middleware(request: NextRequest) {
   const { data: { user } } = await supabase.auth.getUser();
 
   const { pathname } = request.nextUrl;
-  const publicRoutes = ['/', '/auth'];
+  const publicRoutes: string[] = [ROUTES.HOME, ROUTES.AUTH];
 
   if (!user && !publicRoutes.includes(pathname)) {
     const url = request.nextUrl.clone();
-    url.pathname = '/auth';
+    url.pathname = ROUTES.AUTH;
     return NextResponse.redirect(url);
   }
 

@@ -2,6 +2,7 @@
 
 import { revalidatePath } from 'next/cache';
 import { createClient } from '@/lib/supabase/server';
+import { ROUTES } from '@/lib/constants';
 import type { CreateTaskData, UpdateTaskData, Task } from '@/types/task.types';
 
 export async function createTask(data: CreateTaskData) {
@@ -29,7 +30,7 @@ export async function createTask(data: CreateTaskData) {
       return { error: error.message };
     }
 
-    revalidatePath('/tasks');
+    revalidatePath(ROUTES.TASKS);
     return { success: true };
   } catch (error) {
     return { error: 'An unexpected error occurred' };
@@ -64,7 +65,7 @@ export async function updateTask(taskId: string, data: UpdateTaskData) {
       return { error: error.message };
     }
 
-    revalidatePath('/tasks');
+    revalidatePath(ROUTES.TASKS);
     return { success: true };
   } catch (error) {
     return { error: 'An unexpected error occurred' };

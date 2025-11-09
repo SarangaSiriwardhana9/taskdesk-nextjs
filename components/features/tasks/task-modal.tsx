@@ -14,11 +14,12 @@ import { Label } from '@/components/ui/label';
 import { PrioritySelector } from './priority-selector';
 import { DatePicker } from './date-picker';
 import { taskSchema, type TaskFormData } from '@/components/forms/task-form/form-schema';
-import type { Task } from '@/types/task.types';
+import type { Task, TaskModalMode } from '@/types/task.types';
+import { TASK_DEFAULTS } from '@/lib/constants';
 import { cn } from '@/lib/utils';
 
 interface TaskModalProps {
-  mode: 'create' | 'edit' | 'view';
+  mode: TaskModalMode;
   open: boolean;
   onOpenChange: (open: boolean) => void;
   onSubmit: (data: TaskFormData) => Promise<void>;
@@ -48,7 +49,7 @@ export function TaskModal({
     defaultValues: {
       title: '',
       description: '',
-      priority: 'Medium',
+      priority: TASK_DEFAULTS.PRIORITY,
       due_date: '',
     },
   });
@@ -69,7 +70,7 @@ export function TaskModal({
         reset({
           title: '',
           description: '',
-          priority: 'Medium',
+          priority: TASK_DEFAULTS.PRIORITY,
           due_date: '',
         });
       }
