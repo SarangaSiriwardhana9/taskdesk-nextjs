@@ -94,7 +94,7 @@ export function DatePicker({ value, onChange, error, readOnly }: DatePickerProps
                 size="sm"
                 onClick={() => handleQuickOption(option.getDate)}
                 disabled={readOnly}
-                className="h-auto flex-col gap-1 py-2.5"
+                className="h-auto flex-col gap-1 py-2.5 hover:bg-transparent hover:border-primary active:border-primary hover:text-foreground"
               >
                 <CalendarIcon className="h-4 w-4" />
                 <span className="text-xs">{option.label}</span>
@@ -116,7 +116,7 @@ export function DatePicker({ value, onChange, error, readOnly }: DatePickerProps
                   variant="outline"
                   disabled={readOnly}
                   className={cn(
-                    'h-11 w-full justify-start text-left font-normal bg-background/50 pr-10',
+                    'h-11 w-full hover:bg-transparent hover:text-foreground justify-start text-left font-normal bg-background/50 pr-10',
                     !date ? 'text-muted-foreground' : 'text-foreground',
                     error && 'border-destructive ring-destructive/20',
                     readOnly && 'bg-muted/50 cursor-default'

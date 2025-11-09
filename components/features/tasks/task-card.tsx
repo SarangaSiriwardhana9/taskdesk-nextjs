@@ -150,7 +150,7 @@ export function TaskCard({ task, onToggleComplete, onDelete, onEdit, onView }: T
         </div>
       </div>
 
-      <div className="mt-auto ml-6 sm:ml-4">
+      <div className="mt-auto ml-6 sm:ml-10">
         <div className="flex flex-wrap items-center gap-2">
           <Badge variant={priority.variant}>
             <div className={cn('h-2 w-2 rounded-full', priority.icon)} />
