@@ -18,7 +18,15 @@ export const metadata: Metadata = {
   title: 'TaskDesk - Organize Your Life',
   description: 'Modern task management application built with Next.js and Supabase',
   icons: {
-    icon: '/task.png',
+    icon: [
+      {
+        url: '/task.png',
+        sizes: 'any',
+        type: 'image/png',
+      },
+    ],
+    shortcut: '/task.png',
+    apple: '/task.png',
   },
 };
 
@@ -31,6 +39,11 @@ export default async function RootLayout({
 
   return (
     <html lang="en" suppressHydrationWarning>
+      <head>
+        <link rel="icon" type="image/png" href="/task.png" />
+        <link rel="shortcut icon" type="image/png" href="/task.png" />
+        <link rel="apple-touch-icon" href="/task.png" />
+      </head>
       <body className={`${geistSans.variable} ${geistMono.variable} antialiased`}>
         <Providers initialUser={initialUser}>
           {children}
