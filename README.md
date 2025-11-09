@@ -286,13 +286,8 @@ This project was built as part of a technical assessment. The code follows moder
 - ✅ **Success Styling** - Proper button variants and design system
 - ✅ **Overdue Detection** - Smart overdue task identification and highlighting
 
-## 📞 Contact
+ 
 
-Built by [Your Name] as part of a technical assessment.
-
-- **Email**: [your-email@example.com]
-- **LinkedIn**: [Your LinkedIn Profile]
-- **Portfolio**: [Your Portfolio URL]
 
 ---
 
