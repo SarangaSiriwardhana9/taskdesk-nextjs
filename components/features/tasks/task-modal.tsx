@@ -96,8 +96,8 @@ export function TaskModal({
 
   return (
     <Dialog open={open} onOpenChange={onOpenChange}>
-      <DialogContent className="sm:max-w-[900px] max-h-[95vh] w-[95vw] p-0 overflow-hidden">
-        <div className="relative flex flex-col max-h-[95vh]">
+      <DialogContent className="sm:max-w-[900px] max-h-[85vh] sm:max-h-[95vh] w-[95vw] p-0 overflow-hidden">
+        <div className="relative flex flex-col max-h-[85vh] sm:max-h-[95vh]">
           <div className="absolute inset-0 bg-gradient-to-br from-primary/5 via-transparent to-accent/5 pointer-events-none" />
 
           <div className="relative p-4 sm:p-6 pb-0 flex-shrink-0">

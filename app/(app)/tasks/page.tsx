@@ -165,21 +165,21 @@ export default function TasksPage() {
 
   if (isLoading) {
     return (
-      <main className="min-h-screen bg-background pt-20 pb-24">
-        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-          <div className="space-y-8">
-            <div className="space-y-4">
-              <Skeleton className="h-12 w-48 rounded-xl" />
-              <Skeleton className="h-6 w-96" />
+      <main className="min-h-screen bg-background pt-20 sm:pt-24 pb-12 sm:pb-24">
+        <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-12">
+          <div className="space-y-6 sm:space-y-8">
+            <div className="space-y-3 sm:space-y-4 text-center">
+              <Skeleton className="h-10 sm:h-12 w-32 sm:w-48 rounded-xl mx-auto" />
+              <Skeleton className="h-4 sm:h-6 w-48 sm:w-96 rounded-lg mx-auto" />
             </div>
-            <div className="grid grid-cols-1 sm:grid-cols-3 gap-4">
+            <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-5 gap-3 sm:gap-4">
               {Array.from({ length: CONFIG.SKELETON_COUNTS.HEADER }).map((_, i) => (
-                <Skeleton key={i} className="h-32 rounded-2xl" />
+                <Skeleton key={i} className="h-24 sm:h-32 rounded-2xl" />
               ))}
             </div>
             <div className={CONFIG.TASK_GRID_LAYOUT}>
               {Array.from({ length: CONFIG.SKELETON_COUNTS.TASKS }).map((_, i) => (
-                <Skeleton key={i} className="h-48 rounded-xl" />
+                <Skeleton key={i} className="h-40 sm:h-48 rounded-xl" />
               ))}
             </div>
           </div>
@@ -189,9 +189,9 @@ export default function TasksPage() {
   }
 
   return (
-    <main className="min-h-screen bg-background pt-10 ">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-        <div className="space-y-12">
+    <main className="min-h-screen bg-background pt-20 sm:pt-24">
+      <div className="max-w-7xl mx-auto px-3 sm:px-4 lg:px-8 py-6 sm:py-12">
+        <div className="space-y-8 sm:space-y-12">
           <TasksPageHeader tasks={tasks} />
 
           {tasks.length === 0 ? (

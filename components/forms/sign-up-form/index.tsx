@@ -137,7 +137,7 @@ export function SignUpForm({ onSignInClick }: SignUpFormProps) {
 
         <div className="relative my-6">
           <Separator className="bg-border/50" />
-          <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-3 text-xs text-muted-foreground">
+          <span className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 bg-card px-2 sm:px-3 text-[10px] xs:text-xs text-muted-foreground whitespace-nowrap">
             or continue with email
           </span>
         </div>
