@@ -47,8 +47,6 @@ A beautiful, responsive task management application built with Next.js 16, TypeS
 - 📈 **Smart Sorting** - Sort by date, priority, or due date
 
 ### Enhanced Features
-- 🚀 **Auto-close Modals** - Modals automatically close after task completion actions
-- 💚 **Success Styling** - Proper success button variants for completion actions
 - 🎨 **Consistent Design** - All components follow the design system
 - 📝 **Profile Management** - Update user profile with name changes
 - 🌙 **Theme Support** - Dark/light mode compatibility
@@ -204,7 +202,6 @@ taskdesk/
 - **Component Library** - Custom shadcn/ui components with consistent styling
 - **Color System** - Priority-based color coding (Yellow/Blue/Red)
 - **Typography** - Responsive text utilities for better mobile readability
-- **Button Variants** - Success, outline, gradient, and social button styles
 
 ### Interactive Elements
 - **Dark/Light Mode** - Theme switching capability with smooth transitions
@@ -258,7 +255,7 @@ taskdesk/
 ### Netlify
 1. Build command: `npm run build`
 2. Publish directory: `.next`
-3. Add environment variables in Netlify dashboard
+
 
 ## 🤝 Contributing
 
@@ -294,9 +291,6 @@ This project was built as part of a technical assessment. The code follows moder
 - ✅ **Advanced Filtering** - Filter and sort tasks by multiple criteria
 - ✅ **Profile Management** - User profile updates and management
 - ✅ **Mobile Optimization** - Enhanced mobile experience with proper touch targets
-- ✅ **Auto-close Modals** - Improved UX with automatic modal closing
-- ✅ **Success Styling** - Proper button variants and design system
-- ✅ **Overdue Detection** - Smart overdue task identification and highlighting
 
  
 
