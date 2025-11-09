@@ -2,6 +2,22 @@
 
 A beautiful, responsive task management application built with Next.js 16, TypeScript, and Supabase. Features user authentication, task CRUD operations, priority management, and a modern UI with smooth animations.
 
+### 🖼️ Screenshots
+
+<div align="center">
+
+| ![Screenshot 1](https://github.com/user-attachments/assets/7eb9cb55-ee42-4fdd-bafa-2f813667f931) | ![Screenshot 2](https://github.com/user-attachments/assets/68f47aef-a978-4da2-9e78-c4f25672f54b) |
+|:--:|:--:|
+| **Tasks Dashboard** | **Add Task Modal** |
+
+| ![Screenshot 3](https://github.com/user-attachments/assets/76a67881-e5e7-4cc1-811b-ff52f4bcce5a) | ![Screenshot 4](https://github.com/user-attachments/assets/afcf01d5-ad61-4966-9bb4-d74878f55fa5) |
+|:--:|:--:|
+| **Profile Page** | **Authentication Page** |
+
+</div>
+
+
+
 ![TaskDesk Preview](https://via.placeholder.com/800x400/6366f1/ffffff?text=TaskDesk+Preview)
 
 ## 🚀 Live Demo
