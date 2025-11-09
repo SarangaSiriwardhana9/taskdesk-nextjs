@@ -62,13 +62,13 @@ export function TaskCard({ task, onToggleComplete, onDelete, onEdit, onView }: T
   return (
     <div
       className={cn(
-        'relative rounded-xl border-2 bg-card p-6',
+        'relative rounded-xl border-2 bg-card p-6 h-48 flex flex-col',
         task.completed
           ? 'border-green-500 dark:border-green-400'
           : priority.border
       )}
     >
-      <div className="flex items-start gap-4">
+      <div className="flex items-start gap-4 mb-3">
         <div className="flex flex-col items-center gap-2 mt-1">
           <button
             onClick={handleToggleComplete}
@@ -101,12 +101,12 @@ export function TaskCard({ task, onToggleComplete, onDelete, onEdit, onView }: T
           </button>
         </div>
 
-        <div className="flex-1 min-w-0 space-y-3">
+        <div className="flex-1 min-w-0 space-y-2">
           <div className="flex items-start justify-between gap-3">
             <div className="flex-1 min-w-0">
               <h3
                 className={cn(
-                  'text-lg font-semibold leading-tight',
+                  'text-lg font-semibold leading-tight line-clamp-1',
                   task.completed
                     ? 'text-muted-foreground'
                     : 'text-foreground'
@@ -114,11 +114,6 @@ export function TaskCard({ task, onToggleComplete, onDelete, onEdit, onView }: T
               >
                 {task.title}
               </h3>
-              {task.description && (
-                <p className="mt-1.5 text-sm leading-relaxed line-clamp-2 text-muted-foreground">
-                  {task.description}
-                </p>
-              )}
             </div>
 
             <DropdownMenu>
@@ -146,27 +141,35 @@ export function TaskCard({ task, onToggleComplete, onDelete, onEdit, onView }: T
               </DropdownMenuContent>
             </DropdownMenu>
           </div>
+          
+          {task.description && (
+            <p className="text-sm leading-relaxed line-clamp-3 text-muted-foreground">
+              {task.description}
+            </p>
+          )}
+        </div>
+      </div>
 
-          <div className="flex flex-wrap items-center gap-3">
-            <Badge variant={priority.variant}>
-              <div className={cn('h-2 w-2 rounded-full', priority.icon)} />
-              {task.priority}
+      <div className="mt-auto ml-8">
+        <div className="flex flex-wrap items-center gap-3">
+          <Badge variant={priority.variant}>
+            <div className={cn('h-2 w-2 rounded-full', priority.icon)} />
+            {task.priority}
+          </Badge>
+
+          {dueDate && (
+            <Badge variant={isOverdue ? 'overdue' : 'due'}>
+              <Clock className="h-3 w-3" />
+              <span>{getDueDateLabel()}</span>
             </Badge>
+          )}
 
-            {dueDate && (
-              <Badge variant={isOverdue ? 'overdue' : 'due'}>
-                <Clock className="h-3 w-3" />
-                <span>{getDueDateLabel()}</span>
-              </Badge>
-            )}
-
-            {dueDate && (
-              <div className="text-xs text-muted-foreground">
-                <Calendar className="inline h-3 w-3 mr-1" />
-                {format(dueDate, 'MMM d, yyyy')}
-              </div>
-            )}
-          </div>
+          {dueDate && (
+            <div className="text-xs text-muted-foreground">
+              <Calendar className="inline h-3 w-3 mr-1" />
+              {format(dueDate, 'MMM d, yyyy')}
+            </div>
+          )}
         </div>
       </div>
     </div>
