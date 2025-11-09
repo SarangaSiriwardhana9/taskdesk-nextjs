@@ -3,9 +3,9 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { toast } from 'sonner';
+import { toastVariants } from '@/lib/utils/toast';
 import { useRouter } from 'next/navigation';
-import Link from 'next/link';
+ 
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
@@ -45,12 +45,12 @@ export function SignInForm({ onSignUpClick }: SignInFormProps) {
       const result = await signIn(data);
 
       if (result?.error) {
-        toast.error(result.error);
+        toastVariants.error(result.error);
         return;
       }
 
       if (result?.success) {
-        toast.success(TOAST_MESSAGES.AUTH.SIGN_IN_SUCCESS);
+        toastVariants.success(TOAST_MESSAGES.AUTH.SIGN_IN_SUCCESS);
 
         const supabase = createClient();
         const { data: { user: sessionUser } } = await supabase.auth.getUser();
@@ -78,7 +78,7 @@ export function SignInForm({ onSignUpClick }: SignInFormProps) {
         }, 100);
       }
     } catch (error) {
-      toast.error(TOAST_MESSAGES.AUTH.SIGN_IN_ERROR);
+      toastVariants.error(TOAST_MESSAGES.AUTH.SIGN_IN_ERROR);
     } finally {
       setIsLoading(false);
     }

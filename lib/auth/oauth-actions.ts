@@ -1,7 +1,7 @@
 'use client';
 
 import { createClient } from '@/lib/supabase/client';
-import { toast } from 'sonner';
+import { toastVariants } from '@/lib/utils/toast';
 
 export type OAuthProvider = 'google' | 'github';
 
@@ -49,7 +49,7 @@ export async function handleOAuthSignIn(
     const result = await signInWithOAuth(provider, options);
 
     if (!result.success && result.error) {
-      toast.error(result.error);
+      toastVariants.error(result.error);
     }
 
     return result;

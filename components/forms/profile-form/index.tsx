@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { toast } from 'sonner';
+import { toastVariants } from '@/lib/utils/toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Card, CardContent, CardDescription, CardHeader, CardTitle } from '@/components/ui/card';
@@ -37,18 +37,18 @@ export function ProfileForm({ initialData, onSubmit }: ProfileFormProps) {
       const result = await updateProfile({ name: data.name });
       
       if (result.error) {
-        toast.error(result.error);
+        toastVariants.error(result.error);
         return;
       }
 
       if (result.success && result.user) {
         // Update the auth store with new user data
         setUser(result.user);
-        toast.success(TOAST_MESSAGES.PROFILE.UPDATE_SUCCESS);
+        toastVariants.success(TOAST_MESSAGES.PROFILE.UPDATE_SUCCESS);
         onSubmit?.(data);
       }
     } catch (error) {
-      toast.error(TOAST_MESSAGES.PROFILE.UPDATE_ERROR);
+      toastVariants.error(TOAST_MESSAGES.PROFILE.UPDATE_ERROR);
     } finally {
       setIsLoading(false);
     }

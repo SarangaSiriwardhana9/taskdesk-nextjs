@@ -1,6 +1,7 @@
 'use client';
 
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { SignInForm } from '@/components/forms/sign-in-form';
 import { SignUpForm } from '@/components/forms/sign-up-form';
 
@@ -11,11 +12,26 @@ interface AuthContainerProps {
 }
 
 export function AuthContainer({ initialMode = 'signin' }: AuthContainerProps) {
+  const searchParams = useSearchParams();
   const [mode, setMode] = useState<AuthMode>(initialMode);
   const [isTransitioning, setIsTransitioning] = useState(false);
 
+  // Check URL parameters for mode override
+  useEffect(() => {
+    const modeParam = searchParams.get('mode');
+    if (modeParam === 'signin' || modeParam === 'signup') {
+      setMode(modeParam);
+    }
+  }, [searchParams]);
+
   const handleModeChange = (newMode: AuthMode) => {
     setIsTransitioning(true);
+    
+ 
+    const url = new URL(window.location.href);
+    url.searchParams.set('mode', newMode);
+    window.history.pushState({}, '', url.toString());
+    
     setTimeout(() => {
       setMode(newMode);
       setTimeout(() => setIsTransitioning(false), 50);

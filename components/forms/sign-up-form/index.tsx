@@ -3,7 +3,7 @@
 import React, { useState } from 'react';
 import { useForm } from 'react-hook-form';
 import { zodResolver } from '@hookform/resolvers/zod';
-import { toast } from 'sonner';
+import { toastVariants } from '@/lib/utils/toast';
 import { Button } from '@/components/ui/button';
 import { Input } from '@/components/ui/input';
 import { Separator } from '@/components/ui/separator';
@@ -41,7 +41,7 @@ export function SignUpForm({ onSignInClick }: SignUpFormProps) {
 
   const onSubmitForm = async (data: SignUpFormData) => {
     if (!agreeToTerms) {
-      toast.error(TOAST_MESSAGES.AUTH.TERMS_REQUIRED);
+      toastVariants.error(TOAST_MESSAGES.AUTH.TERMS_REQUIRED);
       return;
     }
 
@@ -51,15 +51,15 @@ export function SignUpForm({ onSignInClick }: SignUpFormProps) {
       const result = await signUp(data);
 
       if (result?.error) {
-        toast.error(result.error);
+        toastVariants.error(result.error);
         return;
       }
 
       if (result?.success) {
         if (result.message) {
-          toast.success(result.message);
+          toastVariants.success(result.message);
         } else {
-          toast.success(TOAST_MESSAGES.AUTH.SIGN_UP_SUCCESS);
+          toastVariants.success(TOAST_MESSAGES.AUTH.SIGN_UP_SUCCESS);
 
           if (result.redirect) {
             const supabase = createClient();
@@ -90,7 +90,7 @@ export function SignUpForm({ onSignInClick }: SignUpFormProps) {
         }
       }
     } catch (error) {
-      toast.error(TOAST_MESSAGES.AUTH.SIGN_UP_ERROR);
+      toastVariants.error(TOAST_MESSAGES.AUTH.SIGN_UP_ERROR);
     } finally {
       setIsLoading(false);
     }

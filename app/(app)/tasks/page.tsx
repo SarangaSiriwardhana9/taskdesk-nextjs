@@ -1,7 +1,7 @@
 'use client';
 
 import { useState, useEffect } from 'react';
-import { toast } from 'sonner';
+import { toastVariants } from '@/lib/utils/toast';
 import { CreateTaskFab } from '@/components/features/tasks/create-task-fab';
 import { TasksPageHeader } from '@/components/features/tasks/tasks-page-header';
 import { TaskList } from '@/components/features/tasks/task-list';
@@ -37,7 +37,7 @@ export default function TasksPage() {
       setTotalCount(result.totalCount);
     }
     if (result.error) {
-      toast.error(result.error);
+      toastVariants.error(result.error);
     }
     setIsLoading(false);
   };
@@ -54,18 +54,18 @@ export default function TasksPage() {
       });
 
       if (result?.error) {
-        toast.error(result.error || TOAST_MESSAGES.TASKS.CREATE_ERROR);
+        toastVariants.error(result.error || TOAST_MESSAGES.TASKS.CREATE_ERROR);
         return;
       }
 
       if (result?.success) {
-        toast.success(TOAST_MESSAGES.TASKS.CREATE_SUCCESS);
+        toastVariants.success(TOAST_MESSAGES.TASKS.CREATE_SUCCESS);
         setCurrentPage(1);
         await loadTasks(1);
         setShowCreateModal(false);
       }
     } catch (error) {
-      toast.error(TOAST_MESSAGES.TASKS.CREATE_ERROR);
+      toastVariants.error(TOAST_MESSAGES.TASKS.CREATE_ERROR);
     } finally {
       setIsCreating(false);
     }
@@ -84,13 +84,13 @@ export default function TasksPage() {
       const result = await updateTask(taskId, { completed });
       if (result?.error) {
         setTasks(previousTasks);
-        toast.error(result.error || TOAST_MESSAGES.TASKS.UPDATE_ERROR);
+        toastVariants.error(result.error || TOAST_MESSAGES.TASKS.UPDATE_ERROR);
       } else {
-        toast.success(completed ? TOAST_MESSAGES.TASKS.COMPLETE_SUCCESS : TOAST_MESSAGES.TASKS.INCOMPLETE_SUCCESS);
+        toastVariants.success(completed ? TOAST_MESSAGES.TASKS.COMPLETE_SUCCESS : TOAST_MESSAGES.TASKS.INCOMPLETE_SUCCESS);
       }
     } catch (error) {
       setTasks(previousTasks);
-      toast.error(TOAST_MESSAGES.TASKS.UPDATE_ERROR);
+      toastVariants.error(TOAST_MESSAGES.TASKS.UPDATE_ERROR);
     }
   };
 
@@ -106,9 +106,9 @@ export default function TasksPage() {
       if (result?.error) {
         setTasks(previousTasks);
         setTotalCount(previousCount);
-        toast.error(result.error || TOAST_MESSAGES.TASKS.DELETE_ERROR);
+        toastVariants.error(result.error || TOAST_MESSAGES.TASKS.DELETE_ERROR);
       } else {
-        toast.success(TOAST_MESSAGES.TASKS.DELETE_SUCCESS);
+        toastVariants.success(TOAST_MESSAGES.TASKS.DELETE_SUCCESS);
         
         if (tasks.length === 1 && currentPage > 1) {
           const newPage = currentPage - 1;
@@ -119,7 +119,7 @@ export default function TasksPage() {
     } catch (error) {
       setTasks(previousTasks);
       setTotalCount(previousCount);
-      toast.error(TOAST_MESSAGES.TASKS.DELETE_ERROR);
+      toastVariants.error(TOAST_MESSAGES.TASKS.DELETE_ERROR);
     }
   };
 
@@ -149,14 +149,14 @@ export default function TasksPage() {
       const result = await updateTask(editingTask.id, data);
       if (result?.error) {
         setTasks(previousTasks);
-        toast.error(result.error || TOAST_MESSAGES.TASKS.UPDATE_ERROR);
+        toastVariants.error(result.error || TOAST_MESSAGES.TASKS.UPDATE_ERROR);
       } else {
-        toast.success(TOAST_MESSAGES.TASKS.UPDATE_SUCCESS);
+        toastVariants.success(TOAST_MESSAGES.TASKS.UPDATE_SUCCESS);
         setEditingTask(null);
       }
     } catch (error) {
       setTasks(previousTasks);
-      toast.error(TOAST_MESSAGES.TASKS.UPDATE_ERROR);
+      toastVariants.error(TOAST_MESSAGES.TASKS.UPDATE_ERROR);
     } finally {
       setIsEditing(false);
     }

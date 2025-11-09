@@ -34,7 +34,7 @@ export const Header = React.memo(function Header() {
     }
 
     return (
-      <Link href={ROUTES.AUTH}>
+      <Link href={`${ROUTES.AUTH}?mode=signin`}>
         <Button variant="outline" size="default" className="gap-2">
           <LogIn className="h-4 w-4" />
           Sign In
